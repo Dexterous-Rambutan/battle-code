@@ -1,8 +1,8 @@
 ## Dexterous-Rambutan Git Workflow
 
-1. **GITHUB**: Fork plausibleyeti/client-recon
-1. **LOCAL**: git clone user/client-recon
-1. **LOCAL**: git remote add upstream plausibleyeti/client-recon
+1. **GITHUB**: Fork Dexterous-Rambutan/battle-code
+1. **LOCAL**: git clone user/battle-code
+1. **LOCAL**: git remote add upstream Dexterous-Rambutan/battle-code
 
 <hr>
 

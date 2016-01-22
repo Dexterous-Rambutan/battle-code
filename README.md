@@ -55,7 +55,7 @@ View the project roadmap [here](https://github.com/Dexterous-Rambutan/battle-cod
 <hr>
 ## Contributing + Github Workflow
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [github.md](github.md) for contribution and github workflow guidelines.
+See [github.md](github.md) for contribution and github workflow guidelines.
 
 <hr>
 ## Architecture
