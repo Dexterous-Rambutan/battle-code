@@ -1,0 +1,38 @@
+{
+  "name": "battle-code",
+  "version": "0.0.1",
+  "description": "head to head programming arena",
+  "main": "/public/index.html",
+  "dependencies": {
+    "babel": "^6.3.26",
+    "babel-core": "^6.4.0",
+    "babel-loader": "^6.2.1",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "body-parser": "^1.14.2",
+    "chai": "^3.4.1",
+    "express": "^4.13.3",
+    "history": "^1.17.0",
+    "lodash": "^4.0.0",
+    "mocha": "^2.3.4",
+    "moment": "^2.11.0",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
+    "react-redux": "^4.0.6",
+    "react-router": "^1.0.3",
+    "redux": "^3.0.5",
+    "redux-thunk": "^1.0.3",
+    "rest": "^1.3.1",
+    "webpack": "^1.12.10",
+    "webpack-dev-server": "^1.14.0"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^1.14.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --inline --hot --content-base public/"
+  },
+  "author": "",
+  "license": "ISC"
+}
