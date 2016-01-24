@@ -8,6 +8,6 @@ module.exports = function (app) {
   app.post('/api/challenges', function (req, res) {});
   app.get('/api/users/:userId', function (req, res) {});
   app.post('/api/users', function (req, res) {});
-  app.get('/api/solutions/:problemId', function (req, res) {});
-  app.post('/api/solutions/:problemId', function (req, res) {});
+  app.get('/api/solutions/:challengeId', function (req, res) {});
+  app.post('/api/solutions/:challengeId', function (req, res) {});
 };
