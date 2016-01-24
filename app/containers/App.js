@@ -6,6 +6,18 @@ var { connect } = require('react-redux');
 
 var actions = require('../actions');
 
+var Arena = require('../components/Arena');
+var Login = require('../components/Login');
+var Staging = require('../components/Staging');
+var Leaderboard = require('../components/Leaderboard');
+var NavBar = require('../components/NavBar');
+
+var LOGIN = require('../constants').view.LOGIN;
+var ARENA = require('../constants').view.ARENA;
+var STAGING = require('../constants').view.STAGING;
+var LEADERBOARD = require('../constants').view.LEADERBOARD;
+
+
 var contextType = {
   redux: React.PropTypes.object
 }
@@ -13,11 +25,39 @@ var contextType = {
 var App = React.createClass({
   //switch cases for views
   render: function(){
-    return (
-      <div>
-        test
-      </div>
-    );
+    switch(this.props.view) {
+      case LOGIN:
+        return (
+          <div>
+            <NavBar {...this.props}/>
+            <Login {...this.props}/>
+          </div>
+        );
+
+      case STAGING:
+        return (
+          <div>
+            <NavBar {...this.props}/>
+            <Staging {...this.props}/>
+          </div>
+        );
+
+      case ARENA:
+        return (
+          <div>
+            <NavBar {...this.props}/>
+            <Arena {...this.props}/>
+          </div>
+        );
+
+      case LEADERBOARD:
+        return (
+          <div>
+            <NavBar {...this.props}/>
+            <Leaderboard {...this.props}/>
+          </div>
+        );
+    }
   }
 });
 
