@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  navAction: require('./navActions.js'),
+  navActions: require('./navActions.js'),
 
   loginActions: require('./loginActions.js'),
 

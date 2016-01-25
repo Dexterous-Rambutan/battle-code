@@ -29,7 +29,7 @@ var App = React.createClass({
       case LOGIN:
         return (
           <div>
-            <NavBar {...this.props}/>
+            <NavBar navActions={this.props.navActions}/>
             <Login {...this.props}/>
           </div>
         );
@@ -37,7 +37,7 @@ var App = React.createClass({
       case STAGING:
         return (
           <div>
-            <NavBar {...this.props}/>
+            <NavBar navActions={this.props.navActions}/>
             <Staging {...this.props}/>
           </div>
         );
@@ -45,7 +45,7 @@ var App = React.createClass({
       case ARENA:
         return (
           <div>
-            <NavBar {...this.props}/>
+            <NavBar navActions={this.props.navActions}/>
             <Arena {...this.props}/>
           </div>
         );
@@ -55,6 +55,13 @@ var App = React.createClass({
           <div>
             <NavBar {...this.props}/>
             <Leaderboard {...this.props}/>
+          </div>
+        );
+      default:
+        return (
+          <div>
+            <NavBar navActions={this.props.navActions}/>
+            <Login {...this.props}/>
           </div>
         );
     }
@@ -75,7 +82,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   // console.log("THE MAPPED ACTIONS", actions);
-  var actionsObj = {};
+  var actionsObj = {}
   for(var key in actions) {
     actionsObj[key] = bindActionCreators(actions[key], dispatch);
   }
