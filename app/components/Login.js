@@ -4,7 +4,9 @@ var Login = React.createClass({
   render: function() {
     return (
       <div>
-        Login
+        <form>
+          
+        </form>
       </div>
     )
   }

@@ -25,6 +25,14 @@ var contextType = {
 var App = React.createClass({
   //switch cases for views
   render: function(){
+    // TODO SEND AUTH GET REQ
+    //get request to AUTH
+      //if loggedin
+        //switch case
+        //default is STAGING
+      //else
+        //switch case
+        //default is LOGIN
     switch(this.props.view) {
       case LOGIN:
         return (
@@ -86,7 +94,6 @@ function mapDispatchToProps(dispatch) {
   for(var key in actions) {
     actionsObj[key] = bindActionCreators(actions[key], dispatch);
   }
-  console.log('actionsObj',actionsObj);
   return actionsObj;
 }
 

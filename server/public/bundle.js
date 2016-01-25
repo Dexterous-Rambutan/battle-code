@@ -20844,6 +20844,14 @@
 
 	  //switch cases for views
 	  render: function render() {
+	    // TODO SEND AUTH GET REQ
+	    //get request to AUTH
+	    //if loggedin
+	    //switch case
+	    //default is STAGING
+	    //else
+	    //switch case
+	    //default is LOGIN
 	    switch (this.props.view) {
 	      case LOGIN:
 	        return React.createElement(
@@ -20905,7 +20913,6 @@
 	  for (var key in actions) {
 	    actionsObj[key] = bindActionCreators(actions[key], dispatch);
 	  }
-	  console.log('actionsObj', actionsObj);
 	  return actionsObj;
 	}
 
@@ -35367,10 +35374,17 @@
 
 	var NAV_STAGING = __webpack_require__(192).action.NAV_STAGING;
 	var LOGOUT = __webpack_require__(192).action.LOGOUT;
+	var NAV_ARENA = __webpack_require__(192).action.NAV_ARENA;
 
 	var navStaging = function navStaging() {
 	  return {
 	    type: NAV_STAGING
+	  };
+	};
+
+	var navArena = function navArena() {
+	  return {
+	    type: NAV_ARENA
 	  };
 	};
 
@@ -35382,7 +35396,8 @@
 
 	module.exports = {
 	  navStaging: navStaging,
-	  navLogout: navLogout
+	  navLogout: navLogout,
+	  navArena: navArena
 	};
 
 /***/ },
@@ -35428,6 +35443,15 @@
 	var Arena = React.createClass({
 	  displayName: 'Arena',
 
+	  //   componentDidMount: function(){
+	  //     //get ('/some-auth-route', function(resp){
+	  //      //logged in
+	  //      //not logged in
+	  //      //if loggedin
+	  //       //render normal stuff
+	  //     //if not logged in
+	  //       //don't render normal stuff})
+	  // },
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -35454,7 +35478,7 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      'Login'
+	      React.createElement('form', null)
 	    );
 	  }
 	});
@@ -35473,10 +35497,15 @@
 	  displayName: 'Staging',
 
 	  render: function render() {
+	    console.log('poop', this.props);
 	    return React.createElement(
 	      'div',
 	      null,
-	      'Staging'
+	      React.createElement(
+	        'button',
+	        { onClick: this.props.navActions.navArena },
+	        'Ready?'
+	      )
 	    );
 	  }
 	});
@@ -35710,9 +35739,11 @@
 	//view strings
 	var STAGING = __webpack_require__(192).view.STAGING;
 	var LOGIN = __webpack_require__(192).view.LOGIN;
+	var ARENA = __webpack_require__(192).view.ARENA;
 
 	//action strings
 	var NAV_STAGING = __webpack_require__(192).action.NAV_STAGING;
+	var NAV_ARENA = __webpack_require__(192).action.NAV_ARENA;
 	var LOGOUT = __webpack_require__(192).action.LOGOUT;
 
 	function viewReducer(state, action) {
@@ -35720,6 +35751,8 @@
 	  switch (action.type) {
 	    case NAV_STAGING:
 	      return STAGING;
+	    case NAV_ARENA:
+	      return ARENA;
 	    case LOGOUT:
 	      return LOGIN;
 	    default:
