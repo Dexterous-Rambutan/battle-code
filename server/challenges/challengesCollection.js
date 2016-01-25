@@ -1,4 +1,4 @@
-var db = require('../dbConfig');
+var db = require('../helpers/dbConfig');
 var Challenge = require('./challengeModel.js');
 
 var Challenges = db.Collection.extend({
