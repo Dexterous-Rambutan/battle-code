@@ -1,6 +1,6 @@
-var challengesController = require('../challenges/challengeController.js');
-var usersController = require('../users/userController.js');
-var solutionsController = require('../solutions/solutionController.js');
+var challengesController = require('./challenges/challengeController.js');
+var usersController = require('./users/userController.js');
+var solutionsController = require('./solutions/solutionController.js');
 
 module.exports = function (app) {
   app.get('/api/challenges', function (req, res) {});
