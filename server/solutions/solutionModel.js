@@ -1,4 +1,4 @@
-var db = require('../dbConfig');
+var db = require('../helpers/dbConfig');
 var User = require('../users/userModel');
 var Challenge = require('../challenges/challengeModel');
 
