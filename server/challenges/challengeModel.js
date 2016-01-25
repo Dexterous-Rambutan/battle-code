@@ -1,7 +1,7 @@
 var db = require('../dbConfig');
 var Solution = require('../solutions/solutionModel');
 
-var User = db.Model.extend({
+var Challenge = db.Model.extend({
   tableName: 'challenges',
   hasTimestamps: true,
   solutions: function() {
@@ -9,4 +9,4 @@ var User = db.Model.extend({
   }
 });
 
-module.exports = User;
+module.exports = Challenge;

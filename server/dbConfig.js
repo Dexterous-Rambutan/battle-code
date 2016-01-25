@@ -53,3 +53,5 @@ db.knex.schema.hasTable('challenges').then(function(exists) {
     });
   }
 });
+
+module.exports = db;
