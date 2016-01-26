@@ -14,7 +14,11 @@ db.knex.schema.hasTable('users').then(function (exists) {
   if (!exists) {
     db.knex.schema.createTable('users', function (user) {
       user.increments('id').primary();
-      user.string('user_handle', 255);
+      user.string('github_handle', 255);
+      user.string('github_display_name', 255);
+      user.string('github_avatar_url', 255);
+      user.string('github_profileUrl', 255);
+      user.string('email', 255);
       user.timestamps();
     }).then(function (table) {
       console.log('Created user Table', table);
