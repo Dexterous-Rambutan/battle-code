@@ -1,6 +1,6 @@
-var challengesController = require('./challenges/challengeController.js');
+var challengeController = require('./challenges/challengeController.js');
 var userController = require('./users/userController.js');
-var solutionsController = require('./solutions/solutionController.js');
+var solutionController = require('./solutions/solutionController.js');
 var passport = require('./helpers/psConfig.js');
 
 module.exports = function (app) {
@@ -38,13 +38,13 @@ module.exports = function (app) {
     }
   });
 
-  app.get('/api/challenges', function (req, res) {});
-  app.get('/api/challenges/:challengeId', function (req, res) {});
-  app.post('/api/challenges', function (req, res) {});
+  app.get('/api/challenges', challengeController.getChallenge);
+  app.get('/api/challenges/:challengeId', challengeController.getChallengeById);
+  app.post('/api/challenges', challengeController.addChallenge);
   app.get('/api/users/:userId', userController.getUserById);
   app.post('/api/users', userController.addUser);
-  app.get('/api/solutions/:challengeId', function (req, res) {});
-  app.post('/api/solutions/:challengeId', function (req, res) {});
+  app.get('/api/solutions/:solutionId', solutionController.getSolutionById);
+  app.post('/api/solutions', solutionController.addSolution);
   app.get('/logout', function (req, res) {
     req.session.loggedIn = false;
     res.redirect('/');

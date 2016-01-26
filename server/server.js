@@ -6,7 +6,8 @@ var passport = require('./helpers/psConfig.js');
 var session = require('express-session');
 
 var app = express();
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 
 //////////// SESSION SECRETS ////////////////////
