@@ -1,4 +1,4 @@
-var db = require('../dbConfig');
+var db = require('../helpers/dbConfig');
 var Solution = require('./solutionModel.js');
 
 var Solutions = db.Collection.extend({

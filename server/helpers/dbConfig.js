@@ -3,14 +3,14 @@ var knex = require('knex')({
   connection: {
     host     : 'localhost',
     database : 'myDB',
-    charset  : 'utf8'
+    charset  : 'utf8',
   }
 });
 
 var db = require('bookshelf')(knex);
 
 // Create users table with id, user_handle
-db.knex.schema.hasTable('users').then(function(exists) {
+db.knex.schema.hasTable('users').then(function (exists) {
   if (!exists) {
     db.knex.schema.createTable('users', function (user) {
       user.increments('id').primary();
@@ -23,7 +23,7 @@ db.knex.schema.hasTable('users').then(function(exists) {
 });
 
 // Create solutions table with id, start_time, end_time, total_time, content, user_id, and challenge_id
-db.knex.schema.hasTable('solutions').then(function(exists) {
+db.knex.schema.hasTable('solutions').then(function (exists) {
   if (!exists) {
     db.knex.schema.createTable('solutions', function (solution) {
       solution.increments('id').primary();
