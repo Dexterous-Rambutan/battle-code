@@ -13,7 +13,7 @@ module.exports = function (app) {
     passport.authenticate('github', { failureRedirect: '/login' }),
     function(req, res) {
       req.session.loggedIn = true;
-      console.log('Successfully logged in, ', req.session.passport.user);
+      console.log('Successfully logged in as: ', req.session.passport.user.displayName);
 
       // Add user to DB
       req.body.github_handle = req.session.passport.user.username;
