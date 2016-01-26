@@ -11,7 +11,7 @@ userController.getUserById = function ( req, res ) {
     if (user) {
       res.status(200).json(user);
     } else {
-      res.status(404).json({});
+      res.status(404).json(null);
     }
   }).catch(function (err) {
     res.status(500).json({error: true, data: {message: err.message}});

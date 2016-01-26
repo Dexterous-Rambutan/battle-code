@@ -7,10 +7,10 @@ module.exports = {
     Challenge.fetchAll()
     .then(function (challenges) {
       var i = Math.floor(Math.random() * challenges.size());
-      res.json(challenges.at(i));
+      res.status(200).json(challenges.at(i));
     }).catch(function (err) {
       res.status(500).json({error: true, data: {message: err.message}});
-    })
+    });
   },
   // GET /api/challenges/:challengeId
   getChallengeById: function (req, res) {
@@ -20,10 +20,14 @@ module.exports = {
     })
     .fetch()
     .then(function (challenge) {
-      res.json(challenge);
+      if (challenge) {
+        res.status(200).json(challenge);
+      } else {
+        res.status(404).json(null);
+      }
     }).catch(function (err) {
       res.status(500).json({error: true, data: {message: err.message}});
-    })
+    });
   },
   // POST /api/challenges
   addChallenge: function (req, res) {
@@ -36,11 +40,9 @@ module.exports = {
     Challenge.forge(challengeAttr)
     .save()
     .then(function (challenge) {
-      res.json(challenge);
+      res.status(201).json(challenge);
     }).catch(function (err) {
       res.status(500).json({error: true, data: {message: err.message}});
-    })
+    });
   }
-
-
-}
+};

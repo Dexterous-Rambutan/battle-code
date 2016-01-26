@@ -10,10 +10,14 @@ module.exports = {
     })
     .fetch()
     .then(function (solution) {
-      res.json(solution);
+      if (solution) { 
+        res.json(solution);
+      } else {
+        res.status(404).json(null);
+      }
     }).catch(function (err) {
       res.status(500).json({error: true, data: {message: err.message}});
-    })
+    });
   },
 
   // POST /api/solutions/:solutionId
@@ -31,10 +35,10 @@ module.exports = {
     Solution.forge(solutionAttr)
     .save()
     .then(function (solution) {
-      res.json(solution);
+      res.status(201).json(solution);
     }).catch(function (err) {
       res.status(500).json({error: true, data: {message: err.message}});
     });
 
   }
-}
+};
