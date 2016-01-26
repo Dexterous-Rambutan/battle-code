@@ -1,19 +1,23 @@
 var React = require('react');
 
 var Arena = React.createClass({
-//   componentDidMount: function(){
-//     //get ('/some-auth-route', function(resp){
-//      //logged in
-//      //not logged in
-//      //if loggedin
-//       //render normal stuff
-//     //if not logged in
-//       //don't render normal stuff})
-// },
+  componentDidMount: function(){
+    console.log('2');
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/javascript");
+
+    //getProblem - action
+    //getProblem_Success
+      //set current prompt = response.body
+      //editor.SetValue
+
+  },
   render: function() {
+    console.log('1');
     return (
-      <div>
-        Arena
+      <div id="editor">
+        {this.props.something}
       </div>
     )
   }

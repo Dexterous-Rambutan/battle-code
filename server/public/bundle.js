@@ -35443,20 +35443,23 @@
 	var Arena = React.createClass({
 	  displayName: 'Arena',
 
-	  //   componentDidMount: function(){
-	  //     //get ('/some-auth-route', function(resp){
-	  //      //logged in
-	  //      //not logged in
-	  //      //if loggedin
-	  //       //render normal stuff
-	  //     //if not logged in
-	  //       //don't render normal stuff})
-	  // },
+	  componentDidMount: function componentDidMount() {
+	    console.log('2');
+	    var editor = ace.edit("editor");
+	    editor.setTheme("ace/theme/monokai");
+	    editor.getSession().setMode("ace/mode/javascript");
+
+	    //getProblem - action
+	    //getProblem_Success
+	    //set current prompt = response.body
+	    //editor.SetValue
+	  },
 	  render: function render() {
+	    console.log('1');
 	    return React.createElement(
 	      'div',
-	      null,
-	      'Arena'
+	      { id: 'editor' },
+	      this.props.something
 	    );
 	  }
 	});
