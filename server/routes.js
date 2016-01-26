@@ -34,7 +34,7 @@ module.exports = function (app) {
       req.params.userId = req.session.passport.user.username || '';
       userController.getUserById(req, res);
     } else {
-      res.status(403).json({});
+      res.status(403).json(null);
     }
   });
 
