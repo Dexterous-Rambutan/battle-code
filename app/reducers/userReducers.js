@@ -7,6 +7,7 @@ var _ = require('lodash');
 var initial = {
   isLoggedIn: false,
   user_handle: ""
+
 }
 
 function userReducer (state, action){
@@ -14,11 +15,13 @@ function userReducer (state, action){
   switch(action.type){
     case IS_LOGGED_IN:
       return _.extend({}, state, {
-        isLoggedIn: true
+        isLoggedIn: true,
+        user_handle: action.harun
       });
     case IS_LOGGED_OUT:
       return _.extend({}, state, {
-        isLoggedIn: false
+        isLoggedIn: false,
+        user_handle: ""
       });
   }
   return state;

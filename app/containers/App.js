@@ -25,7 +25,6 @@ var contextType = {
 var App = React.createClass({
   componentWillMount: function(){
     this.props.loginActions.checkLoggedIn();
-    console.log('poop');
   },
 
   render: function(){

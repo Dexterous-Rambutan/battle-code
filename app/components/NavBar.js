@@ -5,7 +5,7 @@ var Nav = React.createClass({
     return (
       <div>
         <ul>
-          <li onClick={this.props.navActions.navLogout}>Log Out</li>
+          <a href="/logout">Log Out</a>
           <li onClick={this.props.navActions.navStaging}>Staging</li>
         </ul>
       </div>

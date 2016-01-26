@@ -20844,7 +20844,6 @@
 
 	  componentWillMount: function componentWillMount() {
 	    this.props.loginActions.checkLoggedIn();
-	    console.log('poop');
 	  },
 
 	  render: function render() {
@@ -35461,11 +35460,13 @@
 	      dataType: 'json',
 	      cache: false,
 	      success: function success(data) {
-	        if (data.auth === true) {
-	          dispatch({ type: IS_LOGGED_IN });
-	        } else {
-	          dispatch({ type: IS_LOGGED_OUT });
-	        }
+	        dispatch({
+	          type: IS_LOGGED_IN,
+	          harun: data.github_handle
+	        });
+	      },
+	      error: function error(_error) {
+	        dispatch({ type: IS_LOGGED_OUT });
 	      }
 	    });
 	  };
@@ -35606,29 +35607,29 @@
 /* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var React = __webpack_require__(1);
 
 	var Nav = React.createClass({
-	  displayName: 'Nav',
+	  displayName: "Nav",
 
 	  render: function render() {
 	    return React.createElement(
-	      'div',
+	      "div",
 	      null,
 	      React.createElement(
-	        'ul',
+	        "ul",
 	        null,
 	        React.createElement(
-	          'li',
-	          { onClick: this.props.navActions.navLogout },
-	          'Log Out'
+	          "a",
+	          { href: "/logout" },
+	          "Log Out"
 	        ),
 	        React.createElement(
-	          'li',
+	          "li",
 	          { onClick: this.props.navActions.navStaging },
-	          'Staging'
+	          "Staging"
 	        )
 	      )
 	    );
@@ -35740,6 +35741,7 @@
 	var initial = {
 	  isLoggedIn: false,
 	  user_handle: ""
+
 	};
 
 	function userReducer(state, action) {
@@ -35747,11 +35749,13 @@
 	  switch (action.type) {
 	    case IS_LOGGED_IN:
 	      return _.extend({}, state, {
-	        isLoggedIn: true
+	        isLoggedIn: true,
+	        user_handle: action.harun
 	      });
 	    case IS_LOGGED_OUT:
 	      return _.extend({}, state, {
-	        isLoggedIn: false
+	        isLoggedIn: false,
+	        user_handle: ""
 	      });
 	  }
 	  return state;

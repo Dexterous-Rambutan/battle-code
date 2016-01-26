@@ -11,11 +11,13 @@ var checkLoggedIn = function(){
       dataType: 'json',
       cache: false,
       success: function(data){
-        if(data.auth===true){
-          dispatch({type: IS_LOGGED_IN});
-        } else {
-          dispatch({type: IS_LOGGED_OUT});
-        }
+          dispatch({
+            type: IS_LOGGED_IN,
+            harun: data.github_handle
+          })
+      },
+      error: function(error){
+        dispatch({type: IS_LOGGED_OUT});
       }
     })
   }
