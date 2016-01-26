@@ -10,6 +10,8 @@ module.exports = {
     //Login
     LOGIN: 'LOGIN',
     NAV_STAGING: 'NAV_STAGING',
+    IS_LOGGED_IN: 'IS_LOGGED_IN',
+    IS_LOGGED_OUT: 'IS_LOGGED_OUT',
 
     //Staging
     NAV_ARENA: 'NAV_ARENA',

@@ -23,57 +23,46 @@ var contextType = {
 }
 
 var App = React.createClass({
-  //switch cases for views
+  componentWillMount: function(){
+    this.props.loginActions.checkLoggedIn();
+    console.log('poop');
+  },
+
   render: function(){
-    // TODO SEND AUTH GET REQ
-    //get request to AUTH
-      //if loggedin
-        //switch case
-        //default is STAGING
-      //else
-        //switch case
-        //default is LOGIN
-    switch(this.props.view) {
-      case LOGIN:
-        return (
-          <div>
-            <NavBar navActions={this.props.navActions}/>
-            <Login {...this.props}/>
-          </div>
-        );
-
-      case STAGING:
-        return (
-          <div>
-            <NavBar navActions={this.props.navActions}/>
-            <Staging {...this.props}/>
-          </div>
-        );
-
-      case ARENA:
-        return (
-          <div>
-            <NavBar navActions={this.props.navActions}/>
-            <Arena {...this.props}/>
-          </div>
-        );
-
-      case LEADERBOARD:
-        return (
-          <div>
-            <NavBar {...this.props}/>
-            <Leaderboard {...this.props}/>
-          </div>
-        );
-      default:
-        return (
-          <div>
-            <NavBar navActions={this.props.navActions}/>
-            <Login {...this.props}/>
-          </div>
-        );
+    if(this.props.user.isLoggedIn){
+      switch(this.props.view) {
+        case STAGING:
+          return (
+            <div>
+              <NavBar navActions={this.props.navActions}/>
+              <Staging {...this.props}/>
+            </div>
+          );
+        case ARENA:
+          return (
+            <div>
+              <NavBar navActions={this.props.navActions}/>
+              <Arena {...this.props}/>
+            </div>
+          );
+        case LEADERBOARD:
+          return (
+            <div>
+              <NavBar {...this.props}/>
+              <Leaderboard {...this.props}/>
+            </div>
+          );
+      }
+    } else {
+      return (
+        <div>
+          <NavBar navActions={this.props.navActions}/>
+          <Login {...this.props}/>
+        </div>
+      );
     }
-  }
+
+    }
 });
 
 function mapStateToProps(state) {

@@ -13,7 +13,7 @@ var LOGOUT = require('../constants').action.LOGOUT;
 
 
 function viewReducer (state, action){
-  state = state || LOGIN;
+  state = state || STAGING;
   switch (action.type){
     case NAV_STAGING:
       return STAGING;

@@ -20824,16 +20824,16 @@
 
 	var actions = __webpack_require__(181);
 
-	var Arena = __webpack_require__(187);
-	var Login = __webpack_require__(188);
-	var Staging = __webpack_require__(189);
-	var Leaderboard = __webpack_require__(190);
-	var NavBar = __webpack_require__(191);
+	var Arena = __webpack_require__(188);
+	var Login = __webpack_require__(189);
+	var Staging = __webpack_require__(190);
+	var Leaderboard = __webpack_require__(191);
+	var NavBar = __webpack_require__(192);
 
-	var LOGIN = __webpack_require__(192).view.LOGIN;
-	var ARENA = __webpack_require__(192).view.ARENA;
-	var STAGING = __webpack_require__(192).view.STAGING;
-	var LEADERBOARD = __webpack_require__(192).view.LEADERBOARD;
+	var LOGIN = __webpack_require__(183).view.LOGIN;
+	var ARENA = __webpack_require__(183).view.ARENA;
+	var STAGING = __webpack_require__(183).view.STAGING;
+	var LEADERBOARD = __webpack_require__(183).view.LEADERBOARD;
 
 	var contextType = {
 	  redux: React.PropTypes.object
@@ -20842,55 +20842,43 @@
 	var App = React.createClass({
 	  displayName: 'App',
 
-	  //switch cases for views
+	  componentWillMount: function componentWillMount() {
+	    this.props.loginActions.checkLoggedIn();
+	    console.log('poop');
+	  },
+
 	  render: function render() {
-	    // TODO SEND AUTH GET REQ
-	    //get request to AUTH
-	    //if loggedin
-	    //switch case
-	    //default is STAGING
-	    //else
-	    //switch case
-	    //default is LOGIN
-	    switch (this.props.view) {
-	      case LOGIN:
-	        return React.createElement(
-	          'div',
-	          null,
-	          React.createElement(NavBar, { navActions: this.props.navActions }),
-	          React.createElement(Login, this.props)
-	        );
-
-	      case STAGING:
-	        return React.createElement(
-	          'div',
-	          null,
-	          React.createElement(NavBar, { navActions: this.props.navActions }),
-	          React.createElement(Staging, this.props)
-	        );
-
-	      case ARENA:
-	        return React.createElement(
-	          'div',
-	          null,
-	          React.createElement(NavBar, { navActions: this.props.navActions }),
-	          React.createElement(Arena, this.props)
-	        );
-
-	      case LEADERBOARD:
-	        return React.createElement(
-	          'div',
-	          null,
-	          React.createElement(NavBar, this.props),
-	          React.createElement(Leaderboard, this.props)
-	        );
-	      default:
-	        return React.createElement(
-	          'div',
-	          null,
-	          React.createElement(NavBar, { navActions: this.props.navActions }),
-	          React.createElement(Login, this.props)
-	        );
+	    if (this.props.user.isLoggedIn) {
+	      switch (this.props.view) {
+	        case STAGING:
+	          return React.createElement(
+	            'div',
+	            null,
+	            React.createElement(NavBar, { navActions: this.props.navActions }),
+	            React.createElement(Staging, this.props)
+	          );
+	        case ARENA:
+	          return React.createElement(
+	            'div',
+	            null,
+	            React.createElement(NavBar, { navActions: this.props.navActions }),
+	            React.createElement(Arena, this.props)
+	          );
+	        case LEADERBOARD:
+	          return React.createElement(
+	            'div',
+	            null,
+	            React.createElement(NavBar, this.props),
+	            React.createElement(Leaderboard, this.props)
+	          );
+	      }
+	    } else {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(NavBar, { navActions: this.props.navActions }),
+	        React.createElement(Login, this.props)
+	      );
 	    }
 	  }
 	});
@@ -35356,13 +35344,13 @@
 	module.exports = {
 	  navActions: __webpack_require__(182),
 
-	  loginActions: __webpack_require__(183),
+	  loginActions: __webpack_require__(184),
 
-	  stagingActions: __webpack_require__(184),
+	  stagingActions: __webpack_require__(185),
 
-	  arenaActions: __webpack_require__(185),
+	  arenaActions: __webpack_require__(186),
 
-	  leaderboardActions: __webpack_require__(186)
+	  leaderboardActions: __webpack_require__(187)
 
 	};
 
@@ -35372,9 +35360,10 @@
 
 	'use strict';
 
-	var NAV_STAGING = __webpack_require__(192).action.NAV_STAGING;
-	var LOGOUT = __webpack_require__(192).action.LOGOUT;
-	var NAV_ARENA = __webpack_require__(192).action.NAV_ARENA;
+	var NAV_STAGING = __webpack_require__(183).action.NAV_STAGING;
+	var LOGOUT = __webpack_require__(183).action.LOGOUT;
+	var NAV_ARENA = __webpack_require__(183).action.NAV_ARENA;
+	var LOGIN = __webpack_require__(183).action.LOGIN;
 
 	var navStaging = function navStaging() {
 	  return {
@@ -35389,6 +35378,8 @@
 	};
 
 	var navLogout = function navLogout() {
+	  //need to send request to route to LOGOUT
+	  //on success, dispatch LOGOUT statement
 	  return {
 	    type: LOGOUT
 	  };
@@ -35406,178 +35397,6 @@
 
 	'use strict';
 
-	module.exports = {};
-
-/***/ },
-/* 184 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = {};
-
-/***/ },
-/* 185 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = {};
-
-/***/ },
-/* 186 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = {};
-
-/***/ },
-/* 187 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	var Arena = React.createClass({
-	  displayName: 'Arena',
-
-	  componentDidMount: function componentDidMount() {
-	    console.log('2');
-	    var editor = ace.edit("editor");
-	    editor.setTheme("ace/theme/monokai");
-	    editor.getSession().setMode("ace/mode/javascript");
-
-	    //getProblem - action
-	    //getProblem_Success
-	    //set current prompt = response.body
-	    //editor.SetValue
-	  },
-	  render: function render() {
-	    console.log('1');
-	    return React.createElement(
-	      'div',
-	      { id: 'editor' },
-	      this.props.something
-	    );
-	  }
-	});
-
-	module.exports = Arena;
-
-/***/ },
-/* 188 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	var Login = React.createClass({
-	  displayName: 'Login',
-
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement('form', null)
-	    );
-	  }
-	});
-
-	module.exports = Login;
-
-/***/ },
-/* 189 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	var Staging = React.createClass({
-	  displayName: 'Staging',
-
-	  render: function render() {
-	    console.log('poop', this.props);
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'button',
-	        { onClick: this.props.navActions.navArena },
-	        'Ready?'
-	      )
-	    );
-	  }
-	});
-
-	module.exports = Staging;
-
-/***/ },
-/* 190 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	var Leaderboard = React.createClass({
-	  displayName: 'Leaderboard',
-
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      null,
-	      'Leaderboard'
-	    );
-	  }
-	});
-
-	module.exports = Leaderboard;
-
-/***/ },
-/* 191 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	var Nav = React.createClass({
-	  displayName: 'Nav',
-
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'ul',
-	        null,
-	        React.createElement(
-	          'li',
-	          { onClick: this.props.navActions.navLogout },
-	          'Log Out'
-	        ),
-	        React.createElement(
-	          'li',
-	          { onClick: this.props.navActions.navStaging },
-	          'Staging'
-	        )
-	      )
-	    );
-	  }
-	});
-
-	module.exports = Nav;
-
-/***/ },
-/* 192 */
-/***/ function(module, exports) {
-
-	'use strict';
-
 	module.exports = {
 	  //ACTION CONSTANTS
 	  action: {
@@ -35588,6 +35407,8 @@
 	    //Login
 	    LOGIN: 'LOGIN',
 	    NAV_STAGING: 'NAV_STAGING',
+	    IS_LOGGED_IN: 'IS_LOGGED_IN',
+	    IS_LOGGED_OUT: 'IS_LOGGED_OUT',
 
 	    //Staging
 	    NAV_ARENA: 'NAV_ARENA',
@@ -35622,6 +35443,199 @@
 	    LEADERBOARD: 'LEADERBOARD'
 	  }
 	};
+
+/***/ },
+/* 184 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var IS_LOGGED_IN = __webpack_require__(183).action.IS_LOGGED_IN;
+	var IS_LOGGED_OUT = __webpack_require__(183).action.IS_LOGGED_OUT;
+
+	var checkLoggedIn = function checkLoggedIn() {
+	  return function (dispatch) {
+	    $.ajax({
+	      method: 'GET',
+	      url: '/auth-verify',
+	      dataType: 'json',
+	      cache: false,
+	      success: function success(data) {
+	        if (data.auth === true) {
+	          dispatch({ type: IS_LOGGED_IN });
+	        } else {
+	          dispatch({ type: IS_LOGGED_OUT });
+	        }
+	      }
+	    });
+	  };
+	};
+
+	module.exports = {
+	  checkLoggedIn: checkLoggedIn
+	};
+
+/***/ },
+/* 185 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = {};
+
+/***/ },
+/* 186 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = {};
+
+/***/ },
+/* 187 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = {};
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Arena = React.createClass({
+	  displayName: "Arena",
+
+	  componentDidMount: function componentDidMount() {
+	    var editor = ace.edit("editor");
+	    editor.setTheme("ace/theme/monokai");
+	    editor.getSession().setMode("ace/mode/javascript");
+
+	    //getProblem - action
+	    //getProblem_Success
+	    //set current prompt = response.body
+	    //editor.SetValue
+	  },
+	  render: function render() {
+	    return React.createElement("div", { id: "editor" });
+	  }
+	});
+
+	module.exports = Arena;
+
+/***/ },
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Login = React.createClass({
+	  displayName: "Login",
+
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "a",
+	        { href: "/auth/github" },
+	        "Login with GitHub"
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Login;
+
+/***/ },
+/* 190 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var Staging = React.createClass({
+	  displayName: 'Staging',
+
+	  render: function render() {
+	    console.log('poop', this.props);
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'button',
+	        { onClick: this.props.navActions.navArena },
+	        'Ready?'
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Staging;
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var Leaderboard = React.createClass({
+	  displayName: 'Leaderboard',
+
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      'Leaderboard'
+	    );
+	  }
+	});
+
+	module.exports = Leaderboard;
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var Nav = React.createClass({
+	  displayName: 'Nav',
+
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'ul',
+	        null,
+	        React.createElement(
+	          'li',
+	          { onClick: this.props.navActions.navLogout },
+	          'Log Out'
+	        ),
+	        React.createElement(
+	          'li',
+	          { onClick: this.props.navActions.navStaging },
+	          'Staging'
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Nav;
 
 /***/ },
 /* 193 */
@@ -35718,6 +35732,9 @@
 
 	'use strict';
 
+	var IS_LOGGED_IN = __webpack_require__(183).action.IS_LOGGED_IN;
+	var IS_LOGGED_OUT = __webpack_require__(183).action.IS_LOGGED_OUT;
+
 	var _ = __webpack_require__(178);
 
 	var initial = {
@@ -35725,8 +35742,18 @@
 	  user_handle: ""
 	};
 
-	function userReducer(state) {
+	function userReducer(state, action) {
 	  state = state || initial;
+	  switch (action.type) {
+	    case IS_LOGGED_IN:
+	      return _.extend({}, state, {
+	        isLoggedIn: true
+	      });
+	    case IS_LOGGED_OUT:
+	      return _.extend({}, state, {
+	        isLoggedIn: false
+	      });
+	  }
 	  return state;
 	};
 
@@ -35740,17 +35767,17 @@
 
 	var _ = __webpack_require__(178);
 	//view strings
-	var STAGING = __webpack_require__(192).view.STAGING;
-	var LOGIN = __webpack_require__(192).view.LOGIN;
-	var ARENA = __webpack_require__(192).view.ARENA;
+	var STAGING = __webpack_require__(183).view.STAGING;
+	var LOGIN = __webpack_require__(183).view.LOGIN;
+	var ARENA = __webpack_require__(183).view.ARENA;
 
 	//action strings
-	var NAV_STAGING = __webpack_require__(192).action.NAV_STAGING;
-	var NAV_ARENA = __webpack_require__(192).action.NAV_ARENA;
-	var LOGOUT = __webpack_require__(192).action.LOGOUT;
+	var NAV_STAGING = __webpack_require__(183).action.NAV_STAGING;
+	var NAV_ARENA = __webpack_require__(183).action.NAV_ARENA;
+	var LOGOUT = __webpack_require__(183).action.LOGOUT;
 
 	function viewReducer(state, action) {
-	  state = state || LOGIN;
+	  state = state || STAGING;
 	  switch (action.type) {
 	    case NAV_STAGING:
 	      return STAGING;
