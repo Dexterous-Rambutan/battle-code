@@ -16,7 +16,7 @@ function userReducer (state, action){
     case IS_LOGGED_IN:
       return _.extend({}, state, {
         isLoggedIn: true,
-        user_handle: action.harun
+        user_handle: action.payload
       });
     case IS_LOGGED_OUT:
       return _.extend({}, state, {

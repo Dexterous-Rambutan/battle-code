@@ -13,7 +13,7 @@ var checkLoggedIn = function(){
       success: function(data){
           dispatch({
             type: IS_LOGGED_IN,
-            harun: data.github_handle
+            payload: data.github_handle
           })
       },
       error: function(error){

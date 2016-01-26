@@ -20850,6 +20850,7 @@
 	    if (this.props.user.isLoggedIn) {
 	      switch (this.props.view) {
 	        case STAGING:
+	          //history.pushState(store.getState(), 'Staging', "staging");
 	          return React.createElement(
 	            'div',
 	            null,
@@ -20857,6 +20858,7 @@
 	            React.createElement(Staging, this.props)
 	          );
 	        case ARENA:
+	          //history.pushState(store.getState(), 'Arena', "arena");
 	          return React.createElement(
 	            'div',
 	            null,
@@ -20864,6 +20866,7 @@
 	            React.createElement(Arena, this.props)
 	          );
 	        case LEADERBOARD:
+	          //history.pushState(store.getState(), 'Leaderboard', "leadboard");
 	          return React.createElement(
 	            'div',
 	            null,
@@ -20872,6 +20875,7 @@
 	          );
 	      }
 	    } else {
+	      //history.pushState(store.getState(), 'Login', "login");
 	      return React.createElement(
 	        'div',
 	        null,
@@ -35462,7 +35466,7 @@
 	      success: function success(data) {
 	        dispatch({
 	          type: IS_LOGGED_IN,
-	          harun: data.github_handle
+	          payload: data.github_handle
 	        });
 	      },
 	      error: function error(_error) {
@@ -35625,11 +35629,6 @@
 	          "a",
 	          { href: "/logout" },
 	          "Log Out"
-	        ),
-	        React.createElement(
-	          "li",
-	          { onClick: this.props.navActions.navStaging },
-	          "Staging"
 	        )
 	      )
 	    );
@@ -35750,7 +35749,7 @@
 	    case IS_LOGGED_IN:
 	      return _.extend({}, state, {
 	        isLoggedIn: true,
-	        user_handle: action.harun
+	        user_handle: action.payload
 	      });
 	    case IS_LOGGED_OUT:
 	      return _.extend({}, state, {

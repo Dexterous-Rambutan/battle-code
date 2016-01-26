@@ -31,6 +31,7 @@ var App = React.createClass({
     if(this.props.user.isLoggedIn){
       switch(this.props.view) {
         case STAGING:
+          //history.pushState(store.getState(), 'Staging', "staging");
           return (
             <div>
               <NavBar navActions={this.props.navActions}/>
@@ -38,6 +39,7 @@ var App = React.createClass({
             </div>
           );
         case ARENA:
+          //history.pushState(store.getState(), 'Arena', "arena");
           return (
             <div>
               <NavBar navActions={this.props.navActions}/>
@@ -45,6 +47,7 @@ var App = React.createClass({
             </div>
           );
         case LEADERBOARD:
+          //history.pushState(store.getState(), 'Leaderboard', "leadboard");
           return (
             <div>
               <NavBar {...this.props}/>
@@ -53,6 +56,7 @@ var App = React.createClass({
           );
       }
     } else {
+      //history.pushState(store.getState(), 'Login', "login");
       return (
         <div>
           <NavBar navActions={this.props.navActions}/>
