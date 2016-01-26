@@ -2,13 +2,12 @@
 var combineReducers = require('redux').combineReducers;
 
 
-
 var reducers = {
-  arenaReducers: require('./arenaReducers.js'),
+  arena: require('./arenaReducers.js'),
 
-  userReducers: require('./userReducers.js'),
+  user: require('./userReducers.js'),
 
-  viewReducers: require('./viewReducers.js'),
+  view: require('./viewReducers.js'),
 
 }
 

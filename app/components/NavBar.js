@@ -4,11 +4,11 @@ var Nav = React.createClass({
   render: function() {
     return (
       <div>
-        <button />
-        <button />
-        <button />
+        <ul>
+          <a href="/logout">Log Out</a>
+        </ul>
       </div>
-    )
+    );
   }
 });
 

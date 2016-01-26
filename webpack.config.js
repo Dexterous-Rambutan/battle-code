@@ -14,7 +14,7 @@ module.exports = {
   output: {
 
     // `path` is a path to the directory where your bundle will be written.
-    path: 'public',
+    path: 'server/public',
 
     // `publicPath` is optional. It allows you to set a separate path that will
     // be used by any lazy-loading in your Webpack scripts to load more chunks

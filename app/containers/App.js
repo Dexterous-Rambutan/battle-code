@@ -23,42 +23,49 @@ var contextType = {
 }
 
 var App = React.createClass({
-  //switch cases for views
+  componentWillMount: function(){
+    this.props.loginActions.checkLoggedIn();
+  },
+
   render: function(){
-    switch(this.props.view) {
-      case LOGIN:
-        return (
-          <div>
-            <NavBar {...this.props}/>
-            <Login {...this.props}/>
-          </div>
-        );
-
-      case STAGING:
-        return (
-          <div>
-            <NavBar {...this.props}/>
-            <Staging {...this.props}/>
-          </div>
-        );
-
-      case ARENA:
-        return (
-          <div>
-            <NavBar {...this.props}/>
-            <Arena {...this.props}/>
-          </div>
-        );
-
-      case LEADERBOARD:
-        return (
-          <div>
-            <NavBar {...this.props}/>
-            <Leaderboard {...this.props}/>
-          </div>
-        );
+    if(this.props.user.isLoggedIn){
+      switch(this.props.view) {
+        case STAGING:
+          //history.pushState(store.getState(), 'Staging', "staging");
+          return (
+            <div>
+              <NavBar navActions={this.props.navActions}/>
+              <Staging {...this.props}/>
+            </div>
+          );
+        case ARENA:
+          //history.pushState(store.getState(), 'Arena', "arena");
+          return (
+            <div>
+              <NavBar navActions={this.props.navActions}/>
+              <Arena {...this.props}/>
+            </div>
+          );
+        case LEADERBOARD:
+          //history.pushState(store.getState(), 'Leaderboard', "leadboard");
+          return (
+            <div>
+              <NavBar {...this.props}/>
+              <Leaderboard {...this.props}/>
+            </div>
+          );
+      }
+    } else {
+      //history.pushState(store.getState(), 'Login', "login");
+      return (
+        <div>
+          <NavBar navActions={this.props.navActions}/>
+          <Login {...this.props}/>
+        </div>
+      );
     }
-  }
+
+    }
 });
 
 function mapStateToProps(state) {
@@ -75,11 +82,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   // console.log("THE MAPPED ACTIONS", actions);
-  var actionsObj = {};
+  var actionsObj = {}
   for(var key in actions) {
     actionsObj[key] = bindActionCreators(actions[key], dispatch);
   }
-  console.log('actionsObj',actionsObj);
   return actionsObj;
 }
 
