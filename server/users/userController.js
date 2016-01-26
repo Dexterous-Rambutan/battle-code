@@ -22,10 +22,13 @@ userController.getUserById = function ( req, res ) {
 // otherwise ask DB to create user
 userController.addUser = function ( req, res ) {
   var github_handle = req.body.github_handle;
-  var github_display_name = req.body.github_display_name;
-  var github_avatar_url = req.body.github_avatar_url;
-  var github_profileUrl = req.body.github_profileUrl;
-  var email = req.body.email;
+  var userAttr = {
+    github_handle: req.body.github_handle,
+    github_display_name: req.body.github_display_name,
+    github_avatar_url: req.body.github_avatar_url,
+    github_profileUrl: req.body.github_profileUrl,
+    email: req.body.email
+  };
   // Construct a new user, and see if it already exists
   new User({github_handle: github_handle}).fetch()
   .then(function(user) {
@@ -36,13 +39,7 @@ userController.addUser = function ( req, res ) {
       }
     // if not, add that user to the DB
     } else {
-      User.forge({
-        github_handle: github_handle,
-        github_display_name: github_display_name,
-        github_avatar_url: github_avatar_url,
-        github_profileUrl: github_profileUrl,
-        email: email
-      }).save().then(function(newUser){
+      User.forge(userAttr).save().then(function(newUser){
         if (res) {
           res.status(201).json(newUser);
         }
