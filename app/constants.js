@@ -16,6 +16,7 @@ module.exports = {
     //Staging
     NAV_SOLO_ARENA: 'NAV_SOLO_ARENA',
     NAV_CHALLENGE_ARENA: 'NAV_CHALLENGE_ARENA',
+    CREATE_SOCKET: 'CREATE_SOCKET',
 
     //Arena
     GET_PROBLEM: 'GET_PROBLEM',

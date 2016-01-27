@@ -1,5 +1,5 @@
 var React = require('react');
-
+var io = require('socket.io-client');
 var SoloArena = React.createClass({
   componentDidMount: function(){
     var editor = ace.edit("editor");
