@@ -9,12 +9,19 @@ var SoloArena = React.createClass({
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/javascript");
   },
-  
+
   render: function() {
+    var submitProblem = function(){
+      this.props.arenaActions.submitProblem($('#editor').val(), this.props.arena.socket.id, this.props.arena.problem_id, this.props.user_handle);
+    }
     return (
-      <div id="editor">
+      <div>
+        <div id="editor">
+        </div>
+        <button onClick={submitProblem}>Submit Solution</button>
+        <div>{this.props.arena.submissionMessage}</div>
       </div>
-    )
+    );
   }
 });
 
