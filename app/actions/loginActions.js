@@ -17,7 +17,9 @@ var checkLoggedIn = function(){
           })
       },
       error: function(error){
-        dispatch({type: IS_LOGGED_OUT});
+        dispatch({
+          type: IS_LOGGED_OUT
+        });
       }
     })
   }
