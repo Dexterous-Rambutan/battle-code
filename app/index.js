@@ -9,13 +9,18 @@ var App = require('./containers/App');
 var configureStore = require('./store/configureStore');
 
 
+
+
 var store = configureStore();
 store.subscribe(() => {
   console.dir('state changed',store.getState());
 });
 
+
 window.store = store;
 store.getState();
+
+require('./sockets/socket-helper');
 
 render(
  <Provider store={store}>
