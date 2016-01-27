@@ -4,6 +4,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var passport = require('./helpers/psConfig.js');
 var session = require('express-session');
+var redis = require('redis');
+var redisClient = redis.createClient();
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
@@ -33,7 +35,7 @@ var authUser = function(req, res, next){
 };
 
 ////////////////////////////////////////////////
-require('./routes.js')(app, express);
+require('./routes.js')(app, redisClient);
 
 app.listen(port);
 console.log('Server now listening on port ' + port);
