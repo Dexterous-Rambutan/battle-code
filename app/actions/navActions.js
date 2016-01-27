@@ -2,7 +2,8 @@
 
 var NAV_STAGING = require('../constants').action.NAV_STAGING;
 var LOGOUT = require('../constants').action.LOGOUT;
-var NAV_ARENA = require('../constants').action.NAV_ARENA;
+var NAV_SOLO_ARENA = require('../constants').action.NAV_SOLO_ARENA;
+var NAV_CHALLENGE_ARENA = require('../constants').action.NAV_CHALLENGE_ARENA;
 var LOGIN = require('../constants').action.LOGIN;
 
 var navStaging = function(){
@@ -11,9 +12,15 @@ var navStaging = function(){
   }
 };
 
-var navArena = function(){
+var navSoloArena = function(){
   return {
-    type: NAV_ARENA
+    type: NAV_SOLO_ARENA
+  }
+};
+
+var navChallengeArena = function(){
+  return {
+    type: NAV_CHALLENGE_ARENA
   }
 };
 
@@ -29,5 +36,6 @@ var navLogout = function(){
 module.exports = {
   navStaging: navStaging,
   navLogout: navLogout,
-  navArena: navArena
+  navSoloArena: navSoloArena,
+  navChallengeArena: navChallengeArena
 }

@@ -14,7 +14,8 @@ module.exports = {
     IS_LOGGED_OUT: 'IS_LOGGED_OUT',
 
     //Staging
-    NAV_ARENA: 'NAV_ARENA',
+    NAV_SOLO_ARENA: 'NAV_SOLO_ARENA',
+    NAV_CHALLENGE_ARENA: 'NAV_CHALLENGE_ARENA',
 
     //Arena
     GET_PROBLEM: 'GET_PROBLEM',
@@ -42,7 +43,8 @@ module.exports = {
   view: {
     LOGIN: 'LOGIN',
     STAGING: 'STAGING',
-    ARENA: 'ARENA',
+    SOLO_ARENA: 'SOLO_ARENA',
+    CHALLENGE_ARENA: 'CHALLENGE_ARENA',
     LEADERBOARD: 'LEADERBOARD'
   }
 }
