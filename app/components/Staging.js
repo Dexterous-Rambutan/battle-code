@@ -1,11 +1,14 @@
 var React = require('react');
 
 var Staging = React.createClass({
+  componentDidMount: function(){
+    this.props.stagingActions.createSocket();
+  },
   render: function() {
-    console.log('poop',this.props)
     return (
       <div>
-        <button onClick={this.props.navActions.navArena}>Ready?</button>
+        <button onClick={this.props.navActions.navSoloArena}>SOLO</button>
+        <button onClick={this.props.navActions.navChallengeArena}>CHALLENGE</button>
       </div>
     )
   }
