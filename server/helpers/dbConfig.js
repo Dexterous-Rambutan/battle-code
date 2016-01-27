@@ -44,7 +44,7 @@ var createChallengesTable = function () {
   db.knex.schema.createTable('challenges', function (challenge) {
     challenge.increments('id').primary();
     challenge.string('name', 255);
-    challenge.string('prompt', 255);
+    challenge.string('prompt', 1000);
     challenge.string('test_suite', 8000); // test code that we will write per challenge
     challenge.timestamps();
   }).then(function (table) {
