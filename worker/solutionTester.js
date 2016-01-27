@@ -35,7 +35,8 @@ function runTest() {
       var solutionText = solutionInfo.content;
       var solutionScript = new vm.Script(solutionText);
 
-      var testText = JSON.parse(challenge.get('test_suite'));
+      // var testText = JSON.parse(challenge.get('test_suite'));
+      var testText = challenge.get('test_suite');
       var testScript = new vm.Script(testText);
 
       var validateScript = setIsValidTrue;
