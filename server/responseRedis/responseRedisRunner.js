@@ -15,10 +15,13 @@ var responds = function (io) {
 
     // assume replies is a JSON object
     var reply = JSON.parse(replies[1]);
-    var toSocket = reply.socketId;
+    var toSocket = reply.socket_id;
+    var challenge_id = reply.challenge_id;
+    var user_handle = reply.user_handle;
+    var soln_str = reply.soln_str;
     var message = reply.message;
 
-    // // Send evaluated response to socket
+    // Send evaluated response to socket
     io.to(toSocket).emit('eval', message);
 
     // // Keep listening

@@ -2,3 +2,4 @@ node_modules
 public/bundle.js
 server/lib/apiKey.js
 server/public/bundle.js
+dump.rdb
