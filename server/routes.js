@@ -2,6 +2,7 @@ var challengeController = require('./challenges/challengeController.js');
 var userController = require('./users/userController.js');
 var solutionController = require('./solutions/solutionController.js');
 var passport = require('./helpers/psConfig.js');
+var db = require('./helpers/dbConfig.js');
 
 module.exports = function (app) {
 
@@ -49,4 +50,5 @@ module.exports = function (app) {
     req.session.loggedIn = false;
     res.redirect('/');
   });
+  app.get('/reset', db.resetEverything);
 };
