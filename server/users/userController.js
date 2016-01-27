@@ -5,7 +5,7 @@ var userController = {};
 // Try to fetch that user via route: /api/users/:userId, and
 // return {user object}
 userController.getUserById = function ( req, res ) {
-  var github_handle = req.params.userId;
+  var github_handle = req.params.github_handle;
   new User({github_handle: github_handle}).fetch()
   .then(function(user) {
     if (user) {

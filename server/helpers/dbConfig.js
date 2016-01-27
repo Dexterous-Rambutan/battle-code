@@ -75,7 +75,7 @@ db.resetEverything = function (req, res) {
   res.status(201).end();
 };
 
-// Create users table with id, user_handle
+// Create users table with id, github_handle
 db.knex.schema.hasTable('users').then(function (exists) {
   if (!exists) {
     createUsersTable();

@@ -1,5 +1,6 @@
 var redis = require('redis');
 var redisQueue = require('./redisQueue.js');
+var solutionController = require('../solutions/solutionController.js');
 
 // May need to change client URL and port number
 var client = redis.createClient();
@@ -17,14 +18,22 @@ var responds = function (io) {
     var reply = JSON.parse(replies[1]);
     var toSocket = reply.socket_id;
     var challenge_id = reply.challenge_id;
-    var user_handle = reply.user_handle;
+    var github_handle = reply.github_handle;
     var soln_str = reply.soln_str;
     var message = reply.message;
+
+    if ( message === 'victory!') {
+      solutionController.addSolution({
+        content: soln_str,
+        challenge_id: challenge_id,
+        github_handle: github_handle
+      });
+    }
 
     // Send evaluated response to socket
     io.to(toSocket).emit('eval', message);
 
-    // // Keep listening
+    // Keep listening
     responds(io);
   });
 };

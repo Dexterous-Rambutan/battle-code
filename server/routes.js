@@ -32,7 +32,7 @@ module.exports = function (app) {
   app.get('/auth-verify', function(req, res) {
     console.log('GET request to /auth-verify', req.session.loggedIn);
     if (req.session.loggedIn) {
-      req.params.userId = req.session.passport.user.username || '';
+      req.params.github_handle = req.session.passport.user.username || '';
       userController.getUserById(req, res);
     } else {
       res.status(403).json(null);
@@ -45,7 +45,6 @@ module.exports = function (app) {
   app.get('/api/users/:userId', userController.getUserById);
   app.post('/api/users', userController.addUser);
   app.get('/api/solutions/:solutionId', solutionController.getSolutionById);
-  app.post('/api/solutions', solutionController.addSolution);
   app.get('/logout', function (req, res) {
     req.session.loggedIn = false;
     res.redirect('/');
