@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var $challengeName = $('.challengeName');
+      var $challengePrompt = $('.challengePrompt');
+      var $challengeTest = $('.challengeTest');
+      var $submitProblem = $('.submitProblem');
+
+      var $solution = $('.solution');
+      var $challengeId = $('.challengeId');
+      var $submitSolution = $('.submitSolution');
+
+      $submitProblem.on('click', function() {
+        var data = JSON.stringify({
+            name: $challengeName.val(),
+            prompt: $challengePrompt.val(),
+            test_suite: $challengeTest.val()
+        });
+        console.log(data);
+        $.ajax({
+          url: 'http://127.0.0.1:3000/api/challenges',
+          method: 'POST',
+          data: data,
+          contentType: 'application/json',
+          success: function(a) {
+            console.log('success');
+          },
+          error: function(a, b) {
+            console.log('error');
+            console.log(b);
+          }
+        })
+      });
+
+      $submitSolution.on('click', function() {
+        var data = JSON.stringify({
+          content: JSON.stringify($solution.val()),
+        });
+        console.log(data);
+        $.ajax({
+          url: 'http://127.0.0.1:3000/api/solutions/' + $challengeId.val(),
+          method: 'POST',
+          data: data,
+          contentType: 'application/json',
+          success: function(a) {
+            console.log('success');
+          },
+          error: function(a, b) {
+            console.log('error');
+            console.log(b);
+          }
+        })
+      })
+      
+    });
+  </script>
+</head>
+<body>
+  <div style="float: left">
+    <div style="width:400px; height:350px; float: left; padding: 10px">
+      <input class="challengeName" placeholder="Problem name..." style="width: 400px; height: 20px"></input>
+      <textarea class="challengePrompt" placeholder="Problem prompt..." style="width:400px; height:325px"></textarea><br>
+    </div>
+    <div style="width:400px; height:350px; float: left; padding: 10px">
+      <textarea class="challengeTest" placeholder="Problem test suite..." style="width:400px; height:350px; float: left"></textarea><br>
+    </div>
+    <div style="clear: left; padding: 10px">
+      <button class="submitProblem">Submit Problem</button>
+    </div>
+  </div>
+  <div style="clear: left">
+    <div style="width:400px; height:350px; float: left; padding: 10px">
+      <textarea class="solution" placeholder="Solution Code..." style="width:400px; height:350px; float: left"></textarea></div>  
+    </div>
+    <div style="width:400px; height:350px; float: left; padding: 10px">
+      <input class="challengeId" placeholder="Challenge Id" style="width:200px; float: left"></textarea></div>  
+    </div>  
+  </div>
+  <div style="padding: 10px; clear:left">
+    <button class="submitSolution">Submit Solution</button>
+  </div>
+</body>
+</html>

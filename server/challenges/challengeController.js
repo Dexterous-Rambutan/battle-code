@@ -37,8 +37,7 @@ module.exports = {
       test_suite: req.body.test_suite
     };
 
-    Challenge.forge(challengeAttr)
-    .save()
+    Challenge.forge(challengeAttr).save()
     .then(function (challenge) {
       res.status(201).json(challenge);
     }).catch(function (err) {
