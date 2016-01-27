@@ -5,7 +5,7 @@ var LOGOUT = require('../constants').action.LOGOUT;
 var NAV_SOLO_ARENA = require('../constants').action.NAV_SOLO_ARENA;
 var NAV_CHALLENGE_ARENA = require('../constants').action.NAV_CHALLENGE_ARENA;
 var LOGIN = require('../constants').action.LOGIN;
-
+var socket = require('../sockets/socket-helper');
 var navStaging = function(){
   return {
     type: NAV_STAGING
@@ -13,6 +13,7 @@ var navStaging = function(){
 };
 
 var navSoloArena = function(){
+  socket.emit('solo_arena');
   return {
     type: NAV_SOLO_ARENA
   }
