@@ -23,23 +23,18 @@ function runTest() {
 
     var output = challenge.fetch()
     .then(function (challenge) {      
-      var setIsValidTrue = "isValid = true;"
-
       var sandbox = {
         // chai: require('chai'),
         assert: require('chai').assert,
-        isValid: false
       }
       var context = new vm.createContext(sandbox);
 
-      var solutionText = solutionInfo.content;
+      var solutionText = solutionInfo.soln_str;
       var solutionScript = new vm.Script(solutionText);
 
       // var testText = JSON.parse(challenge.get('test_suite'));
       var testText = challenge.get('test_suite');
       var testScript = new vm.Script(testText);
-
-      var validateScript = setIsValidTrue;
 
       try {
         solutionScript.runInContext(context);
@@ -51,12 +46,11 @@ function runTest() {
     })
     .catch(function (err) {
       return new Error(err);
-    })
+    });
 
     runTest();
     
-  })
-
+  });
 }
 
 

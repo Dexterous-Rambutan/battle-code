@@ -38,7 +38,9 @@
 
       $submitSolution.on('click', function() {
         var data = JSON.stringify({
-          content: JSON.stringify($solution.val()),
+          soln_str: JSON.stringify($solution.val()),
+          user_handle: null,
+          socket_id: null
         });
         console.log(data);
         $.ajax({

@@ -1,6 +1,5 @@
 var db = require('../helpers/dbConfig');
 var Solution = require('./solutionModel.js');
-var redis = require('redis');
 var Queue = require('../../worker/queue.js');
 
 module.exports = {
@@ -25,7 +24,9 @@ module.exports = {
   // POST /api/solutions/:challengeId
   testSolution: function (req, res, redisClient) {
     var solutionAttr = {
-      content: JSON.parse(req.body.content),
+      soln_str: JSON.parse(req.body.soln_str),
+      user_handle: req.body.user_handle,
+      socket_id: req.body.socket_id,
       challenge_id: req.params.challengeId
     }
     var jobQueue = new Queue('testQueue', redisClient);
