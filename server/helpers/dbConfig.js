@@ -67,10 +67,12 @@ var resetChallengesTable = function () {
   db.knex.schema.dropTable('challenges').then(createChallengesTable);
 };
 
-db.resetEverything = function () {
+// Exposed function that resets the entire database
+db.resetEverything = function (req, res) {
   resetUsersTable();
   resetSolutionsTable();
   resetChallengesTable();
+  res.status(201).end();
 };
 
 // Create users table with id, user_handle

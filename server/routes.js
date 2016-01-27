@@ -50,5 +50,5 @@ module.exports = function (app) {
     req.session.loggedIn = false;
     res.redirect('/');
   });
-  app.get('/reset', db.resetEverything);
+  app.get('/api/resetDB', db.resetEverything);
 };
