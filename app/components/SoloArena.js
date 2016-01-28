@@ -1,11 +1,11 @@
 var React = require('react');
 var io = require('socket.io-client');
 
+
 var ErrorList = require('./ErrorList');
 var socket = require('../sockets/socket-helper');
 
 var SoloArena = React.createClass({
-
   componentDidMount: function(){
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
