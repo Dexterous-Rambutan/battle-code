@@ -50,4 +50,38 @@ userController.addUser = function ( req, res ) {
   });
 };
 
+userController.resetWithData = function() {
+  return User.forge({
+    github_handle: 'alanzfu',
+    github_display_name: 'Alan Fu',
+    github_avatar_url: null,
+    github_profileUrl: null,
+    email: null
+  }).save().then(function() {
+    User.forge({
+      github_handle: 'puzzlehe4d',
+      github_display_name: 'Harun Davood',
+      github_avatar_url: null,
+      github_profileUrl: null,
+      email: null
+    }).save();
+  }).then(function() {
+    User.forge({
+      github_handle: 'kweng2',
+      github_display_name: 'Kevin Weng',
+      github_avatar_url: null,
+      github_profileUrl: null,
+      email: null
+    }).save();
+  }).then(function() {
+    User.forge({
+      github_handle: 'hahnbi',
+      github_display_name: 'Hahnbi Sun',
+      github_avatar_url: null,
+      github_profileUrl: null,
+      email: null
+    }).save();
+  })
+}
+
 module.exports = userController;

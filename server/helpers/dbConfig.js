@@ -11,7 +11,7 @@ var db = require('bookshelf')(knex);
 
 // Shortcut function to create the users table
 var createUsersTable = function () {
-  db.knex.schema.createTable('users', function (user) {
+  return db.knex.schema.createTable('users', function (user) {
     user.increments('id').primary();
     user.string('github_handle', 255);
     user.string('github_display_name', 255);
@@ -26,7 +26,7 @@ var createUsersTable = function () {
 
 // Shortcut function to create the solutions table
 var createSolutionsTable = function () {
-  db.knex.schema.createTable('solutions', function (solution) {
+  return db.knex.schema.createTable('solutions', function (solution) {
     solution.increments('id').primary();
     solution.dateTime('start_time');
     solution.dateTime('end_time');
@@ -41,7 +41,7 @@ var createSolutionsTable = function () {
 
 // Shortcut function to create the challenges table
 var createChallengesTable = function () {
-  db.knex.schema.createTable('challenges', function (challenge) {
+  return db.knex.schema.createTable('challenges', function (challenge) {
     challenge.increments('id').primary();
     challenge.string('name', 255);
     challenge.string('prompt', 1000);
@@ -54,25 +54,36 @@ var createChallengesTable = function () {
 
 // Shortcut function to reset users
 var resetUsersTable = function () {
-  db.knex.schema.dropTable('users').then(createUsersTable);
+  return db.knex.schema.dropTable('users').then(createUsersTable);
 };
 
 // Shortcut function to reset solutions
 var resetSolutionsTable = function () {
-  db.knex.schema.dropTable('solutions').then(createSolutionsTable);
+  return db.knex.schema.dropTable('solutions').then(createSolutionsTable);
 };
 
 // Shortcut function to reset challenges
 var resetChallengesTable = function () {
-  db.knex.schema.dropTable('challenges').then(createChallengesTable);
+  return db.knex.schema.dropTable('challenges').then(createChallengesTable);
 };
 
 // Exposed function that resets the entire database
 db.resetEverything = function (req, res) {
-  resetUsersTable();
-  resetSolutionsTable();
-  resetChallengesTable();
-  res.status(201).end();
+  resetUsersTable().then(function() {
+    resetSolutionsTable();
+  }).then(function() {
+    resetChallengesTable();
+  }).then(function() {
+    res.status(201).end();
+  });
+};
+
+db.resetEverythingPromise = function (req, res) {
+  return resetUsersTable().then(function() {
+    resetSolutionsTable();
+  }).then(function() {
+    resetChallengesTable();
+  });
 };
 
 // Create users table with id, github_handle

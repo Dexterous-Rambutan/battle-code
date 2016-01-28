@@ -48,10 +48,21 @@ module.exports = function (app, redisClient) {
   app.post('/api/solutions/:challengeId', function (req, res) {
     solutionController.testSolution(req, res, redisClient);
   });
-  app.post('/api/solutions', solutionController.addSolution);
   app.get('/logout', function (req, res) {
     req.session.loggedIn = false;
     res.redirect('/');
   });
   app.get('/api/resetDB', db.resetEverything);
+  app.get('/api/resetDBWithData', function (req, res) {
+    return db.resetEverythingPromise().then(function() {
+      return userController.resetWithData();
+    }).then(function() {
+      return challengeController.resetWithData();
+    }).then(function() {
+      return solutionController.resetWithData();
+    }).then(function() {
+      res.status(201).end();
+      return;
+    })
+  });
 };
