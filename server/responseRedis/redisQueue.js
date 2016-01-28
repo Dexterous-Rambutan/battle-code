@@ -7,12 +7,11 @@ function Queue (name, client) {
 
 Queue.prototype.push = function (data) {
   // Pushes `data` onto the tail of the list at key `this.name`
+  console.log('Pushing to', this.name, 'at', this.client.address);
   this.client.rpush(this.name, data, function (err, replies) {
     if (err) throw new Error(err);
-
-    console.log(replies + '\n');
-    // this.client.quit();
-  });
+    console.log('Successfully pushed to', this.name, 'at', this.client.address, replies);
+  }.bind(this));
 };
 
 Queue.prototype.pop = function (callback) {

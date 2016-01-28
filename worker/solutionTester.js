@@ -15,69 +15,65 @@ var responseQueue = new Queue('rQueue', client);
 runTest();
 
 function runTest() {
+  console.log('Listening for items to enter testQueue...');
 
+  // Pop from testQueue any solutions waiting to be tested
   testQueue.pop(function (err, results) {
     if (err) throw new Error(err);
 
-    // var results = JSON.parse(results);
+    // Parse the solution string from testQueue
     var solutionInfo = JSON.parse(results[1]);
     var challenge = Challenge.forge({
       id: solutionInfo.challenge_id
     });
 
-    var output = challenge.fetch()
-    .then(function (challenge) {      
+    // Fetch the challenge test suite
+    challenge.fetch()
+    .then(function (challenge) {
+      // create a sanbox and load chai into that context
       var sandbox = {
-        // chai: require('chai'),
-        assert: require('chai').assert,
+        assert: require('chai').assert
       };
       var context = new vm.createContext(sandbox);
 
-      var solutionText = solutionInfo.soln_str;
-      var solutionScript = new vm.Script(solutionText);
-
-      // var testText = JSON.parse(challenge.get('test_suite'));
+      // Load test suite into the context
       var testText = challenge.get('test_suite');
+      var solutionText = solutionInfo.soln_str;
       var testScript = new vm.Script(testText);
 
-      solutionScript.runInContext(context);
-      console.log('try1');
-      testScript.runInContext(context);
-      console.log('try2');
+      // Try to run solution string against the test suite
+      try {
+        // Try to load the solution string into the context
+        var solutionScript = new vm.Script(solutionText);
+        solutionScript.runInContext(context);
+        testScript.runInContext(context);
 
-      // console.log('There was an error while evaluating the solution');
-      responseQueue.push(JSON.stringify({
-        socket_id: 'testing socketID',
-        challenge_id: challenge.get('id'),
-        github_handle: 'kweng2',
-        soln_str: solutionText,
-        // message: e.message
-        message: 'YOU WIN!'
-      }));
-      // , function() {
-      //   console.log('try4');
-      //   client.lrange('rQueue', 0, -1, function(err, results) {
-      //     console.log(results);
-      //     console.log('Here is the error thrown: ', e.message);
-      //   });
-      //   console.log('try5');
-      // });
+        // Successful evaluation, add response to rQueue
+        console.log('Successfully evaluated the solution!');
+        responseQueue.push(JSON.stringify({
+          socket_id: solutionInfo.socket_id,
+          challenge_id: challenge.get('id'),
+          github_handle: solutionInfo.user_handle,
+          soln_str: solutionText,
+          message: 'victory!'
+        }), runTest);
+      } catch (e) {
+        // Failed evaluation, add response to rQueue
+        console.log('Failed while evaluating the solution', e.message);
+        responseQueue.push(JSON.stringify({
+          socket_id: solutionInfo.socket_id,
+          challenge_id: challenge.get('id'),
+          github_handle: solutionInfo.user_handle,
+          soln_str: solutionText,
+          message: e.message
+        }), runTest);
+      }
     })
+    // Potential errors include: no such challenge
     .catch(function (err) {
-      console.log('YOU LOSE!');
-      responseQueue.push(JSON.stringify({
-        socket_id: 'testing socketID',
-        challenge_id: challenge.get('id'),
-        github_handle: 'kweng2',
-        soln_str: solutionText,
-        // message: e.message
-        message: 'YOU LOSE!'
-      }));
+      console.log('got an error despite the try catch block');
       return new Error(err);
     });
-
-    runTest();
-    
   });
 }
 

@@ -31,7 +31,6 @@ module.exports = {
       challenge_id: req.params.challengeId
     };
     var jobQueue = new Queue('testQueue', redisClient);
-    console.log('pushing to testQueue', solutionAttr);
     jobQueue.push(JSON.stringify(solutionAttr));
     res.status(201).end();
   },
