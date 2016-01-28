@@ -52,9 +52,10 @@ var spoofSolo = function(){
   return function (dispatch) {
     $.ajax({
       method:'GET',
-      url: '/api/challenges/NUMBER_TO_SPOOF',
+      url: '/api/challenges/1',
       dataType: 'json',
       success: function(data){
+        console.log('hey')
         dispatch({
           type: actions.STORE_SOLO_PROBLEM,
           payload: data

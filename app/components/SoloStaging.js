@@ -13,7 +13,7 @@ var SoloStaging = React.createClass({
       <div>
         <h1>Practice Problem Archive</h1>
         {listOfProblems.length>0 ? <ul>{listOfProblems}</ul> : <div>Sorry, you do not have any problems to practice on. Please play challenge or pair mode to unlock more problems.</div>}
-        <button onClick={this.props.navActions.spoofProblem}>Spoof Solo</button>
+        <button onClick={this.props.navActions.spoofSolo}>Spoof Solo</button>
       </div>
     )
   }

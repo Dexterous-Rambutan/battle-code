@@ -32,6 +32,10 @@ function arenaReducer (state, action){
       return _.extend({}, state, {
         submissionMessage: action.payload
       });
+    case actions.SUBMIT_PROBLEM_SUCCESS:
+      return _.extend({}, state, {
+        submissionMessage: "Victory!"
+      });
     case actions.STORE_EDITOR:
       return _.extend({}, state, {
         editor: action.payload
