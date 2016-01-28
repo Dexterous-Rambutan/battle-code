@@ -52,7 +52,7 @@ var spoofSolo = function(){
   return function (dispatch) {
     $.ajax({
       method:'GET',
-      url: 'api/challenges/NUMBER_TO_SPOOF',
+      url: '/api/challenges/NUMBER_TO_SPOOF',
       dataType: 'json',
       success: function(data){
         dispatch({
@@ -62,6 +62,9 @@ var spoofSolo = function(){
         dispatch({
           type: actions.NAV_SOLO_ARENA
         });
+      },
+      error: function(err){
+        console.log('Change the url to the spoofed challenge_id from the db',err)
       }
     })
   }
