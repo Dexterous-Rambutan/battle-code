@@ -1,6 +1,7 @@
 var db = require('../helpers/dbConfig');
 var Solution = require('./solutionModel.js');
-var Queue = require('../../worker/queue.js');
+var User = require('../users/userModel.js');
+var Queue = require('../responseRedis/redisQueue.js');
 
 module.exports = {
   // GET /api/solutions/:solutionId
@@ -28,31 +29,24 @@ module.exports = {
       user_handle: req.body.user_handle,
       socket_id: req.body.socket_id,
       challenge_id: req.params.challengeId
-    }
+    };
     var jobQueue = new Queue('testQueue', redisClient);
     jobQueue.push(JSON.stringify(solutionAttr));
     res.status(201).end();
   },
 
-  // POST /api/solutions/
-  addSolution: function (req, res) {
-    var solutionAttr = {
-      start_time: req.body.start_time,
-      end_time: req.body.end_time,
-      total_time: req.body.total_time,
-      content: req.body.content,
-      user_id: req.body.user_id,
-      challenge_id: req.body.challenge_id,  
-    };
-    //TODO: evaluate code, send to worker process
-    //TODO: sockets to signal solution submitted and results of solution testing
-    Solution.forge(solutionAttr)
-    .save()
-    .then(function (solution) {
-      res.status(201).json(solution);
+  // POST /api/solutions/:solutionId
+  addSolution: function (solutionAttr) {
+    console.log("LOOKING FOR USER WITH GITHUB HANDLE: ", solutionAttr.github_handle);
+    new User({github_handle: solutionAttr.github_handle})
+    .fetch().then(function(user) {
+      return user.get('id');
+    }).then(function(userId){
+      delete solutionAttr.github_handle;
+      solutionAttr.user_id = userId;
+      return Solution.forge(solutionAttr).save();
     }).catch(function (err) {
-      res.status(500).json({error: true, data: {message: err.message}});
+      console.log('addSolution error: ', err);
     });
-
   }
 };

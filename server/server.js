@@ -36,6 +36,16 @@ var authUser = function(req, res, next){
 
 ////////////////////////////////////////////////
 require('./routes.js')(app, redisClient);
+////////////////////////////////////////////////
 
-app.listen(port);
-console.log('Server now listening on port ' + port);
+// Start server
+var server = app.listen(port, function () {
+  console.log('Server listening at port ', port);
+});
+
+// Start socket listener
+var io = require('socket.io').listen(server);
+
+// Start redisQueue listener for evaluated solutions
+var solutionEvalResponse = require('./responseRedis/responseRedisRunner.js');
+solutionEvalResponse(io);

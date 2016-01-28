@@ -33,14 +33,14 @@
             console.log('error');
             console.log(b);
           }
-        })
+        });
       });
 
       $submitSolution.on('click', function() {
         var data = JSON.stringify({
           soln_str: JSON.stringify($solution.val()),
-          user_handle: null,
-          socket_id: null
+          user_handle: 'kweng2',
+          socket_id: 123456
         });
         console.log(data);
         $.ajax({
@@ -55,8 +55,8 @@
             console.log('error');
             console.log(b);
           }
-        })
-      })
+        });
+      });
       
     });
   </script>
