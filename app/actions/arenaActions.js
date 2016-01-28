@@ -46,12 +46,12 @@ var submitProblem = function(errors, solution_str, socket_id, problem_id, user_h
       $.ajax({
         method:'POST',
         url: '/api/solutions/' + problem_id,
-        dataType: 'json',
-        data: {
-          soln_str: solution_str,
+        contentType: 'application/json',
+        data: JSON.stringify({
+          soln_str: JSON.stringify(solution_str),
           user_handle: user_handle,
           socket_id: socket_id
-        },
+        }),
         success: function(){
           dispatch({
             type: actions.SUBMIT_PROBLEM

@@ -18,7 +18,7 @@ var SoloArena = React.createClass({
       var errors = this.props.arena.editor.getSession().getAnnotations();
       console.log(errors);
       var content = this.props.arena.editor.getSession().getValue();
-      this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.user_handle);
+      this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle);
     }.bind(this);
     return (
       <div>
