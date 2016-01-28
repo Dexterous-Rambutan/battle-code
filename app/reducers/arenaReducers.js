@@ -48,7 +48,6 @@ function arenaReducer (state, action){
       });
     case actions.STORE_SOLO_PROBLEM:
       return _.extend({}, state, {
-        //
         content: action.payload.prompt,
         problem_id: action.payload.id
       });

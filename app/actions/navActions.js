@@ -48,6 +48,25 @@ var navSoloArena = function(payload){
   }
 };
 
+var spoofSolo = function(){
+  return function (dispatch) {
+    $.ajax({
+      method:'GET',
+      url: 'api/challenges/NUMBER_TO_SPOOF',
+      dataType: 'json',
+      success: function(data){
+        dispatch({
+          type: actions.STORE_SOLO_PROBLEM,
+          payload: data
+        });
+        dispatch({
+          type: actions.NAV_SOLO_ARENA
+        });
+      }
+    })
+  }
+}
+
 var navChallengeArena = function(){
   return {
     type: actions.NAV_CHALLENGE_ARENA
@@ -76,5 +95,6 @@ module.exports = {
   navSoloArena: navSoloArena,
   navSoloStaging: navSoloStaging,
   navChallengeArena: navChallengeArena,
-  navProfile: navProfile
+  navProfile: navProfile,
+  spoofSolo: spoofSolo
 }
