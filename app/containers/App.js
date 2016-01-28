@@ -17,6 +17,8 @@ var Login = require('../components/Login');
 var Staging = require('../components/Staging');
 var Leaderboard = require('../components/Leaderboard');
 var NavBar = require('../components/NavBar');
+var Profile = require('../components/Profile');
+var SoloStaging = require('../components/SoloStaging');
 
 //constant requires (views)
 var LOGIN = require('../constants').view.LOGIN;
@@ -24,7 +26,8 @@ var SOLO_ARENA = require('../constants').view.SOLO_ARENA;
 var CHALLENGE_ARENA = require('../constants').view.CHALLENGE_ARENA;
 var STAGING = require('../constants').view.STAGING;
 var LEADERBOARD = require('../constants').view.LEADERBOARD;
-
+var PROFILE = require('../constants').view.PROFILE;
+var SOLO_STAGING = require('../constants').view.SOLO_STAGING;
 
 var contextType = {
   redux: React.PropTypes.object
@@ -43,7 +46,7 @@ var App = React.createClass({
           //history.pushState(store.getState(), 'Staging', "staging");
           return (
             <div>
-              <NavBar navActions={this.props.navActions}/>
+              <NavBar {...this.props}/>
               <Staging {...this.props}/>
             </div>
           );
@@ -51,7 +54,7 @@ var App = React.createClass({
           //history.pushState(store.getState(), 'Arena', "arena");
           return (
             <div>
-              <NavBar navActions={this.props.navActions}/>
+              <NavBar {...this.props}/>
               <SoloArena {...this.props}/>
             </div>
           );
@@ -59,7 +62,7 @@ var App = React.createClass({
           //history.pushState(store.getState(), 'Arena', "arena");
           return (
             <div>
-              <NavBar navActions={this.props.navActions}/>
+              <NavBar {...this.props}/>
               <ChallengeArena {...this.props}/>
             </div>
           );
@@ -71,12 +74,28 @@ var App = React.createClass({
               <Leaderboard {...this.props}/>
             </div>
           );
+          case PROFILE:
+            //history.pushState(store.getState(), 'Leaderboard', "leadboard");
+            return (
+              <div>
+                <NavBar {...this.props}/>
+                <Profile {...this.props}/>
+              </div>
+            );
+          case SOLO_STAGING:
+            //history.pushState(store.getState(), 'Leaderboard', "leadboard");
+            return (
+              <div>
+                <NavBar {...this.props}/>
+                <SoloStaging {...this.props}/>
+              </div>
+            );
       }
     } else {
       //history.pushState(store.getState(), 'Login', "login");
       return (
         <div>
-          <NavBar navActions={this.props.navActions}/>
+          <NavBar {...this.props}/>
           <Login {...this.props}/>
         </div>
       );

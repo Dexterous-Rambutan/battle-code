@@ -11,9 +11,10 @@ var checkLoggedIn = function(){
       dataType: 'json',
       cache: false,
       success: function(data){
+          console.log('login data',data);
           dispatch({
             type: IS_LOGGED_IN,
-            payload: data.github_handle
+            payload: data
           })
       },
       error: function(error){
