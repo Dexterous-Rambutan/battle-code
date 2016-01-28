@@ -1,11 +1,11 @@
 'use strict';
 var socket = require('../sockets/socket-helper');
+var actions = require('../constants').action;
 
 
-var CREATE_SOCKET = require('../constants').action.CREATE_SOCKET;
 var createSocket = function(){
   return {
-        type: CREATE_SOCKET,
+        type: actions.CREATE_SOCKET,
         payload: socket
     }
 };
