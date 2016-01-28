@@ -47,5 +47,5 @@ var server = app.listen(port, function () {
 var io = require('socket.io').listen(server);
 
 // Start redisQueue listener for evaluated solutions
-var solutionEvalResponse = require('./responseRedis/responseRedisRunner.js');
-solutionEvalResponse(io);
+// var solutionEvalResponse = require('./responseRedis/responseRedisRunner.js');
+// solutionEvalResponse(io);

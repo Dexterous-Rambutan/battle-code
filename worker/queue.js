@@ -5,9 +5,12 @@ function Queue (name, client) {
   this.timeout = 0;
 }
 
-Queue.prototype.push = function (data) {
+Queue.prototype.push = function (data, callback) {
   // TODO: Push `data` onto the tail of the list at key `this.name`
-  this.client.rpush(this.name, data);
+  setTimeout(function(){
+    this.client.rpush(this.name, data, callback);
+    console.log('pushing to queue!: ', this.name);
+  }.bind(this), 1000);
 };
 
 Queue.prototype.pop = function (callback) {

@@ -1,7 +1,7 @@
 var db = require('../helpers/dbConfig');
 var Solution = require('./solutionModel.js');
 var User = require('../users/userModel.js');
-var Queue = require('../../worker/queue.js');
+var Queue = require('../responseRedis/redisQueue.js');
 
 module.exports = {
   // GET /api/solutions/:solutionId
@@ -29,8 +29,9 @@ module.exports = {
       user_handle: req.body.user_handle,
       socket_id: req.body.socket_id,
       challenge_id: req.params.challengeId
-    }
+    };
     var jobQueue = new Queue('testQueue', redisClient);
+    console.log('pushing to testQueue', solutionAttr);
     jobQueue.push(JSON.stringify(solutionAttr));
     res.status(201).end();
   },

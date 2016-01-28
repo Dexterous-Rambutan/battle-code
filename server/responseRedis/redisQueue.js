@@ -11,7 +11,7 @@ Queue.prototype.push = function (data) {
     if (err) throw new Error(err);
 
     console.log(replies + '\n');
-    this.client.quit();
+    // this.client.quit();
   });
 };
 

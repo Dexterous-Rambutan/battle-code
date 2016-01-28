@@ -3,14 +3,20 @@ var redisQueue = require('./redisQueue.js');
 var solutionController = require('../solutions/solutionController.js');
 
 // May need to change client URL and port number
-var client = redis.createClient();
+var client = redis.createClient({
+  host: '127.0.0.1',
+  port: 6379
+});
 var responseQueue = new redisQueue('rQueue', client);
 
 var responds = function (io) {
   // Wait for responses to arrive in `responseQueue`, then pop them out.
   // Afterwards, resume waiting for more responses to arrive
+      console.log('should never get here');
   responseQueue.pop(function (err, replies) {
-    if (err) throw new Error(err);
+    if (err) {
+      throw new Error(err); 
+    }
 
     console.log('Successfully popped from redisQueue', replies);
 
@@ -31,7 +37,7 @@ var responds = function (io) {
     }
 
     // Send evaluated response to socket
-    io.to(toSocket).emit('eval', message);
+    // io.to(toSocket).emit('eval', message);
 
     // Keep listening
     responds(io);
