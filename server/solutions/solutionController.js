@@ -1,6 +1,7 @@
 var db = require('../helpers/dbConfig');
 var Solution = require('./solutionModel.js');
 var User = require('../users/userModel.js');
+var Queue = require('../../worker/queue.js');
 
 module.exports = {
   // GET /api/solutions/:solutionId
@@ -19,6 +20,19 @@ module.exports = {
     }).catch(function (err) {
       res.status(500).json({error: true, data: {message: err.message}});
     });
+  },
+
+  // POST /api/solutions/:challengeId
+  testSolution: function (req, res, redisClient) {
+    var solutionAttr = {
+      soln_str: JSON.parse(req.body.soln_str),
+      user_handle: req.body.user_handle,
+      socket_id: req.body.socket_id,
+      challenge_id: req.params.challengeId
+    }
+    var jobQueue = new Queue('testQueue', redisClient);
+    jobQueue.push(JSON.stringify(solutionAttr));
+    res.status(201).end();
   },
 
   // POST /api/solutions/:solutionId

@@ -4,7 +4,7 @@ var solutionController = require('./solutions/solutionController.js');
 var passport = require('./helpers/psConfig.js');
 var db = require('./helpers/dbConfig.js');
 
-module.exports = function (app) {
+module.exports = function (app, redisClient) {
 
   // Try to authenticate via github
   app.get('/auth/github', passport.authenticate('github'));
@@ -45,6 +45,10 @@ module.exports = function (app) {
   app.get('/api/users/:userId', userController.getUserById);
   app.post('/api/users', userController.addUser);
   app.get('/api/solutions/:solutionId', solutionController.getSolutionById);
+  app.post('/api/solutions/:challengeId', function (req, res) {
+    solutionController.testSolution(req, res, redisClient);
+  });
+  app.post('/api/solutions', solutionController.addSolution);
   app.get('/logout', function (req, res) {
     req.session.loggedIn = false;
     res.redirect('/');
