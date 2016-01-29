@@ -22,6 +22,33 @@ module.exports = {
     });
   },
 
+  // GET /api/solutions/user/:userId
+  getAllSolutionsForUser: function (req, res) {
+    var github_handle = req.params.githubHandle;
+    User.forge({
+      github_handle: github_handle
+    })
+    .fetch()
+    .then(function (user) {
+      if (user) {
+        return Solution.where({
+          user_id: user.get('id')
+        }).fetchAll();
+      }
+      else {
+        res.status(404).json(null);
+      }
+    })
+    .then(function (challenges) {
+      console.log(challenges);
+      res.json(challenges);
+    })
+    .catch(function (user) {
+      res.status(500).json({error: true, data: {message: err.message}});
+    })
+
+  },
+
   // POST /api/solutions/:challengeId
   testSolution: function (req, res, redisClient) {
     var solutionAttr = {
