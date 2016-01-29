@@ -10,15 +10,12 @@ var navStaging = function(){
 };
 
 var navSoloStaging = function(github_handle){
-  //get all the links here and dispatch with payload to user reducers and view reducers
   return function(dispatch){
     $.ajax({
       method: 'GET',
       dataType: 'json',
-      //use getuserproblems route here
       url:'/api/solutions/user/' + github_handle,
       success: function(data){
-        console.log('list of solutions',data);
         dispatch({
           type: actions.STORE_USER_PROBLEMS,
           payload: data
@@ -37,7 +34,30 @@ var navSoloStaging = function(github_handle){
 };
 
 var navSoloArena = function(payload){
+  console.log(payload);
   return function(dispatch){
+    $.ajax({
+      method: 'GET',
+      url: '/api/challenges/'+payload.challenge_id,
+      dataType: 'json',
+      success: function(results){
+        dispatch({
+          type: actions.STORE_SOLO_PROBLEM,
+          payload: results
+        });
+        dispatch({
+          type: actions.NAV_SOLO_ARENA
+        });
+      },
+      error: function(error){
+        console.log('error fetching problem', error)
+        dispatch({
+          type: actions.NAV_SOLO_STAGING
+        })
+      }
+    })
+
+
     dispatch({
       type: actions.STORE_SOLO_PROBLEM,
       payload: payload
@@ -87,6 +107,7 @@ var navLogout = function(){
 };
 
 var navProfile = function(){
+  
   return {
     type: actions.NAV_PROFILE
   }

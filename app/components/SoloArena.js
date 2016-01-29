@@ -12,6 +12,9 @@ var SoloArena = React.createClass({
     editor.getSession().setMode("ace/mode/javascript");
     this.props.arenaActions.storeEditor(editor);
   },
+  componentDidUpdate: function(){
+    this.props.arena.editor.setValue(this.props.arena.content);
+  },
 
   render: function() {
     var submitProblem = function(){
@@ -22,7 +25,6 @@ var SoloArena = React.createClass({
     return (
       <div>
         <div id="editor">
-          {this.props.arena.content}
         </div>
         <button onClick={submitProblem}>Submit Solution</button>
         <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors} />

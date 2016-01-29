@@ -6,7 +6,6 @@ var Staging = React.createClass({
   },
   render: function() {
     var getListofProblemsAndNav = function(){
-      console.log(this.props.user.github_handle);
       this.props.navActions.navSoloStaging(this.props.user.github_handle);
     }.bind(this);
 
