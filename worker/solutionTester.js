@@ -38,15 +38,15 @@ function runTest() {
 
       // Load test suite into the context
       var testText = challenge.get('test_suite');
-      var solutionText = solutionInfo.soln_str;
       var testScript = new vm.Script(testText);
+      var solutionText = solutionInfo.soln_str;
 
       // Try to run solution string against the test suite
       try {
         // Try to load the solution string into the context
         var solutionScript = new vm.Script(solutionText);
-        solutionScript.runInContext(context);
-        testScript.runInContext(context);
+        solutionScript.runInContext(context, {timeout:2000});
+        testScript.runInContext(context,{timeout:2000});
 
         // Successful evaluation, add response to rQueue
         console.log('Successfully evaluated the solution!');
@@ -76,6 +76,3 @@ function runTest() {
     });
   });
 }
-
-
-
