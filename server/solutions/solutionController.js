@@ -22,7 +22,7 @@ module.exports = {
     });
   },
 
-  // GET /api/solutions/user/:userId
+  // GET /api/solutions/user/:githubHandle
   getAllSolutionsForUser: function (req, res) {
     var github_handle = req.params.githubHandle;
     User.forge({
@@ -40,7 +40,6 @@ module.exports = {
       }
     })
     .then(function (challenges) {
-      console.log(challenges);
       res.json(challenges);
     })
     .catch(function (user) {
