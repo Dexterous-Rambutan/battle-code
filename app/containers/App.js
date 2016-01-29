@@ -11,19 +11,10 @@ var io = require('socket.io-client');
 var actions = require('../actions');
 
 //component require
-var SoloArena = require('../components/SoloArena');
-var ChallengeArena = require('../components/ChallengeArena');
-var Login = require('../components/Login');
-var Staging = require('../components/Staging');
-var Leaderboard = require('../components/Leaderboard');
-var NavBar = require('../components/NavBar');
+var components = require('../components')
 
 //constant requires (views)
-var LOGIN = require('../constants').view.LOGIN;
-var SOLO_ARENA = require('../constants').view.SOLO_ARENA;
-var CHALLENGE_ARENA = require('../constants').view.CHALLENGE_ARENA;
-var STAGING = require('../constants').view.STAGING;
-var LEADERBOARD = require('../constants').view.LEADERBOARD;
+var views = require('../constants').view
 
 
 var contextType = {
@@ -38,46 +29,62 @@ var App = React.createClass({
   render: function(){
     if(this.props.user.isLoggedIn){
       switch(this.props.view) {
-        case STAGING:
+        case views.STAGING:
         console.log(this.props)
           //history.pushState(store.getState(), 'Staging', "staging");
           return (
             <div>
-              <NavBar navActions={this.props.navActions}/>
-              <Staging {...this.props}/>
+              <components.NavBar {...this.props}/>
+              <components.Staging {...this.props}/>
             </div>
           );
-        case SOLO_ARENA:
+        case views.SOLO_ARENA:
           //history.pushState(store.getState(), 'Arena', "arena");
           return (
             <div>
-              <NavBar navActions={this.props.navActions}/>
-              <SoloArena {...this.props}/>
+              <components.NavBar {...this.props}/>
+              <components.SoloArena {...this.props}/>
             </div>
           );
-        case CHALLENGE_ARENA:
+        case views.CHALLENGE_ARENA:
           //history.pushState(store.getState(), 'Arena', "arena");
           return (
             <div>
-              <NavBar navActions={this.props.navActions}/>
-              <ChallengeArena {...this.props}/>
+              <components.NavBar {...this.props}/>
+              <components.ChallengeArena {...this.props}/>
             </div>
           );
-        case LEADERBOARD:
+        case views.LEADERBOARD:
           //history.pushState(store.getState(), 'Leaderboard', "leadboard");
           return (
             <div>
-              <NavBar {...this.props}/>
-              <Leaderboard {...this.props}/>
+              <components.NavBar {...this.props}/>
+              <components.Leaderboard {...this.props}/>
             </div>
           );
+          case views.PROFILE:
+            //history.pushState(store.getState(), 'Leaderboard', "leadboard");
+            return (
+              <div>
+                <components.NavBar {...this.props}/>
+                <components.Profile {...this.props}/>
+              </div>
+            );
+          case views.SOLO_STAGING:
+            //history.pushState(store.getState(), 'Leaderboard', "leadboard");
+            return (
+              <div>
+                <components.NavBar {...this.props}/>
+                <components.SoloStaging {...this.props}/>
+              </div>
+            );
       }
     } else {
       //history.pushState(store.getState(), 'Login', "login");
       return (
         <div>
-          <NavBar navActions={this.props.navActions}/>
-          <Login {...this.props}/>
+          <components.NavBar {...this.props}/>
+          <components.Login {...this.props}/>
         </div>
       );
     }

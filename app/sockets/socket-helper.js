@@ -8,6 +8,7 @@ socket.on('start', function(data){
 });
 
 socket.on('eval', function(submissionMessage){
+  console.log('eval here', submissionMessage);
   store.dispatch(arenaAction.handleSubmissionResponse(submissionMessage));
 })
 

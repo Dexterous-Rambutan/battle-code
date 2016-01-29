@@ -7,7 +7,7 @@ var Staging = React.createClass({
   render: function() {
     return (
       <div>
-        <button onClick={this.props.navActions.navSoloArena}>SOLO</button>
+        <button onClick={this.props.navActions.navSoloStaging}>PRACTICE</button>
         <button onClick={this.props.navActions.navChallengeArena}>CHALLENGE</button>
       </div>
     )

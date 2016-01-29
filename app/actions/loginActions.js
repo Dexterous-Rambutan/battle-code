@@ -1,6 +1,6 @@
 'use strict';
-var IS_LOGGED_IN = require('../constants').action.IS_LOGGED_IN;
-var IS_LOGGED_OUT = require('../constants').action.IS_LOGGED_OUT;
+var actions = require('../constants').action;
+
 
 
 var checkLoggedIn = function(){
@@ -11,14 +11,15 @@ var checkLoggedIn = function(){
       dataType: 'json',
       cache: false,
       success: function(data){
+          console.log('login data',data);
           dispatch({
-            type: IS_LOGGED_IN,
-            payload: data.github_handle
+            type: actions.IS_LOGGED_IN,
+            payload: data
           })
       },
       error: function(error){
         dispatch({
-          type: IS_LOGGED_OUT
+          type: actions.IS_LOGGED_OUT
         });
       }
     })

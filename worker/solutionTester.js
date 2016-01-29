@@ -45,8 +45,8 @@ function runTest() {
       try {
         // Try to load the solution string into the context
         var solutionScript = new vm.Script(solutionText);
-        solutionScript.runInContext(context);
-        testScript.runInContext(context);
+        solutionScript.runInContext(context, {timeout:2000});
+        testScript.runInContext(context, {timeout:2000});
 
         // Successful evaluation, add response to rQueue
         console.log('Successfully evaluated the solution!');
