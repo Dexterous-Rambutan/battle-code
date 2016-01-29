@@ -1,24 +1,26 @@
 var React = require('react');
 var io = require('socket.io-client');
 
+
 var ErrorList = require('./ErrorList');
 var socket = require('../sockets/socket-helper');
 
 var SoloArena = React.createClass({
-
   componentDidMount: function(){
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/javascript");
     this.props.arenaActions.storeEditor(editor);
   },
+  componentDidUpdate: function(){
+    this.props.arena.editor.setValue(this.props.arena.content);
+  },
 
   render: function() {
     var submitProblem = function(){
       var errors = this.props.arena.editor.getSession().getAnnotations();
-      console.log(errors);
       var content = this.props.arena.editor.getSession().getValue();
-      this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.user_handle);
+      this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle);
     }.bind(this);
     return (
       <div>

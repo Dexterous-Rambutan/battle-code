@@ -1,27 +1,37 @@
 'use strict';
-var IS_LOGGED_IN = require('../constants').action.IS_LOGGED_IN;
-var IS_LOGGED_OUT = require('../constants').action.IS_LOGGED_OUT;
+var actions = require('../constants').action;
+
 
 var _ = require('lodash');
 
 var initial = {
   isLoggedIn: false,
-  user_handle: ""
-
+  github_handle: "",
+  github_display_name: '',
+  github_profileUrl: '',
+  github_avatar_url: '',
+  user_problems: []
 }
 
 function userReducer (state, action){
   state = state || initial;
   switch(action.type){
-    case IS_LOGGED_IN:
+    case actions.IS_LOGGED_IN:
       return _.extend({}, state, {
         isLoggedIn: true,
-        user_handle: action.payload
+        github_handle: action.payload.github_handle,
+        github_display_name: action.payload.github_display_name,
+        github_profileUrl: action.payload.github_profileUrl,
+        github_avatar_url: action.payload.github_avatar_url
       });
-    case IS_LOGGED_OUT:
+    case actions.IS_LOGGED_OUT:
       return _.extend({}, state, {
         isLoggedIn: false,
         user_handle: ""
+      });
+    case actions.STORE_USER_PROBLEMS:
+      return _.extend({}, state, {
+        user_problems: action.payload
       });
   }
   return state;

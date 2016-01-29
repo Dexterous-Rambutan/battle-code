@@ -13,7 +13,7 @@ var responds = function (io) {
   // Wait for responses to arrive in `responseQueue`, then pop them out.
   // Afterwards, resume waiting for more responses to arrive
   responseQueue.pop(function (err, replies) {
-    if (err) throw new Error(err); 
+    if (err) throw new Error(err);
 
     console.log('Successfully popped from', replies[0], 'with message: ', JSON.parse(replies[1]).message);
 
@@ -34,7 +34,7 @@ var responds = function (io) {
     }
 
     // Send evaluated response to socket
-    io.to(toSocket).emit('eval', message);
+    io.to('/#'+toSocket).emit('eval', message);
 
     // Keep listening
     responds(io);
