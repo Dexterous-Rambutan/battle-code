@@ -5,9 +5,14 @@ var Staging = React.createClass({
     this.props.stagingActions.createSocket();
   },
   render: function() {
+    var getListofProblemsAndNav = function(){
+      console.log(this.props.user.github_handle);
+      this.props.navActions.navSoloStaging(this.props.user.github_handle);
+    }.bind(this);
+
     return (
       <div>
-        <button onClick={this.props.navActions.navSoloStaging}>PRACTICE</button>
+        <button onClick={getListofProblemsAndNav}>PRACTICE</button>
         <button onClick={this.props.navActions.navChallengeArena}>CHALLENGE</button>
       </div>
     )

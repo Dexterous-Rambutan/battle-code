@@ -9,18 +9,18 @@ var navStaging = function(){
   }
 };
 
-var navSoloStaging = function(){
+var navSoloStaging = function(github_handle){
   //get all the links here and dispatch with payload to user reducers and view reducers
   return function(dispatch){
     $.ajax({
       method: 'GET',
       dataType: 'json',
       //use getuserproblems route here
-      url:'/api/tbd',
+      url:'/api/solutions/user/' + github_handle,
       success: function(data){
+        console.log('list of solutions',data);
         dispatch({
           type: actions.STORE_USER_PROBLEMS,
-          //data undetermined
           payload: data
         });
         dispatch({
