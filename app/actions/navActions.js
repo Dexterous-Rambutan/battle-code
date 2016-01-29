@@ -72,6 +72,8 @@ var spoofSolo = function(){
 }
 
 var navChallengeArena = function(){
+  console.log('should emit arena action');
+  socket.emit('arena');
   return {
     type: actions.NAV_CHALLENGE_ARENA
   }
