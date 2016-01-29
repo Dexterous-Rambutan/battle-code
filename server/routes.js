@@ -55,7 +55,7 @@ module.exports = function (app, redisClient) {
   });
   app.get('/api/resetDB', db.resetEverything);
   app.get('/api/resetDBWithData', function (req, res) {
-    return db.resetEverythingPromise()
+    db.resetEverythingPromise()
     .then(function() {
       return userController.resetWithData();
     })
@@ -67,6 +67,10 @@ module.exports = function (app, redisClient) {
     })
     .then(function() {
       res.status(201).end();
+      return;
+    })
+    .catch(function(err) {
+      res.status(500).send(err);
       return;
     })
   });

@@ -58,7 +58,7 @@ userController.resetWithData = function() {
     github_profileUrl: null,
     email: null
   }).save().then(function() {
-    User.forge({
+    return User.forge({
       github_handle: 'puzzlehe4d',
       github_display_name: 'Harun Davood',
       github_avatar_url: null,
@@ -66,7 +66,7 @@ userController.resetWithData = function() {
       email: null
     }).save();
   }).then(function() {
-    User.forge({
+    return User.forge({
       github_handle: 'kweng2',
       github_display_name: 'Kevin Weng',
       github_avatar_url: null,
@@ -74,7 +74,7 @@ userController.resetWithData = function() {
       email: null
     }).save();
   }).then(function() {
-    User.forge({
+    return User.forge({
       github_handle: 'hahnbi',
       github_display_name: 'Hahnbi Sun',
       github_avatar_url: null,
