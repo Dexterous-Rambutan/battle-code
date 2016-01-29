@@ -36,7 +36,9 @@
     "webpack-dev-server": "^1.14.0"
   },
   "devDependencies": {
-    "webpack-dev-server": "^1.14.0"
+    "webpack-dev-server": "^1.14.0",
+    "jquery": "~2.2.0",
+    "request": "~2.69.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

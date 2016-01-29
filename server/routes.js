@@ -42,7 +42,7 @@ module.exports = function (app, redisClient) {
   app.get('/api/challenges', challengeController.getChallenge);
   app.get('/api/challenges/:challengeId', challengeController.getChallengeById);
   app.post('/api/challenges', challengeController.addChallenge);
-  app.get('/api/users/:userId', userController.getUserById);
+  app.get('/api/users/:githubHandle', userController.getUserById);
   app.post('/api/users', userController.addUser);
   app.get('/api/solutions/:solutionId', solutionController.getSolutionById);
   app.get('/api/solutions/user/:githubHandle', solutionController.getAllSolutionsForUser);

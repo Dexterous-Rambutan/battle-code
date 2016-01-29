@@ -2,10 +2,10 @@ var User = require('./userModel.js');
 
 var userController = {};
 
-// Try to fetch that user via route: /api/users/:userId, and
+// Try to fetch that user via route: /api/users/:github_handle, and
 // return {user object}
 userController.getUserById = function ( req, res ) {
-  var github_handle = req.params.github_handle;
+  var github_handle = req.params.githubHandle;
   new User({github_handle: github_handle}).fetch()
   .then(function(user) {
     if (user) {
