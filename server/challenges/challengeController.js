@@ -56,7 +56,6 @@ module.exports = {
         name: "Test function two",
         prompt: "Write a function two() that returns the value 2.\n\nExample usage: \ntwo(1); \/\/ => 2\ntwo(2); \/\/ => 2",
         test_suite: "assert.equal(two(1),2);\nassert.equal(two(2),2);"
-        
       }).save();
     })
     .then(function () {

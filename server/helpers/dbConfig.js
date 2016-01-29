@@ -80,9 +80,11 @@ db.resetEverything = function (req, res) {
 
 db.resetEverythingPromise = function (req, res) {
   return resetUsersTable().then(function() {
-    resetSolutionsTable();
+    return resetSolutionsTable();
   }).then(function() {
-    resetChallengesTable();
+    return resetChallengesTable();
+  }).catch(function(e) {
+    console.log(e);
   });
 };
 

@@ -55,13 +55,17 @@ module.exports = function (app, redisClient) {
   });
   app.get('/api/resetDB', db.resetEverything);
   app.get('/api/resetDBWithData', function (req, res) {
-    return db.resetEverythingPromise().then(function() {
+    return db.resetEverythingPromise()
+    .then(function() {
       return userController.resetWithData();
-    }).then(function() {
+    })
+    .then(function() {
       return challengeController.resetWithData();
-    }).then(function() {
+    })
+    .then(function() {
       return solutionController.resetWithData();
-    }).then(function() {
+    })
+    .then(function() {
       res.status(201).end();
       return;
     })
