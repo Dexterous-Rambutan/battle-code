@@ -38,7 +38,7 @@
 
       $submitSolution.on('click', function() {
         var data = JSON.stringify({
-          soln_str: JSON.stringify($solution.val()),
+          soln_str: $solution.val(),
           user_handle: 'kweng2',
           socket_id: 123456
         });

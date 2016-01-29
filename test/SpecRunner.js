@@ -1,5 +1,6 @@
 var assert = require('chai').assert;
 var request = require('request');
+var io = require('socket.io-client');
 
 var solutionController = require('../server/solutions/solutionController.js');
 var userController = require('../server/users/userController.js');
@@ -69,6 +70,76 @@ describe('solutionControllerTest', function () {
       });
     });
   });
+  describe('testSolution', function () {
+    it('should be a function', function () {
+      assert.isFunction(solutionController.testSolution);
+    });
+    it('should return success for a valid solution', function (done) {
+      var socket = io('http://127.0.0.1:3000');
+      socket.on('connect', function () {
+        request({
+          url: 'http://127.0.0.1:3000/api/solutions/2',
+          method: 'POST',
+          json: {
+            socket_id: socket.id,
+            soln_str: "function two() {return 2;}",
+            user_handle: 'kweng2'
+          }
+        }, function (err, response, body) {
+          assert.equal(response.statusCode, 201);
+        });
+
+        socket.on('eval', function(message) {
+          assert.equal(message, 'victory!');
+          done();
+        })
+      });
+    });
+    it('should persist valid solutions in database', function (done) {
+      request({
+        url: 'http://127.0.0.1:3000/api/solutions/9',
+        method: 'GET',
+        json: {}
+      }, function (err, response, body) {
+        assert.equal(response.statusCode, 200);
+        assert.equal(body.user_id, 3);
+        assert.equal(body.challenge_id, 2);
+        done();
+      });
+    });
+    it('should return failure for an invalid solution', function (done) {
+      var socket = io('http://127.0.0.1:3000');
+      socket.on('connect', function () {
+        request({
+          url: 'http://127.0.0.1:3000/api/solutions/2',
+          method: 'POST',
+          json: {
+            socket_id: socket.id,
+            soln_str: "test solution",
+            user_handle: 'kweng2'
+          }
+        }, function (err, response, body) {
+          assert.equal(response.statusCode, 201);
+        });
+
+        socket.on('eval', function(message) {
+          assert.equal(message, 'Unexpected identifier');
+          done();
+        })
+      });
+    });
+    it('should not persist invalid solutons in database', function (done) {
+      request({
+        url: 'http://127.0.0.1:3000/api/solutions/10',
+        method: 'GET',
+        json: {}
+      }, function (err, response, body) {
+        assert.equal(response.statusCode, 404);
+        done();
+      });
+    });
+  });
+
 });
 
 describe('userController', function () {

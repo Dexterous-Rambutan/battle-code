@@ -37,7 +37,8 @@
   },
   "devDependencies": {
     "webpack-dev-server": "^1.14.0",
-    "request": "~2.69.0"
+    "request": "~2.69.0",
+    "socket.io-client": "~1.4.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

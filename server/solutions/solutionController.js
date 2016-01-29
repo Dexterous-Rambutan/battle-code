@@ -51,7 +51,7 @@ module.exports = {
   // POST /api/solutions/:challengeId
   testSolution: function (req, res, redisClient) {
     var solutionAttr = {
-      soln_str: JSON.parse(req.body.soln_str),
+      soln_str: req.body.soln_str,
       user_handle: req.body.user_handle,
       socket_id: req.body.socket_id,
       challenge_id: req.params.challengeId
