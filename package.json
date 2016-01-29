@@ -37,7 +37,6 @@
   },
   "devDependencies": {
     "webpack-dev-server": "^1.14.0",
-    "jquery": "~2.2.0",
     "request": "~2.69.0"
   },
   "scripts": {
