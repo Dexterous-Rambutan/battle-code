@@ -43,10 +43,12 @@ function arenaReducer (state, action){
     case actions.SYNTAX_ERROR:
       return _.extend({}, state, {
         syntaxMessage: 'There are syntax errors in your code. Please fix them and re-submit.',
-        errors: action.payload
+        errors: action.payload.errors,
+        content: action.payload.solution_str
       });
     case actions.NO_SYNTAX_ERROR:
       return _.extend({}, state, {
+        content: action.payload,
         syntaxMessage: '',
         errors: []
       });
