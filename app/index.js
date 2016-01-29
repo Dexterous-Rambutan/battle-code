@@ -13,7 +13,7 @@ var configureStore = require('./store/configureStore');
 
 var store = configureStore();
 store.subscribe(() => {
-  console.dir('state changed',store.getState());
+  console.log('state changed',store.getState());
 });
 
 
