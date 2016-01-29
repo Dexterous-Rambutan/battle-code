@@ -1,7 +1,8 @@
 var knex = require('knex')({
   client: 'pg',
   connection: {
-    host     : 'localhost',
+    // host     : 'localhost',
+    host: 'postgres',
     database : 'myDB',
     charset  : 'utf8',
   }
