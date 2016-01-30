@@ -2,9 +2,9 @@ var knex = require('knex')({
   client: 'pg',
   connection: {
     host: 'postgres',
-    user: 'docker',
-    password: 'docker',
-    database : 'docker',
+    user: 'postgres',
+    password: 'mysecretpassword',
+    database : 'postgres',
     charset  : 'utf8'
   }
 });

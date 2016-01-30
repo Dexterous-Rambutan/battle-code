@@ -18,5 +18,4 @@ redis:
   image: redis
 
 postgres:
-  build: .
-  dockerfile: Dockerfile-postgres
+  image: postgres
