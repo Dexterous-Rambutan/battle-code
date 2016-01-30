@@ -1,14 +1,18 @@
 var vm = require('vm');
 var util = require('util');
-var Solution = require('../server/solutions/solutionModel.js');
-var Challenge = require('../server/challenges/challengeModel.js');
+var Solution = require('./solutions/solutionModel.js');
+var Challenge = require('./challenges/challengeModel.js');
+// var Solution;
+// try {
+//   Solution = require('../server/solutions/solutionModel.js');
+// } catch (e) {
+//   Solution = require('./solutions/solutionModel.js');
+// }
 
 var redis = require('redis');
 var Queue = require('./queue.js');
-var client = redis.createClient({
-  host: '127.0.0.1',
-  port: 6379
-});
+var client = redis.createClient(6379, 'redis');
+
 var testQueue = new Queue('testQueue', client);
 var responseQueue = new Queue('rQueue', client);
 

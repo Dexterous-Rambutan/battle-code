@@ -1,0 +1,22 @@
+creator:
+  build: .
+  dockerfile: Dockerfile-server
+  ports:
+   - 80:3000
+  links:
+   - redis
+   - postgres
+
+solution:
+  build: .
+  dockerfile: Dockerfile-worker
+  links:
+   - redis
+   - postgres
+
+redis:
+  image: redis
+
+postgres:
+  build: .
+  dockerfile: Dockerfile-postgres
