@@ -8,6 +8,7 @@ var challengeController = require('../server/challenges/challengeController.js')
 
 describe('solutionControllerTest', function () {
   before(function (done) {
+    console.log('Resetting DBs')
     request('http://127.0.0.1:3000/api/resetDBWithData', function () {
       done();
     });
@@ -42,6 +43,7 @@ describe('solutionControllerTest', function () {
       });
     });
   });
+
   describe('getAllSolutionsForUser', function () {
     it('should be a function', function () {
       assert.isFunction(solutionController.getAllSolutionsForUser);
@@ -74,7 +76,7 @@ describe('solutionControllerTest', function () {
     it('should be a function', function () {
       assert.isFunction(solutionController.testSolution);
     });
-    it('should return success for a valid solution', function (done) {
+    it('should return success for a valid solution if user has already completed challenge', function (done) {
       var socket = io('http://127.0.0.1:3000');
       socket.on('connect', function () {
         request({
@@ -92,19 +94,38 @@ describe('solutionControllerTest', function () {
         socket.on('eval', function(message) {
           assert.equal(message, 'victory!');
           done();
-        })
+        });
       });
     });
-    it('should persist valid solutions in database', function (done) {
+    it('should not persist valid solutions in database if user has already completed the challenge', function (done) {
       request({
         url: 'http://127.0.0.1:3000/api/solutions/9',
         method: 'GET',
         json: {}
       }, function (err, response, body) {
-        assert.equal(response.statusCode, 200);
-        assert.equal(body.user_id, 3);
-        assert.equal(body.challenge_id, 2);
+        assert.equal(response.statusCode, 404);
         done();
+      });
+    });
+    it('should return success for a valid solution if user has not completed challenge', function (done) {
+      var socket = io('http://127.0.0.1:3000');
+      socket.on('connect', function () {
+        request({
+          url: 'http://127.0.0.1:3000/api/solutions/4',
+          method: 'POST',
+          json: {
+            socket_id: socket.id,
+            soln_str: "function four() {return 4;}",
+            user_handle: 'kweng2'
+          }
+        }, function (err, response, body) {
+          assert.equal(response.statusCode, 201);
+        });
+
+        socket.on('eval', function(message) {
+          assert.equal(message, 'victory!');
+          done();
+        });
       });
     });
     it('should return failure for an invalid solution', function (done) {
@@ -136,6 +157,18 @@ describe('solutionControllerTest', function () {
       }, function (err, response, body) {
         assert.equal(response.statusCode, 404);
         done();
+      });
+    });
+    it('should persist valid solutions in database if user has not completed challenge', function (done) {
+      request({
+        url: 'http://127.0.0.1:3000/api/solutions/9',
+        method: 'GET',
+        json: {}
+      }, function (err, response, body) {
+        assert.equal(body.id, 9);
+        assert.equal(body.user_id, 3);
+        assert.equal(body.challenge_id, 4);
+        done()          
       });
     });
   });
@@ -272,9 +305,9 @@ describe('challengeController', function () {
     });
   });
 
-  after(function (done) {
-    request('http://127.0.0.1:3000/api/resetDBWithData', function () {
-      done();
-    });
-  });
+  // after(function (done) {
+  //   request('http://127.0.0.1:3000/api/resetDBWithData', function () {
+  //     done();
+  //   });
+  // });
 });

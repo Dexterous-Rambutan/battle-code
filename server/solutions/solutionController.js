@@ -70,8 +70,19 @@ module.exports = {
     }).then(function(userId){
       delete solutionAttr.github_handle;
       solutionAttr.user_id = userId;
-      return Solution.forge(solutionAttr).save();
-    }).catch(function (err) {
+
+      return Solution.forge({
+        challenge_id: solutionAttr.challenge_id,
+        user_id: solutionAttr.user_id
+      }).fetch();
+    }).then(function (solution) {
+      if (solution) {
+        return;
+      } else {
+        return Solution.forge(solutionAttr).save();
+      }
+    })
+    .catch(function (err) {
       console.log('addSolution error: ', err);
     });
   },
