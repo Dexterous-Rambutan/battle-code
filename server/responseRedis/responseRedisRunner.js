@@ -3,7 +3,15 @@ var redisQueue = require('./redisQueue.js');
 var solutionController = require('../solutions/solutionController.js');
 
 // May need to change client URL and port number
-var client = redis.createClient(6379, 'redis');
+var client;
+try {
+  client = redis.createClient(6379, 'redis');
+} catch (e) {
+  client = redis.createClient({
+    host: '127.0.0.1',
+    port: 6379
+  });
+}
 var responseQueue = new redisQueue('rQueue', client);
 
 var responds = function (io) {

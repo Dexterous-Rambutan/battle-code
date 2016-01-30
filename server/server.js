@@ -5,11 +5,15 @@ var bodyParser = require('body-parser');
 var passport = require('./helpers/psConfig.js');
 var session = require('express-session');
 var redis = require('redis');
-var redisClient = redis.createClient(6379, 'redis');
-  // host: 'localhost',
-//   host: '192.168.99.100',
-//   port: 6379
-// });
+var redisClient;
+try {
+  redisClient = redis.createClient(6379, 'redis');
+} catch (e) {
+  redisClient = redis.createClient({
+    host: '127.0.0.1',
+    port: 6379
+  });
+}
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
