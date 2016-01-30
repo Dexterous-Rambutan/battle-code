@@ -92,11 +92,11 @@ db.resetEverything = function (req, res) {
   });
 };
 
-db.resetEverythingPromise = function (req, res) {
+db.resetEverythingPromise = function () {
   return resetUsersTable().then(function() {
-    return resetSolutionsTable();
-  }).then(function() {
     return resetChallengesTable();
+  }).then(function() {
+    return resetSolutionsTable();
   }).catch(function(e) {
     console.log(e);
   });

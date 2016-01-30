@@ -107,7 +107,7 @@ var navLogout = function(){
 };
 
 var navProfile = function(){
-  
+
   return {
     type: actions.NAV_PROFILE
   }

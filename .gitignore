@@ -3,6 +3,5 @@ public/bundle.js
 server/lib/apiKey.js
 server/public/bundle.js
 dump.rdb
-worker/node_modules
-server/node_modules
 .DS_Store
+logfile

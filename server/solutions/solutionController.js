@@ -51,7 +51,7 @@ module.exports = {
   // POST /api/solutions/:challengeId
   testSolution: function (req, res, redisClient) {
     var solutionAttr = {
-      soln_str: JSON.parse(req.body.soln_str),
+      soln_str: req.body.soln_str,
       user_handle: req.body.user_handle,
       socket_id: req.body.socket_id,
       challenge_id: req.params.challengeId
@@ -70,8 +70,19 @@ module.exports = {
     }).then(function(userId){
       delete solutionAttr.github_handle;
       solutionAttr.user_id = userId;
-      return Solution.forge(solutionAttr).save();
-    }).catch(function (err) {
+
+      return Solution.forge({
+        challenge_id: solutionAttr.challenge_id,
+        user_id: solutionAttr.user_id
+      }).fetch();
+    }).then(function (solution) {
+      if (solution) {
+        return;
+      } else {
+        return Solution.forge(solutionAttr).save();
+      }
+    })
+    .catch(function (err) {
       console.log('addSolution error: ', err);
     });
   },

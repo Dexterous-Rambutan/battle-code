@@ -25,6 +25,7 @@ function runTest() {
 
   // Pop from testQueue any solutions waiting to be tested
   testQueue.pop(function (err, results) {
+    console.log('successfully popped from testQueue');
     if (err) throw new Error(err);
 
     // Parse the solution string from testQueue
