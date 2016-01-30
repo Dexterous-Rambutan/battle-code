@@ -3,6 +3,8 @@ creator:
   dockerfile: Dockerfile-server
   ports:
    - 80:3000
+  environment:
+    DEPLOYED: "true"
   links:
    - redis
    - postgres
@@ -10,6 +12,8 @@ creator:
 solution:
   build: .
   dockerfile: Dockerfile-worker
+  environment:
+    DEPLOYED: "true"
   links:
    - redis
    - postgres

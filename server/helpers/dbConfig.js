@@ -1,5 +1,5 @@
 var knex;
-try {
+if (process.env.DEPLOYED) {
   knex = require('knex')({  
     client: 'pg',
     connection: {
@@ -9,8 +9,8 @@ try {
       database : 'postgres',
       charset  : 'utf8'
     }
-  });
-} catch (e) {
+  });  
+} else {
   knex = require('knex')({
     client: 'pg',
     connection: {
