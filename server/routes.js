@@ -42,7 +42,7 @@ module.exports = function (app, redisClient) {
   app.get('/api/challenges', challengeController.getChallenge);
   app.get('/api/challenges/:challengeId', challengeController.getChallengeById);
   app.post('/api/challenges', challengeController.addChallenge);
-  app.get('/api/users/:userId', userController.getUserById);
+  app.get('/api/users/:githubHandle', userController.getUserById);
   app.post('/api/users', userController.addUser);
   app.get('/api/solutions/:solutionId', solutionController.getSolutionById);
   app.get('/api/solutions/user/:githubHandle', solutionController.getAllSolutionsForUser);
@@ -55,7 +55,7 @@ module.exports = function (app, redisClient) {
   });
   app.get('/api/resetDB', db.resetEverything);
   app.get('/api/resetDBWithData', function (req, res) {
-    return db.resetEverythingPromise()
+    db.resetEverythingPromise()
     .then(function() {
       return userController.resetWithData();
     })
@@ -67,6 +67,10 @@ module.exports = function (app, redisClient) {
     })
     .then(function() {
       res.status(201).end();
+      return;
+    })
+    .catch(function(err) {
+      res.status(500).send(err);
       return;
     })
   });
