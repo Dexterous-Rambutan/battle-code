@@ -52,15 +52,17 @@
 
 	var App = __webpack_require__(177);
 
-	var configureStore = __webpack_require__(192);
+	var configureStore = __webpack_require__(245);
 
 	var store = configureStore();
 	store.subscribe(function () {
-	  console.dir('state changed', store.getState());
+	  console.log('state changed', store.getState());
 	});
 
 	window.store = store;
 	store.getState();
+
+	__webpack_require__(230);
 
 	render(React.createElement(
 	  Provider,
@@ -20124,7 +20126,7 @@
 /* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	'use strict';
 
 	exports.__esModule = true;
 
@@ -20134,40 +20136,27 @@
 
 	var _createStore2 = _interopRequireDefault(_createStore);
 
-	var _combineReducers = __webpack_require__(169);
+	var _utilsCombineReducers = __webpack_require__(169);
 
-	var _combineReducers2 = _interopRequireDefault(_combineReducers);
+	var _utilsCombineReducers2 = _interopRequireDefault(_utilsCombineReducers);
 
-	var _bindActionCreators = __webpack_require__(172);
+	var _utilsBindActionCreators = __webpack_require__(172);
 
-	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
+	var _utilsBindActionCreators2 = _interopRequireDefault(_utilsBindActionCreators);
 
-	var _applyMiddleware = __webpack_require__(173);
+	var _utilsApplyMiddleware = __webpack_require__(173);
 
-	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
+	var _utilsApplyMiddleware2 = _interopRequireDefault(_utilsApplyMiddleware);
 
-	var _compose = __webpack_require__(174);
+	var _utilsCompose = __webpack_require__(174);
 
-	var _compose2 = _interopRequireDefault(_compose);
-
-	/*
-	* This is a dummy function to check if the function name has been altered by minification.
-	* If the function has been minified and NODE_ENV !== 'production', warn the user.
-	*/
-	function isCrushed() {}
-
-	if (isCrushed.name !== 'isCrushed' && process.env.NODE_ENV !== 'production') {
-	  /*eslint-disable no-console */
-	  console.error('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
-	  /*eslint-enable */
-	}
+	var _utilsCompose2 = _interopRequireDefault(_utilsCompose);
 
 	exports.createStore = _createStore2['default'];
-	exports.combineReducers = _combineReducers2['default'];
-	exports.bindActionCreators = _bindActionCreators2['default'];
-	exports.applyMiddleware = _applyMiddleware2['default'];
-	exports.compose = _compose2['default'];
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	exports.combineReducers = _utilsCombineReducers2['default'];
+	exports.bindActionCreators = _utilsBindActionCreators2['default'];
+	exports.applyMiddleware = _utilsApplyMiddleware2['default'];
+	exports.compose = _utilsCompose2['default'];
 
 /***/ },
 /* 167 */
@@ -20386,17 +20375,17 @@
 
 	var _createStore = __webpack_require__(167);
 
-	var _utilsIsPlainObject = __webpack_require__(168);
+	var _isPlainObject = __webpack_require__(168);
 
-	var _utilsIsPlainObject2 = _interopRequireDefault(_utilsIsPlainObject);
+	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _utilsMapValues = __webpack_require__(170);
+	var _mapValues = __webpack_require__(170);
 
-	var _utilsMapValues2 = _interopRequireDefault(_utilsMapValues);
+	var _mapValues2 = _interopRequireDefault(_mapValues);
 
-	var _utilsPick = __webpack_require__(171);
+	var _pick = __webpack_require__(171);
 
-	var _utilsPick2 = _interopRequireDefault(_utilsPick);
+	var _pick2 = _interopRequireDefault(_pick);
 
 	/* eslint-disable no-console */
 
@@ -20407,20 +20396,20 @@
 	  return 'Reducer "' + key + '" returned undefined handling ' + actionName + '. ' + 'To ignore an action, you must explicitly return the previous state.';
 	}
 
-	function getUnexpectedStateShapeWarningMessage(inputState, reducers, action) {
-	  var reducerKeys = Object.keys(reducers);
+	function getUnexpectedStateKeyWarningMessage(inputState, outputState, action) {
+	  var reducerKeys = Object.keys(outputState);
 	  var argumentName = action && action.type === _createStore.ActionTypes.INIT ? 'initialState argument passed to createStore' : 'previous state received by the reducer';
 
 	  if (reducerKeys.length === 0) {
 	    return 'Store does not have a valid reducer. Make sure the argument passed ' + 'to combineReducers is an object whose values are reducers.';
 	  }
 
-	  if (!_utilsIsPlainObject2['default'](inputState)) {
+	  if (!_isPlainObject2['default'](inputState)) {
 	    return 'The ' + argumentName + ' has unexpected type of "' + ({}).toString.call(inputState).match(/\s([a-z|A-Z]+)/)[1] + '". Expected argument to be an object with the following ' + ('keys: "' + reducerKeys.join('", "') + '"');
 	  }
 
 	  var unexpectedKeys = Object.keys(inputState).filter(function (key) {
-	    return !reducers.hasOwnProperty(key);
+	    return reducerKeys.indexOf(key) < 0;
 	  });
 
 	  if (unexpectedKeys.length > 0) {
@@ -20462,7 +20451,7 @@
 	 */
 
 	function combineReducers(reducers) {
-	  var finalReducers = _utilsPick2['default'](reducers, function (val) {
+	  var finalReducers = _pick2['default'](reducers, function (val) {
 	    return typeof val === 'function';
 	  });
 	  var sanityError;
@@ -20473,22 +20462,19 @@
 	    sanityError = e;
 	  }
 
+	  var defaultState = _mapValues2['default'](finalReducers, function () {
+	    return undefined;
+	  });
+
 	  return function combination(state, action) {
-	    if (state === undefined) state = {};
+	    if (state === undefined) state = defaultState;
 
 	    if (sanityError) {
 	      throw sanityError;
 	    }
 
-	    if (process.env.NODE_ENV !== 'production') {
-	      var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action);
-	      if (warningMessage) {
-	        console.error(warningMessage);
-	      }
-	    }
-
 	    var hasChanged = false;
-	    var finalState = _utilsMapValues2['default'](finalReducers, function (reducer, key) {
+	    var finalState = _mapValues2['default'](finalReducers, function (reducer, key) {
 	      var previousStateForKey = state[key];
 	      var nextStateForKey = reducer(previousStateForKey, action);
 	      if (typeof nextStateForKey === 'undefined') {
@@ -20498,6 +20484,13 @@
 	      hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
 	      return nextStateForKey;
 	    });
+
+	    if (process.env.NODE_ENV !== 'production') {
+	      var warningMessage = getUnexpectedStateKeyWarningMessage(state, finalState, action);
+	      if (warningMessage) {
+	        console.error(warningMessage);
+	      }
+	    }
 
 	    return hasChanged ? finalState : state;
 	  };
@@ -20569,9 +20562,9 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _utilsMapValues = __webpack_require__(170);
+	var _mapValues = __webpack_require__(170);
 
-	var _utilsMapValues2 = _interopRequireDefault(_utilsMapValues);
+	var _mapValues2 = _interopRequireDefault(_mapValues);
 
 	function bindActionCreator(actionCreator, dispatch) {
 	  return function () {
@@ -20610,7 +20603,7 @@
 	    throw new Error('bindActionCreators expected an object or a function, instead received ' + (actionCreators === null ? 'null' : typeof actionCreators) + '. ' + 'Did you write "import ActionCreators from" instead of "import * as ActionCreators from"?');
 	  }
 
-	  return _utilsMapValues2['default'](actionCreators, function (actionCreator) {
+	  return _mapValues2['default'](actionCreators, function (actionCreator) {
 	    return bindActionCreator(actionCreator, dispatch);
 	  });
 	}
@@ -20704,17 +20697,10 @@
 	    funcs[_key] = arguments[_key];
 	  }
 
-	  return function () {
-	    if (funcs.length === 0) {
-	      return arguments[0];
-	    }
-
-	    var last = funcs[funcs.length - 1];
-	    var rest = funcs.slice(0, -1);
-
-	    return rest.reduceRight(function (composed, f) {
+	  return function (arg) {
+	    return funcs.reduceRight(function (composed, f) {
 	      return f(composed);
-	    }, last.apply(undefined, arguments));
+	    }, arg);
 	  };
 	}
 
@@ -20839,25 +20825,16 @@
 
 	var connect = _require2.connect;
 
-	var io = __webpack_require__(311);
+	var io = __webpack_require__(181);
 
 	//actions require
-	var actions = __webpack_require__(180);
+	var actions = __webpack_require__(227);
 
 	//component require
-	var SoloArena = __webpack_require__(198);
-	var ChallengeArena = __webpack_require__(199);
-	var Login = __webpack_require__(188);
-	var Staging = __webpack_require__(189);
-	var Leaderboard = __webpack_require__(190);
-	var NavBar = __webpack_require__(191);
+	var components = __webpack_require__(235);
 
 	//constant requires (views)
-	var LOGIN = __webpack_require__(182).view.LOGIN;
-	var SOLO_ARENA = __webpack_require__(182).view.SOLO_ARENA;
-	var CHALLENGE_ARENA = __webpack_require__(182).view.CHALLENGE_ARENA;
-	var STAGING = __webpack_require__(182).view.STAGING;
-	var LEADERBOARD = __webpack_require__(182).view.LEADERBOARD;
+	var views = __webpack_require__(229).view;
 
 	var contextType = {
 	  redux: React.PropTypes.object
@@ -20873,38 +20850,54 @@
 	  render: function render() {
 	    if (this.props.user.isLoggedIn) {
 	      switch (this.props.view) {
-	        case STAGING:
+	        case views.STAGING:
 	          console.log(this.props);
 	          //history.pushState(store.getState(), 'Staging', "staging");
 	          return React.createElement(
 	            'div',
 	            null,
-	            React.createElement(NavBar, { navActions: this.props.navActions }),
-	            React.createElement(Staging, this.props)
+	            React.createElement(components.NavBar, this.props),
+	            React.createElement(components.Staging, this.props)
 	          );
-	        case SOLO_ARENA:
+	        case views.SOLO_ARENA:
 	          //history.pushState(store.getState(), 'Arena', "arena");
 	          return React.createElement(
 	            'div',
 	            null,
-	            React.createElement(NavBar, { navActions: this.props.navActions }),
-	            React.createElement(SoloArena, this.props)
+	            React.createElement(components.NavBar, this.props),
+	            React.createElement(components.SoloArena, this.props)
 	          );
-	        case CHALLENGE_ARENA:
+	        case views.CHALLENGE_ARENA:
 	          //history.pushState(store.getState(), 'Arena', "arena");
 	          return React.createElement(
 	            'div',
 	            null,
-	            React.createElement(NavBar, { navActions: this.props.navActions }),
-	            React.createElement(ChallengeArena, this.props)
+	            React.createElement(components.NavBar, this.props),
+	            React.createElement(components.ChallengeArena, this.props)
 	          );
-	        case LEADERBOARD:
+	        case views.LEADERBOARD:
 	          //history.pushState(store.getState(), 'Leaderboard', "leadboard");
 	          return React.createElement(
 	            'div',
 	            null,
-	            React.createElement(NavBar, this.props),
-	            React.createElement(Leaderboard, this.props)
+	            React.createElement(components.NavBar, this.props),
+	            React.createElement(components.Leaderboard, this.props)
+	          );
+	        case views.PROFILE:
+	          //history.pushState(store.getState(), 'Leaderboard', "leadboard");
+	          return React.createElement(
+	            'div',
+	            null,
+	            React.createElement(components.NavBar, this.props),
+	            React.createElement(components.Profile, this.props)
+	          );
+	        case views.SOLO_STAGING:
+	          //history.pushState(store.getState(), 'Leaderboard', "leadboard");
+	          return React.createElement(
+	            'div',
+	            null,
+	            React.createElement(components.NavBar, this.props),
+	            React.createElement(components.SoloStaging, this.props)
 	          );
 	      }
 	    } else {
@@ -20912,8 +20905,8 @@
 	      return React.createElement(
 	        'div',
 	        null,
-	        React.createElement(NavBar, { navActions: this.props.navActions }),
-	        React.createElement(Login, this.props)
+	        React.createElement(components.NavBar, this.props),
+	        React.createElement(components.Login, this.props)
 	      );
 	    }
 	  }
@@ -20946,9 +20939,15 @@
 /* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __webpack_require__(179);
+
+/***/ },
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
 	 * @license
-	 * lodash 4.0.1 (Custom Build) <https://lodash.com/>
+	 * lodash 4.0.0 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash -d -o ./lodash.js`
 	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -20961,7 +20960,7 @@
 	  var undefined;
 
 	  /** Used as the semantic version number. */
-	  var VERSION = '4.0.1';
+	  var VERSION = '4.0.0';
 
 	  /** Used to compose bitmasks for wrapper metadata. */
 	  var BIND_FLAG = 1,
@@ -21111,8 +21110,7 @@
 
 	  /** Used to compose unicode character classes. */
 	  var rsAstralRange = '\\ud800-\\udfff',
-	      rsComboMarksRange = '\\u0300-\\u036f\\ufe20-\\ufe23',
-	      rsComboSymbolsRange = '\\u20d0-\\u20f0',
+	      rsComboRange = '\\u0300-\\u036f\\ufe20-\\ufe23',
 	      rsDingbatRange = '\\u2700-\\u27bf',
 	      rsLowerRange = 'a-z\\xdf-\\xf6\\xf8-\\xff',
 	      rsMathOpRange = '\\xac\\xb1\\xd7\\xf7',
@@ -21126,13 +21124,12 @@
 	  /** Used to compose unicode capture groups. */
 	  var rsAstral = '[' + rsAstralRange + ']',
 	      rsBreak = '[' + rsBreakRange + ']',
-	      rsCombo = '[' + rsComboMarksRange + rsComboSymbolsRange + ']',
+	      rsCombo = '[' + rsComboRange + ']',
 	      rsDigits = '\\d+',
 	      rsDingbat = '[' + rsDingbatRange + ']',
 	      rsLower = '[' + rsLowerRange + ']',
 	      rsMisc = '[^' + rsAstralRange + rsBreakRange + rsDigits + rsDingbatRange + rsLowerRange + rsUpperRange + ']',
-	      rsFitz = '\\ud83c[\\udffb-\\udfff]',
-	      rsModifier = '(?:' + rsCombo + '|' + rsFitz + ')',
+	      rsModifier = '(?:\\ud83c[\\udffb-\\udfff])',
 	      rsNonAstral = '[^' + rsAstralRange + ']',
 	      rsRegional = '(?:\\ud83c[\\udde6-\\uddff]){2}',
 	      rsSurrPair = '[\\ud800-\\udbff][\\udc00-\\udfff]',
@@ -21149,17 +21146,14 @@
 	      rsEmoji = '(?:' + [rsDingbat, rsRegional, rsSurrPair].join('|') + ')' + rsSeq,
 	      rsSymbol = '(?:' + [rsNonAstral + rsCombo + '?', rsCombo, rsRegional, rsSurrPair, rsAstral].join('|') + ')';
 
-	  /**
-	   * Used to match [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks) and
-	   * [combining diacritical marks for symbols](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks_for_Symbols).
-	   */
+	  /** Used to match [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks). */
 	  var reComboMark = RegExp(rsCombo, 'g');
 
 	  /** Used to match [string symbols](https://mathiasbynens.be/notes/javascript-unicode). */
-	  var reComplexSymbol = RegExp(rsFitz + '(?=' + rsFitz + ')|' + rsSymbol + rsSeq, 'g');
+	  var reComplexSymbol = RegExp(rsSymbol + rsSeq, 'g');
 
 	  /** Used to detect strings with [zero-width joiners or code points from the astral planes](http://eev.ee/blog/2015/09/12/dark-corners-of-unicode/). */
-	  var reHasComplexSymbol = RegExp('[' + rsZWJ + rsAstralRange  + rsComboMarksRange + rsComboSymbolsRange + rsVarRange + ']');
+	  var reHasComplexSymbol = RegExp('[' + rsZWJ + rsAstralRange + rsComboRange + rsVarRange + ']');
 
 	  /** Used to match non-compound words composed of alphanumeric characters. */
 	  var reBasicWord = /[a-zA-Z0-9]+/g;
@@ -21169,8 +21163,7 @@
 	    rsUpper + '?' + rsLower + '+(?=' + [rsBreak, rsUpper, '$'].join('|') + ')',
 	    rsUpperMisc + '+(?=' + [rsBreak, rsUpper + rsLowerMisc, '$'].join('|') + ')',
 	    rsUpper + '?' + rsLowerMisc + '+',
-	    rsUpper + '+',
-	    rsDigits,
+	    rsDigits + '(?:' + rsLowerMisc + '+)?',
 	    rsEmoji
 	  ].join('|'), 'g');
 
@@ -21551,14 +21544,14 @@
 	   * @param {Array} array The array to iterate over.
 	   * @param {Function} iteratee The function invoked per iteration.
 	   * @param {*} [accumulator] The initial value.
-	   * @param {boolean} [initAccum] Specify using the first element of `array` as the initial value.
+	   * @param {boolean} [initFromArray] Specify using the first element of `array` as the initial value.
 	   * @returns {*} Returns the accumulated value.
 	   */
-	  function arrayReduce(array, iteratee, accumulator, initAccum) {
+	  function arrayReduce(array, iteratee, accumulator, initFromArray) {
 	    var index = -1,
 	        length = array.length;
 
-	    if (initAccum && length) {
+	    if (initFromArray && length) {
 	      accumulator = array[++index];
 	    }
 	    while (++index < length) {
@@ -21575,12 +21568,12 @@
 	   * @param {Array} array The array to iterate over.
 	   * @param {Function} iteratee The function invoked per iteration.
 	   * @param {*} [accumulator] The initial value.
-	   * @param {boolean} [initAccum] Specify using the last element of `array` as the initial value.
+	   * @param {boolean} [initFromArray] Specify using the last element of `array` as the initial value.
 	   * @returns {*} Returns the accumulated value.
 	   */
-	  function arrayReduceRight(array, iteratee, accumulator, initAccum) {
+	  function arrayReduceRight(array, iteratee, accumulator, initFromArray) {
 	    var length = array.length;
-	    if (initAccum && length) {
+	    if (initFromArray && length) {
 	      accumulator = array[--length];
 	    }
 	    while (length--) {
@@ -21642,7 +21635,7 @@
 	  /**
 	   * The base implementation of methods like `_.find` and `_.findKey`, without
 	   * support for iteratee shorthands, which iterates over `collection` using
-	   * `eachFunc`.
+	   * the provided `eachFunc`.
 	   *
 	   * @private
 	   * @param {Array|Object} collection The collection to search.
@@ -21710,20 +21703,21 @@
 
 	  /**
 	   * The base implementation of `_.reduce` and `_.reduceRight`, without support
-	   * for iteratee shorthands, which iterates over `collection` using `eachFunc`.
+	   * for iteratee shorthands, which iterates over `collection` using the provided
+	   * `eachFunc`.
 	   *
 	   * @private
 	   * @param {Array|Object} collection The collection to iterate over.
 	   * @param {Function} iteratee The function invoked per iteration.
 	   * @param {*} accumulator The initial value.
-	   * @param {boolean} initAccum Specify using the first or last element of `collection` as the initial value.
+	   * @param {boolean} initFromCollection Specify using the first or last element of `collection` as the initial value.
 	   * @param {Function} eachFunc The function to iterate over `collection`.
 	   * @returns {*} Returns the accumulated value.
 	   */
-	  function baseReduce(collection, iteratee, accumulator, initAccum, eachFunc) {
+	  function baseReduce(collection, iteratee, accumulator, initFromCollection, eachFunc) {
 	    eachFunc(collection, function(value, index, collection) {
-	      accumulator = initAccum
-	        ? (initAccum = false, value)
+	      accumulator = initFromCollection
+	        ? (initFromCollection = false, value)
 	        : iteratee(accumulator, value, index, collection);
 	    });
 	    return accumulator;
@@ -22117,7 +22111,6 @@
 	  /**
 	   * Gets the number of symbols in `string`.
 	   *
-	   * @private
 	   * @param {string} string The string to inspect.
 	   * @returns {number} Returns the string size.
 	   */
@@ -22233,14 +22226,14 @@
 	    );
 
 	    /** Built-in value references. */
-	    var Reflect = context.Reflect,
-	        Symbol = context.Symbol,
+	    var _Symbol = context.Symbol,
+	        Reflect = context.Reflect,
 	        Uint8Array = context.Uint8Array,
 	        clearTimeout = context.clearTimeout,
 	        enumerate = Reflect ? Reflect.enumerate : undefined,
 	        getPrototypeOf = Object.getPrototypeOf,
 	        getOwnPropertySymbols = Object.getOwnPropertySymbols,
-	        iteratorSymbol = typeof (iteratorSymbol = Symbol && Symbol.iterator) == 'symbol' ? iteratorSymbol : undefined,
+	        iteratorSymbol = typeof (iteratorSymbol = _Symbol && _Symbol.iterator) == 'symbol' ? iteratorSymbol : undefined,
 	        propertyIsEnumerable = objectProto.propertyIsEnumerable,
 	        setTimeout = context.setTimeout,
 	        splice = arrayProto.splice;
@@ -22271,9 +22264,9 @@
 	        setCtorString = Set ? funcToString.call(Set) : '';
 
 	    /** Used to convert symbols to primitives and strings. */
-	    var symbolProto = Symbol ? Symbol.prototype : undefined,
-	        symbolValueOf = Symbol ? symbolProto.valueOf : undefined,
-	        symbolToString = Symbol ? symbolProto.toString : undefined;
+	    var symbolProto = _Symbol ? _Symbol.prototype : undefined,
+	        symbolValueOf = _Symbol ? symbolProto.valueOf : undefined,
+	        symbolToString = _Symbol ? symbolProto.toString : undefined;
 
 	    /** Used to lookup unminified function names. */
 	    var realNames = {};
@@ -22321,12 +22314,13 @@
 	     * The chainable wrapper methods are:
 	     * `after`, `ary`, `assign`, `assignIn`, `assignInWith`, `assignWith`,
 	     * `at`, `before`, `bind`, `bindAll`, `bindKey`, `chain`, `chunk`, `commit`,
-	     * `compact`, `concat`, `conforms`, `constant`, `countBy`, `create`, `curry`,
+	     * `compact`, `concat`, `conforms`,  `constant`, `countBy`, `create`, `curry`,
 	     * `debounce`, `defaults`, `defaultsDeep`, `defer`, `delay`, `difference`,
-	     * `differenceBy`, `differenceWith`, `drop`, `dropRight`, `dropRightWhile`,
+	     * `differenceBy`, `differenceWith`,  `drop`, `dropRight`, `dropRightWhile`,
 	     * `dropWhile`, `fill`, `filter`, `flatten`, `flattenDeep`, `flip`, `flow`,
-	     * `flowRight`, `fromPairs`, `functions`, `functionsIn`, `groupBy`, `initial`,
-	     * `intersection`, `intersectionBy`, `intersectionWith`, `invert`, `invokeMap`,
+	     * `flowRight`, `forEach`, `forEachRight`, `forIn`, `forInRight`, `forOwn`,
+	     * `forOwnRight`, `fromPairs`, `functions`, `functionsIn`, `groupBy`, `initial`,
+	     * `intersection`, `intersectionBy`, `intersectionWith`, invert`, `invokeMap`,
 	     * `iteratee`, `keyBy`, `keys`, `keysIn`, `map`, `mapKeys`, `mapValues`,
 	     * `matches`, `matchesProperty`, `memoize`, `merge`, `mergeWith`, `method`,
 	     * `methodOf`, `mixin`, `negate`, `nthArg`, `omit`, `omitBy`, `once`, `orderBy`,
@@ -22345,23 +22339,22 @@
 	     * `add`, `attempt`, `camelCase`, `capitalize`, `ceil`, `clamp`, `clone`,
 	     * `cloneDeep`, `cloneDeepWith`, `cloneWith`, `deburr`, `endsWith`, `eq`,
 	     * `escape`, `escapeRegExp`, `every`, `find`, `findIndex`, `findKey`,
-	     * `findLast`, `findLastIndex`, `findLastKey`, `floor`, `forEach`, `forEachRight`,
-	     * `forIn`, `forInRight`, `forOwn`, `forOwnRight`, `get`, `gt`, `gte`, `has`,
-	     * `hasIn`, `head`, `identity`, `includes`, `indexOf`, `inRange`, `invoke`,
-	     * `isArguments`, `isArray`, `isArrayLike`, `isArrayLikeObject`, `isBoolean`,
-	     * `isDate`, `isElement`, `isEmpty`, `isEqual`, `isEqualWith`, `isError`,
-	     * `isFinite`, `isFunction`, `isInteger`, `isLength`, `isMatch`, `isMatchWith`,
-	     * `isNaN`, `isNative`, `isNil`, `isNull`, `isNumber`, `isObject`, `isObjectLike`,
-	     * `isPlainObject`, `isRegExp`, `isSafeInteger`, `isString`, `isUndefined`,
-	     * `isTypedArray`, `join`, `kebabCase`, `last`, `lastIndexOf`, `lowerCase`,
-	     * `lowerFirst`, `lt`, `lte`, `max`, `maxBy`, `mean`, `min`, `minBy`,
-	     * `noConflict`, `noop`, `now`, `pad`, `padEnd`, `padStart`, `parseInt`,
-	     * `pop`, `random`, `reduce`, `reduceRight`, `repeat`, `result`, `round`,
-	     * `runInContext`, `sample`, `shift`, `size`, `snakeCase`, `some`, `sortedIndex`,
-	     * `sortedIndexBy`, `sortedLastIndex`, `sortedLastIndexBy`, `startCase`,
-	     * `startsWith`, `subtract`, `sum`, `sumBy`, `template`, `times`, `toLower`,
-	     * `toInteger`, `toLength`, `toNumber`, `toSafeInteger`, `toString`, `toUpper`,
-	     * `trim`, `trimEnd`, `trimStart`, `truncate`, `unescape`, `uniqueId`,
+	     * `findLast`, `findLastIndex`, `findLastKey`, `floor`, `get`, `gt`, `gte`,
+	     * `has`, `hasIn`, `head`, `identity`, `includes`, `indexOf`, `inRange`,
+	     * `invoke`, `isArguments`, `isArray`, `isArrayLike`, `isArrayLikeObject`,
+	     * `isBoolean`, `isDate`, `isElement`, `isEmpty`, `isEqual`, `isEqualWith`,
+	     * `isError`, `isFinite`, `isFunction`, `isInteger`, `isLength`, `isMatch`,
+	     * `isMatchWith`, `isNaN`, `isNative`, `isNil`, `isNull`, `isNumber`,
+	     * `isObject`, `isObjectLike`, `isPlainObject`, `isRegExp`, `isSafeInteger`,
+	     * `isString`, `isUndefined`, `isTypedArray`, `join`, `kebabCase`, `last`,
+	     * `lastIndexOf`, `lowerCase`, `lowerFirst`, `lt`, `lte`, `max`, `maxBy`,
+	     * `mean`, `min`, `minBy`, `noConflict`, `noop`, `now`, `pad`, `padEnd`,
+	     * `padStart`, `parseInt`, `pop`, `random`, `reduce`, `reduceRight`, `repeat`,
+	     * `result`, `round`, `runInContext`, `sample`, `shift`, `size`, `snakeCase`,
+	     * `some`, `sortedIndex`, `sortedIndexBy`, `sortedLastIndex`, `sortedLastIndexBy`,
+	     * `startCase`, `startsWith`, `subtract`, `sum`, sumBy`, `template`, `times`,
+	     * `toLower`, `toInteger`, `toLength`, `toNumber`, `toSafeInteger`, toString`,
+	     * `toUpper`, `trim`, `trimEnd`, `trimStart`, `truncate`, `unescape`, `uniqueId`,
 	     * `upperCase`, `upperFirst`, `value`, and `words`
 	     *
 	     * @name _
@@ -23621,6 +23614,7 @@
 	     * The base implementation of `_.invoke` without support for individual
 	     * method arguments.
 	     *
+	     *
 	     * @private
 	     * @param {Object} object The object to query.
 	     * @param {Array|string} path The path of the method to invoke.
@@ -23763,10 +23757,7 @@
 	          var stack = new Stack,
 	              result = customizer ? customizer(objValue, srcValue, key, object, source, stack) : undefined;
 
-	          if (!(result === undefined
-	                ? baseIsEqual(srcValue, objValue, customizer, UNORDERED_COMPARE_FLAG | PARTIAL_COMPARE_FLAG, stack)
-	                : result
-	              )) {
+	          if (!(result === undefined ? baseIsEqual(srcValue, objValue, customizer, UNORDERED_COMPARE_FLAG | PARTIAL_COMPARE_FLAG, stack) : result)) {
 	            return false;
 	          }
 	        }
@@ -23902,11 +23893,10 @@
 	     * @private
 	     * @param {Object} object The destination object.
 	     * @param {Object} source The source object.
-	     * @param {number} srcIndex The index of `source`.
 	     * @param {Function} [customizer] The function to customize merged values.
 	     * @param {Object} [stack] Tracks traversed source values and their merged counterparts.
 	     */
-	    function baseMerge(object, source, srcIndex, customizer, stack) {
+	    function baseMerge(object, source, customizer, stack) {
 	      if (object === source) {
 	        return;
 	      }
@@ -23918,7 +23908,7 @@
 	        }
 	        if (isObject(srcValue)) {
 	          stack || (stack = new Stack);
-	          baseMergeDeep(object, source, key, srcIndex, baseMerge, customizer, stack);
+	          baseMergeDeep(object, source, key, baseMerge, customizer, stack);
 	        }
 	        else {
 	          var newValue = customizer ? customizer(object[key], srcValue, (key + ''), object, source, stack) : undefined;
@@ -23939,12 +23929,11 @@
 	     * @param {Object} object The destination object.
 	     * @param {Object} source The source object.
 	     * @param {string} key The key of the value to merge.
-	     * @param {number} srcIndex The index of `source`.
 	     * @param {Function} mergeFunc The function to merge values.
 	     * @param {Function} [customizer] The function to customize assigned values.
 	     * @param {Object} [stack] Tracks traversed source values and their merged counterparts.
 	     */
-	    function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, stack) {
+	    function baseMergeDeep(object, source, key, mergeFunc, customizer, stack) {
 	      var objValue = object[key],
 	          srcValue = source[key],
 	          stacked = stack.get(srcValue) || stack.get(objValue);
@@ -23959,36 +23948,24 @@
 	      if (isCommon) {
 	        newValue = srcValue;
 	        if (isArray(srcValue) || isTypedArray(srcValue)) {
-	          if (isArray(objValue)) {
-	            newValue = srcIndex ? copyArray(objValue) : objValue;
-	          }
-	          else if (isArrayLikeObject(objValue)) {
-	            newValue = copyArray(objValue);
-	          }
-	          else {
-	            newValue = baseClone(srcValue);
-	          }
+	          newValue = isArray(objValue)
+	            ? objValue
+	            : ((isArrayLikeObject(objValue)) ? copyArray(objValue) : baseClone(srcValue));
 	        }
 	        else if (isPlainObject(srcValue) || isArguments(srcValue)) {
-	          if (isArguments(objValue)) {
-	            newValue = toPlainObject(objValue);
-	          }
-	          else if (!isObject(objValue) || (srcIndex && isFunction(objValue))) {
-	            newValue = baseClone(srcValue);
-	          }
-	          else {
-	            newValue = srcIndex ? baseClone(objValue) : objValue;
-	          }
+	          newValue = isArguments(objValue)
+	            ? toPlainObject(objValue)
+	            : (isObject(objValue) ? objValue : baseClone(srcValue));
 	        }
 	        else {
-	          isCommon = false;
+	          isCommon = isFunction(srcValue);
 	        }
 	      }
 	      stack.set(srcValue, newValue);
 
 	      if (isCommon) {
 	        // Recursively merge objects and arrays (susceptible to call stack limits).
-	        mergeFunc(newValue, srcValue, srcIndex, customizer, stack);
+	        mergeFunc(newValue, srcValue, customizer, stack);
 	      }
 	      assignMergeValue(object, key, newValue);
 	    }
@@ -24052,7 +24029,7 @@
 	    function basePickBy(object, predicate) {
 	      var result = {};
 	      baseForIn(object, function(value, key) {
-	        if (predicate(value, key)) {
+	        if (predicate(value)) {
 	          result[key] = value;
 	        }
 	      });
@@ -24637,7 +24614,7 @@
 	     * @returns {Object} Returns the cloned symbol object.
 	     */
 	    function cloneSymbol(symbol) {
-	      return Symbol ? Object(symbolValueOf.call(symbol)) : {};
+	      return _Symbol ? Object(symbolValueOf.call(symbol)) : {};
 	    }
 
 	    /**
@@ -24840,7 +24817,7 @@
 	        while (++index < length) {
 	          var source = sources[index];
 	          if (source) {
-	            assigner(object, source, index, customizer);
+	            assigner(object, source, customizer);
 	          }
 	        }
 	        return object;
@@ -25525,7 +25502,7 @@
 	            equalFunc(convert(object), convert(other), customizer, bitmask | UNORDERED_COMPARE_FLAG);
 
 	        case symbolTag:
-	          return !!Symbol && (symbolValueOf.call(object) == symbolValueOf.call(other));
+	          return !!_Symbol && (symbolValueOf.call(object) == symbolValueOf.call(other));
 	      }
 	      return false;
 	    }
@@ -25545,6 +25522,7 @@
 	     */
 	    function equalObjects(object, other, equalFunc, customizer, bitmask, stack) {
 	      var isPartial = bitmask & PARTIAL_COMPARE_FLAG,
+	          isUnordered = bitmask & UNORDERED_COMPARE_FLAG,
 	          objProps = keys(object),
 	          objLength = objProps.length,
 	          othProps = keys(other),
@@ -25556,7 +25534,8 @@
 	      var index = objLength;
 	      while (index--) {
 	        var key = objProps[index];
-	        if (!(isPartial ? key in other : baseHas(other, key))) {
+	        if (!(isPartial ? key in other : baseHas(other, key)) ||
+	            !(isUnordered || key == othProps[index])) {
 	          return false;
 	        }
 	      }
@@ -25626,7 +25605,7 @@
 	    function getFuncName(func) {
 	      var result = (func.name + ''),
 	          array = realNames[result],
-	          length = hasOwnProperty.call(realNames, result) ? array.length : 0;
+	          length = array ? array.length : 0;
 
 	      while (length--) {
 	        var data = array[length],
@@ -26067,9 +26046,9 @@
 	    function mergeDefaults(objValue, srcValue, key, object, source, stack) {
 	      if (isObject(objValue) && isObject(srcValue)) {
 	        stack.set(srcValue, objValue);
-	        baseMerge(objValue, srcValue, undefined, mergeDefaults, stack);
+	        baseMerge(objValue, srcValue, mergeDefaults, stack);
 	      }
-	      return objValue;
+	      return objValue === undefined ? baseClone(srcValue) : objValue;
 	    }
 
 	    /**
@@ -26283,11 +26262,8 @@
 	     * // => [1]
 	     */
 	    var concat = rest(function(array, values) {
-	      if (!isArray(array)) {
-	        array = array == null ? [] : [Object(array)];
-	      }
 	      values = baseFlatten(values);
-	      return arrayConcat(array, values);
+	      return arrayConcat(isArray(array) ? array : [Object(array)], values);
 	    });
 
 	    /**
@@ -26719,7 +26695,7 @@
 
 	      while (++index < length) {
 	        var pair = pairs[index];
-	        result[pair[0]] = pair[1];
+	        baseSet(result, pair[0], pair[1]);
 	      }
 	      return result;
 	    }
@@ -26808,7 +26784,6 @@
 	     * @param {...Array} [arrays] The arrays to inspect.
 	     * @returns {Array} Returns the new array of shared values.
 	     * @example
-	     *
 	     * _.intersection([2, 1], [4, 2], [1, 2]);
 	     * // => [2]
 	     */
@@ -27001,7 +26976,7 @@
 	     *
 	     * var array = [1, 2, 3, 1, 2, 3];
 	     *
-	     * _.pullAll(array, [2, 3]);
+	     * _.pull(array, [2, 3]);
 	     * console.log(array);
 	     * // => [1, 1]
 	     */
@@ -27125,7 +27100,6 @@
 	     * **Note:** This method mutates `array` and is based on
 	     * [`Array#reverse`](https://mdn.io/Array/reverse).
 	     *
-	     * @static
 	     * @memberOf _
 	     * @category Array
 	     * @returns {Array} Returns `array`.
@@ -28084,7 +28058,7 @@
 	    /**
 	     * This method is the wrapper version of `_.flatMap`.
 	     *
-	     * @name flatMap
+	     * @static
 	     * @memberOf _
 	     * @category Seq
 	     * @param {Function|Object|string} [iteratee=_.identity] The function invoked per iteration.
@@ -28235,7 +28209,7 @@
 	     *
 	     * @name value
 	     * @memberOf _
-	     * @alias toJSON, valueOf
+	     * @alias run, toJSON, valueOf
 	     * @category Seq
 	     * @returns {*} Returns the resolved unwrapped value.
 	     * @example
@@ -28259,7 +28233,7 @@
 	     * @memberOf _
 	     * @category Collection
 	     * @param {Array|Object} collection The collection to iterate over.
-	     * @param {Function|Object|string} [iteratee=_.identity] The iteratee to transform keys.
+	     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
 	     * @returns {Object} Returns the composed aggregate object.
 	     * @example
 	     *
@@ -28483,14 +28457,14 @@
 	    /**
 	     * Creates an object composed of keys generated from the results of running
 	     * each element of `collection` through `iteratee`. The corresponding value
-	     * of each key is an array of elements responsible for generating the key.
+	     * of each key is an array of the elements responsible for generating the key.
 	     * The iteratee is invoked with one argument: (value).
 	     *
 	     * @static
 	     * @memberOf _
 	     * @category Collection
 	     * @param {Array|Object} collection The collection to iterate over.
-	     * @param {Function|Object|string} [iteratee=_.identity] The iteratee to transform keys.
+	     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
 	     * @returns {Object} Returns the composed aggregate object.
 	     * @example
 	     *
@@ -28595,7 +28569,7 @@
 	     * @memberOf _
 	     * @category Collection
 	     * @param {Array|Object} collection The collection to iterate over.
-	     * @param {Function|Object|string} [iteratee=_.identity] The iteratee to transform keys.
+	     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
 	     * @returns {Object} Returns the composed aggregate object.
 	     * @example
 	     *
@@ -28604,13 +28578,13 @@
 	     *   { 'dir': 'right', 'code': 100 }
 	     * ];
 	     *
+	     * _.keyBy(keyData, 'dir');
+	     * // => { 'left': { 'dir': 'left', 'code': 97 }, 'right': { 'dir': 'right', 'code': 100 } }
+	     *
 	     * _.keyBy(keyData, function(o) {
 	     *   return String.fromCharCode(o.code);
 	     * });
 	     * // => { 'a': { 'dir': 'left', 'code': 97 }, 'd': { 'dir': 'right', 'code': 100 } }
-	     *
-	     * _.keyBy(keyData, 'dir');
-	     * // => { 'left': { 'dir': 'left', 'code': 97 }, 'right': { 'dir': 'right', 'code': 100 } }
 	     */
 	    var keyBy = createAggregator(function(result, value, key) {
 	      result[key] = value;
@@ -28642,11 +28616,11 @@
 	     *   return n * n;
 	     * }
 	     *
-	     * _.map([4, 8], square);
-	     * // => [16, 64]
+	     * _.map([1, 2], square);
+	     * // => [3, 6]
 	     *
-	     * _.map({ 'a': 4, 'b': 8 }, square);
-	     * // => [16, 64] (iteration order is not guaranteed)
+	     * _.map({ 'a': 1, 'b': 2 }, square);
+	     * // => [3, 6] (iteration order is not guaranteed)
 	     *
 	     * var users = [
 	     *   { 'user': 'barney' },
@@ -28705,9 +28679,9 @@
 
 	    /**
 	     * Creates an array of elements split into two groups, the first of which
-	     * contains elements `predicate` returns truthy for, the second of which
-	     * contains elements `predicate` returns falsey for. The predicate is
-	     * invoked with one argument: (value).
+	     * contains elements `predicate` returns truthy for, while the second of which
+	     * contains elements `predicate` returns falsey for. The predicate is invoked
+	     * with three arguments: (value, index|key, collection).
 	     *
 	     * @static
 	     * @memberOf _
@@ -28779,9 +28753,9 @@
 	     */
 	    function reduce(collection, iteratee, accumulator) {
 	      var func = isArray(collection) ? arrayReduce : baseReduce,
-	          initAccum = arguments.length < 3;
+	          initFromCollection = arguments.length < 3;
 
-	      return func(collection, getIteratee(iteratee, 4), accumulator, initAccum, baseEach);
+	      return func(collection, getIteratee(iteratee, 4), accumulator, initFromCollection, baseEach);
 	    }
 
 	    /**
@@ -28806,9 +28780,9 @@
 	     */
 	    function reduceRight(collection, iteratee, accumulator) {
 	      var func = isArray(collection) ? arrayReduceRight : baseReduce,
-	          initAccum = arguments.length < 3;
+	          initFromCollection = arguments.length < 3;
 
-	      return func(collection, getIteratee(iteratee, 4), accumulator, initAccum, baseEachRight);
+	      return func(collection, getIteratee(iteratee, 4), accumulator, initFromCollection, baseEachRight);
 	    }
 
 	    /**
@@ -28872,8 +28846,7 @@
 	    }
 
 	    /**
-	     * Gets `n` random elements at unique keys from `collection` up to the
-	     * size of `collection`.
+	     * Gets `n` random elements from `collection`.
 	     *
 	     * @static
 	     * @memberOf _
@@ -28883,11 +28856,8 @@
 	     * @returns {Array} Returns the random elements.
 	     * @example
 	     *
-	     * _.sampleSize([1, 2, 3], 2);
+	     * _.sampleSize([1, 2, 3, 4], 2);
 	     * // => [3, 1]
-	     *
-	     * _.sampleSize([1, 2, 3], 4);
-	     * // => [2, 3, 1]
 	     */
 	    function sampleSize(collection, n) {
 	      var index = -1,
@@ -30051,7 +30021,7 @@
 	     * This method is like `_.clone` except that it accepts `customizer` which
 	     * is invoked to produce the cloned value. If `customizer` returns `undefined`
 	     * cloning is handled by the method instead. The `customizer` is invoked with
-	     * up to four arguments; (value [, index|key, object, stack]).
+	     * up to five arguments; (value [, index|key, object, stack]).
 	     *
 	     * @static
 	     * @memberOf _
@@ -30067,7 +30037,7 @@
 	     *   }
 	     * }
 	     *
-	     * var el = _.cloneWith(document.body, customizer);
+	     * var el = _.clone(document.body, customizer);
 	     *
 	     * console.log(el === document.body);
 	     * // => false
@@ -30117,7 +30087,7 @@
 	     *   }
 	     * }
 	     *
-	     * var el = _.cloneDeepWith(document.body, customizer);
+	     * var el = _.cloneDeep(document.body, customizer);
 	     *
 	     * console.log(el === document.body);
 	     * // => false
@@ -30445,7 +30415,7 @@
 	    /**
 	     * This method is like `_.isEqual` except that it accepts `customizer` which is
 	     * invoked to compare values. If `customizer` returns `undefined` comparisons are
-	     * handled by the method instead. The `customizer` is invoked with up to six arguments:
+	     * handled by the method instead. The `customizer` is invoked with up to seven arguments:
 	     * (objValue, othValue [, index|key, object, other, stack]).
 	     *
 	     * @static
@@ -30695,7 +30665,7 @@
 	    /**
 	     * This method is like `_.isMatch` except that it accepts `customizer` which
 	     * is invoked to compare values. If `customizer` returns `undefined` comparisons
-	     * are handled by the method instead. The `customizer` is invoked with five
+	     * are handled by the method instead. The `customizer` is invoked with three
 	     * arguments: (objValue, srcValue, index|key, object, source).
 	     *
 	     * @static
@@ -31166,7 +31136,7 @@
 	     * @memberOf _
 	     * @category Lang
 	     * @param {*} value The value to convert.
-	     * @returns {number} Returns the converted integer.
+	     * @return {number} Returns the converted integer.
 	     * @example
 	     *
 	     * _.toLength(3);
@@ -31305,7 +31275,7 @@
 	        return '';
 	      }
 	      if (isSymbol(value)) {
-	        return Symbol ? symbolToString.call(value) : '';
+	        return _Symbol ? symbolToString.call(value) : '';
 	      }
 	      var result = (value + '');
 	      return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
@@ -31407,7 +31377,7 @@
 	     * defaults({ 'a': 1 }, { 'b': 2 }, { 'a': 3 });
 	     * // => { 'a': 1, 'b': 2 }
 	     */
-	    var assignInWith = createAssigner(function(object, source, srcIndex, customizer) {
+	    var assignInWith = createAssigner(function(object, source, customizer) {
 	      copyObjectWith(source, keysIn(source), object, customizer);
 	    });
 
@@ -31437,7 +31407,7 @@
 	     * defaults({ 'a': 1 }, { 'b': 2 }, { 'a': 3 });
 	     * // => { 'a': 1, 'b': 2 }
 	     */
-	    var assignWith = createAssigner(function(object, source, srcIndex, customizer) {
+	    var assignWith = createAssigner(function(object, source, customizer) {
 	      copyObjectWith(source, keys(source), object, customizer);
 	    });
 
@@ -32117,8 +32087,8 @@
 	     * _.merge(users, ages);
 	     * // => { 'data': [{ 'user': 'barney', 'age': 36 }, { 'user': 'fred', 'age': 40 }] }
 	     */
-	    var merge = createAssigner(function(object, source, srcIndex) {
-	      baseMerge(object, source, srcIndex);
+	    var merge = createAssigner(function(object, source) {
+	      baseMerge(object, source);
 	    });
 
 	    /**
@@ -32156,8 +32126,8 @@
 	     * _.mergeWith(object, other, customizer);
 	     * // => { 'fruits': ['apple', 'banana'], 'vegetables': ['beet', 'carrot'] }
 	     */
-	    var mergeWith = createAssigner(function(object, source, srcIndex, customizer) {
-	      baseMerge(object, source, srcIndex, customizer);
+	    var mergeWith = createAssigner(function(object, source, customizer) {
+	      baseMerge(object, source, customizer);
 	    });
 
 	    /**
@@ -32205,9 +32175,9 @@
 	     * // => { 'b': '2' }
 	     */
 	    function omitBy(object, predicate) {
-	      predicate = getIteratee(predicate, 2);
-	      return basePickBy(object, function(value, key) {
-	        return !predicate(value, key);
+	      predicate = getIteratee(predicate);
+	      return basePickBy(object, function(value) {
+	        return !predicate(value);
 	      });
 	    }
 
@@ -32250,7 +32220,7 @@
 	     * // => { 'a': 1, 'c': 3 }
 	     */
 	    function pickBy(object, predicate) {
-	      return object == null ? {} : basePickBy(object, getIteratee(predicate, 2));
+	      return object == null ? {} : basePickBy(object, getIteratee(predicate));
 	    }
 
 	    /**
@@ -33017,7 +32987,7 @@
 	     * `undefined` or `0`, a `radix` of `10` is used unless `value` is a hexadecimal,
 	     * in which case a `radix` of `16` is used.
 	     *
-	     * **Note:** This method aligns with the [ES5 implementation](https://es5.github.io/#x15.1.2.2)
+	     * **Note:** This method aligns with the [ES5 implementation](https://es5.github.io/#E)
 	     * of `parseInt`.
 	     *
 	     * @static
@@ -33809,7 +33779,7 @@
 	     *   [_.matches({ 'a': 1 }),           _.constant('matches A')],
 	     *   [_.conforms({ 'b': _.isNumber }), _.constant('matches B')],
 	     *   [_.constant(true),                _.constant('no match')]
-	     * ]);
+	     * ])
 	     *
 	     * func({ 'a': 1, 'b': 2 });
 	     * // => 'matches A'
@@ -34180,9 +34150,7 @@
 	     * var lodash = _.noConflict();
 	     */
 	    function noConflict() {
-	      if (root._ === this) {
-	        root._ = oldDash;
-	      }
+	      root._ = oldDash;
 	      return this;
 	    }
 
@@ -34347,7 +34315,8 @@
 	     * Creates an array of numbers (positive and/or negative) progressing from
 	     * `start` up to, but not including, `end`. A step of `-1` is used if a negative
 	     * `start` is specified without an `end` or `step`. If `end` is not specified
-	     * it's set to `start` with `start` then set to `0`.
+	     * it's set to `start` with `start` then set to `0`.  If `end` is less than
+	     * `start` a zero-length range is created unless a negative `step` is specified.
 	     *
 	     * **Note:** JavaScript follows the IEEE-754 standard for resolving
 	     * floating-point values which can produce unexpected results.
@@ -34615,7 +34584,7 @@
 	     *
 	     * var objects = [{ 'n': 1 }, { 'n': 2 }];
 	     *
-	     * _.maxBy(objects, function(o) { return o.n; });
+	     * _.maxBy(objects, function(o) { return o.a; });
 	     * // => { 'n': 2 }
 	     *
 	     * // using the `_.property` iteratee shorthand
@@ -34683,7 +34652,7 @@
 	     *
 	     * var objects = [{ 'n': 1 }, { 'n': 2 }];
 	     *
-	     * _.minBy(objects, function(o) { return o.n; });
+	     * _.minBy(objects, function(o) { return o.a; });
 	     * // => { 'n': 1 }
 	     *
 	     * // using the `_.property` iteratee shorthand
@@ -34967,6 +34936,8 @@
 	    lodash.zipWith = zipWith;
 
 	    // Add aliases.
+	    lodash.each = forEach;
+	    lodash.eachRight = forEachRight;
 	    lodash.extend = assignIn;
 	    lodash.extendWith = assignInWith;
 
@@ -35109,8 +35080,6 @@
 	    lodash.upperFirst = upperFirst;
 
 	    // Add aliases.
-	    lodash.each = forEach;
-	    lodash.eachRight = forEachRight;
 	    lodash.first = head;
 
 	    mixin(lodash, (function() {
@@ -35377,10 +35346,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(179)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(180)(module), (function() { return this; }())))
 
 /***/ },
-/* 179 */
+/* 180 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -35396,1764 +35365,233 @@
 
 
 /***/ },
-/* 180 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	module.exports = {
-	  navActions: __webpack_require__(181),
-
-	  loginActions: __webpack_require__(183),
-
-	  stagingActions: __webpack_require__(184),
-
-	  arenaActions: __webpack_require__(185),
-
-	  leaderboardActions: __webpack_require__(186)
-
-	};
-
-/***/ },
 /* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	var NAV_STAGING = __webpack_require__(182).action.NAV_STAGING;
-	var LOGOUT = __webpack_require__(182).action.LOGOUT;
-	var NAV_SOLO_ARENA = __webpack_require__(182).action.NAV_SOLO_ARENA;
-	var NAV_CHALLENGE_ARENA = __webpack_require__(182).action.NAV_CHALLENGE_ARENA;
-	var LOGIN = __webpack_require__(182).action.LOGIN;
-
-	var navStaging = function navStaging() {
-	  return {
-	    type: NAV_STAGING
-	  };
-	};
-
-	var navSoloArena = function navSoloArena() {
-	  return {
-	    type: NAV_SOLO_ARENA
-	  };
-	};
-
-	var navChallengeArena = function navChallengeArena() {
-	  return {
-	    type: NAV_CHALLENGE_ARENA
-	  };
-	};
-
-	var navLogout = function navLogout() {
-	  //need to send request to route to LOGOUT
-	  //on success, dispatch LOGOUT statement
-	  return {
-	    type: LOGOUT
-	  };
-	};
-
-	module.exports = {
-	  navStaging: navStaging,
-	  navLogout: navLogout,
-	  navSoloArena: navSoloArena,
-	  navChallengeArena: navChallengeArena
-	};
-
-/***/ },
-/* 182 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = {
-	  //ACTION CONSTANTS
-	  action: {
-	    //NavBar
-	    LOGOUT: 'LOGOUT',
-	    NAV_LOGIN: 'NAV_LOGIN',
-
-	    //Login
-	    LOGIN: 'LOGIN',
-	    NAV_STAGING: 'NAV_STAGING',
-	    IS_LOGGED_IN: 'IS_LOGGED_IN',
-	    IS_LOGGED_OUT: 'IS_LOGGED_OUT',
-
-	    //Staging
-	    NAV_SOLO_ARENA: 'NAV_SOLO_ARENA',
-	    NAV_CHALLENGE_ARENA: 'NAV_CHALLENGE_ARENA',
-	    CREATE_SOCKET: 'CREATE_SOCKET',
-
-	    //Arena
-	    GET_PROBLEM: 'GET_PROBLEM',
-	    GET_PROBLEM_SUCCESS: 'GET_PROBLEM_SUCCESS',
-	    GET_PROBLEM_ERROR: 'GET_PROBLEM_ERROR',
-	    SUBMIT_PROBLEM: 'SUBMIT_PROBLEM',
-	    SUBMIT_PROBLEM_WRONG: 'SUBMIT_PROBLEM_WRONG',
-	    SUBMIT_PROBLEM_SUCCESS: 'SUBMIT_PROBLEM_SUCCESS',
-	    NAV_LEADERBOARD: 'NAV_LEADERBOARD',
-
-	    //Arena - Sockets
-	    ENTER_ROOM: 'ENTER_ROOM',
-	    PROBLEM_START: 'PROBLEM_START',
-	    EXIT_ROOM: 'EXIT_ROOM',
-	    OPPONENT_FINISH: 'OPPONENT_FINISH',
-	    OPPONENT_KEYSTROKE: 'OPPONENT_KEYSTROKE',
-
-	    //Leaderboard
-	    GET_LEADERBOARD: 'GET_LEADERBOARD',
-	    GET_LEADERBOARD_SUCCESS: 'GET_LEADERBOARD_SUCCESS',
-	    GET_LEADERBOARD_ERROR: 'GET_LEADERBOARD_ERROR'
-	  },
-
-	  //VIEW CONSTANTS
-	  view: {
-	    LOGIN: 'LOGIN',
-	    STAGING: 'STAGING',
-	    SOLO_ARENA: 'SOLO_ARENA',
-	    CHALLENGE_ARENA: 'CHALLENGE_ARENA',
-	    LEADERBOARD: 'LEADERBOARD'
-	  }
-	};
-
-/***/ },
-/* 183 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var IS_LOGGED_IN = __webpack_require__(182).action.IS_LOGGED_IN;
-	var IS_LOGGED_OUT = __webpack_require__(182).action.IS_LOGGED_OUT;
-
-	var checkLoggedIn = function checkLoggedIn() {
-	  return function (dispatch) {
-	    $.ajax({
-	      method: 'GET',
-	      url: '/auth-verify',
-	      dataType: 'json',
-	      cache: false,
-	      success: function success(data) {
-	        dispatch({
-	          type: IS_LOGGED_IN,
-	          payload: data.github_handle
-	        });
-	      },
-	      error: function error(_error) {
-	        dispatch({ type: IS_LOGGED_OUT });
-	      }
-	    });
-	  };
-	};
-
-	module.exports = {
-	  checkLoggedIn: checkLoggedIn
-	};
-
-/***/ },
-/* 184 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var CREATE_SOCKET = __webpack_require__(182).action.CREATE_SOCKET;
-	var createSocket = function createSocket() {
-	  return {
-	    type: CREATE_SOCKET,
-	    socket: io(location.protocol + '//' + location.hostname + ':3000')
-	  };
-	};
-	module.exports = {
-	  createSocket: createSocket
-	};
-
-/***/ },
-/* 185 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = {};
-
-/***/ },
-/* 186 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = {};
-
-/***/ },
-/* 187 */,
-/* 188 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var React = __webpack_require__(1);
-
-	var Login = React.createClass({
-	  displayName: "Login",
-
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      null,
-	      React.createElement(
-	        "a",
-	        { href: "/auth/github" },
-	        "Login with GitHub"
-	      )
-	    );
-	  }
-	});
-
-	module.exports = Login;
-
-/***/ },
-/* 189 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	var Staging = React.createClass({
-	  displayName: 'Staging',
-
-	  componentDidMount: function componentDidMount() {
-	    this.props.stagingActions.createSocket();
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'button',
-	        { onClick: this.props.navActions.navSoloArena },
-	        'SOLO'
-	      ),
-	      React.createElement(
-	        'button',
-	        { onClick: this.props.navActions.navChallengeArena },
-	        'CHALLENGE'
-	      )
-	    );
-	  }
-	});
-
-	module.exports = Staging;
-
-/***/ },
-/* 190 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	var Leaderboard = React.createClass({
-	  displayName: 'Leaderboard',
-
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      null,
-	      'Leaderboard'
-	    );
-	  }
-	});
-
-	module.exports = Leaderboard;
-
-/***/ },
-/* 191 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var React = __webpack_require__(1);
-
-	var Nav = React.createClass({
-	  displayName: "Nav",
-
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      null,
-	      React.createElement(
-	        "ul",
-	        null,
-	        React.createElement(
-	          "a",
-	          { href: "/logout" },
-	          "Log Out"
-	        )
-	      )
-	    );
-	  }
-	});
-
-	module.exports = Nav;
-
-/***/ },
-/* 192 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var createStore = __webpack_require__(166).createStore;
-	var applyMiddleware = __webpack_require__(166).applyMiddleware;
-	var thunk = __webpack_require__(193);
-	var reducer = __webpack_require__(194);
-
-	var createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-
-	function configureStore(initialState) {
-	  var store = createStoreWithMiddleware(reducer, initialState);
-
-	  // IF YOU WANT TO USE HOT RELOADING
-	  // if (module.hot) {
-	  //   // Enable Webpack hot module replacement for reducers
-	  //   module.hot.accept('../reducers', function(){
-	  //     var nextReducer = require('../reducers');
-	  //     store.replaceReducer(nextReducer);
-	  //   });
-	  // }
-
-	  return store;
-	}
-
-	module.exports = configureStore;
-
-/***/ },
-/* 193 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	function thunkMiddleware(_ref) {
-	  var dispatch = _ref.dispatch;
-	  var getState = _ref.getState;
-
-	  return function (next) {
-	    return function (action) {
-	      return typeof action === 'function' ? action(dispatch, getState) : next(action);
-	    };
-	  };
-	}
-
-	module.exports = thunkMiddleware;
-
-/***/ },
-/* 194 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var combineReducers = __webpack_require__(166).combineReducers;
-
-	var reducers = {
-	  arena: __webpack_require__(195),
-
-	  user: __webpack_require__(196),
-
-	  view: __webpack_require__(197)
-
-	};
-
-	module.exports = combineReducers(reducers);
-
-/***/ },
-/* 195 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _ = __webpack_require__(178);
-
-	var initial = {
-	  problem_id: 0,
-	  content: "",
-	  opponent_content: ""
-	};
-
-	function arenaReducer(state) {
-	  state = state || initial;
-	  return state;
-	};
-
-	module.exports = arenaReducer;
-
-/***/ },
-/* 196 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var IS_LOGGED_IN = __webpack_require__(182).action.IS_LOGGED_IN;
-	var IS_LOGGED_OUT = __webpack_require__(182).action.IS_LOGGED_OUT;
-
-	var _ = __webpack_require__(178);
-
-	var initial = {
-	  isLoggedIn: false,
-	  user_handle: ""
-
-	};
-
-	function userReducer(state, action) {
-	  state = state || initial;
-	  switch (action.type) {
-	    case IS_LOGGED_IN:
-	      return _.extend({}, state, {
-	        isLoggedIn: true,
-	        user_handle: action.payload
-	      });
-	    case IS_LOGGED_OUT:
-	      return _.extend({}, state, {
-	        isLoggedIn: false,
-	        user_handle: ""
-	      });
-	  }
-	  return state;
-	};
-
-	module.exports = userReducer;
-
-/***/ },
-/* 197 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _ = __webpack_require__(178);
-	//view strings
-	var STAGING = __webpack_require__(182).view.STAGING;
-	var LOGIN = __webpack_require__(182).view.LOGIN;
-	var SOLO_ARENA = __webpack_require__(182).view.SOLO_ARENA;
-	var CHALLENGE_ARENA = __webpack_require__(182).view.CHALLENGE_ARENA;
-
-	//action strings
-	var NAV_STAGING = __webpack_require__(182).action.NAV_STAGING;
-	var NAV_SOLO_ARENA = __webpack_require__(182).action.NAV_SOLO_ARENA;
-	var NAV_CHALLENGE_ARENA = __webpack_require__(182).action.NAV_CHALLENGE_ARENA;
-	var LOGOUT = __webpack_require__(182).action.LOGOUT;
-
-	function viewReducer(state, action) {
-	  state = state || STAGING;
-	  switch (action.type) {
-	    case NAV_STAGING:
-	      return STAGING;
-	    case NAV_SOLO_ARENA:
-	      return SOLO_ARENA;
-	    case NAV_CHALLENGE_ARENA:
-	      return CHALLENGE_ARENA;
-	    case LOGOUT:
-	      return LOGIN;
-	    default:
-	      return state;
-	  }
-	};
-
-	module.exports = viewReducer;
-
-/***/ },
-/* 198 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-	var io = __webpack_require__(311);
-	var SoloArena = React.createClass({
-	  displayName: 'SoloArena',
-
-	  componentDidMount: function componentDidMount() {
-	    var editor = ace.edit("editor");
-	    editor.setTheme("ace/theme/monokai");
-	    editor.getSession().setMode("ace/mode/javascript");
-
-	    //getProblem - action
-	    //getProblem_Success
-	    //set current prompt = response.body
-	    //editor.SetValue
-	  },
-	  render: function render() {
-	    return React.createElement('div', { id: 'editor' });
-	  }
-	});
-
-	module.exports = SoloArena;
-
-/***/ },
-/* 199 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var React = __webpack_require__(1);
-
-	var ChallengeArena = React.createClass({
-	  displayName: "ChallengeArena",
-
-	  componentDidMount: function componentDidMount() {
-	    var editor = ace.edit("editor");
-	    editor.setTheme("ace/theme/monokai");
-	    editor.getSession().setMode("ace/mode/javascript");
-
-	    //getProblem - action
-	    //getProblem_Success
-	    //set current prompt = response.body
-	    //editor.SetValue
-	  },
-	  render: function render() {
-	    return React.createElement("div", { id: "editor" });
-	  }
-	});
-
-	module.exports = ChallengeArena;
-
-/***/ },
-/* 200 */,
-/* 201 */,
-/* 202 */,
-/* 203 */,
-/* 204 */,
-/* 205 */,
-/* 206 */,
-/* 207 */,
-/* 208 */
-/***/ function(module, exports) {
-
-	module.exports = Array.isArray || function (arr) {
-	  return Object.prototype.toString.call(arr) == '[object Array]';
-	};
-
-
-/***/ },
-/* 209 */,
-/* 210 */,
-/* 211 */,
-/* 212 */,
-/* 213 */,
-/* 214 */,
-/* 215 */,
-/* 216 */,
-/* 217 */,
-/* 218 */,
-/* 219 */,
-/* 220 */,
-/* 221 */,
-/* 222 */,
-/* 223 */,
-/* 224 */,
-/* 225 */,
-/* 226 */,
-/* 227 */,
-/* 228 */,
-/* 229 */,
-/* 230 */,
-/* 231 */,
-/* 232 */,
-/* 233 */,
-/* 234 */,
-/* 235 */,
-/* 236 */,
-/* 237 */,
-/* 238 */,
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */,
-/* 246 */,
-/* 247 */,
-/* 248 */,
-/* 249 */,
-/* 250 */,
-/* 251 */,
-/* 252 */,
-/* 253 */,
-/* 254 */,
-/* 255 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {/**
+	
+	/**
 	 * Module dependencies.
 	 */
 
-	var keys = __webpack_require__(256);
-	var hasBinary = __webpack_require__(257);
-	var sliceBuffer = __webpack_require__(258);
-	var base64encoder = __webpack_require__(259);
-	var after = __webpack_require__(260);
-	var utf8 = __webpack_require__(261);
-
-	/**
-	 * Check if we are running an android browser. That requires us to use
-	 * ArrayBuffer with polling transports...
-	 *
-	 * http://ghinda.net/jpeg-blob-ajax-android/
-	 */
-
-	var isAndroid = navigator.userAgent.match(/Android/i);
-
-	/**
-	 * Check if we are running in PhantomJS.
-	 * Uploading a Blob with PhantomJS does not work correctly, as reported here:
-	 * https://github.com/ariya/phantomjs/issues/11395
-	 * @type boolean
-	 */
-	var isPhantomJS = /PhantomJS/i.test(navigator.userAgent);
-
-	/**
-	 * When true, avoids using Blobs to encode payloads.
-	 * @type boolean
-	 */
-	var dontSendBlobs = isAndroid || isPhantomJS;
-
-	/**
-	 * Current protocol version.
-	 */
-
-	exports.protocol = 3;
-
-	/**
-	 * Packet types.
-	 */
-
-	var packets = exports.packets = {
-	    open:     0    // non-ws
-	  , close:    1    // non-ws
-	  , ping:     2
-	  , pong:     3
-	  , message:  4
-	  , upgrade:  5
-	  , noop:     6
-	};
-
-	var packetslist = keys(packets);
-
-	/**
-	 * Premade error packet.
-	 */
-
-	var err = { type: 'error', data: 'parser error' };
-
-	/**
-	 * Create a blob api even for blob builder when vendor prefixes exist
-	 */
-
-	var Blob = __webpack_require__(262);
-
-	/**
-	 * Encodes a packet.
-	 *
-	 *     <packet type id> [ <data> ]
-	 *
-	 * Example:
-	 *
-	 *     5hello world
-	 *     3
-	 *     4
-	 *
-	 * Binary is encoded in an identical principle
-	 *
-	 * @api private
-	 */
-
-	exports.encodePacket = function (packet, supportsBinary, utf8encode, callback) {
-	  if ('function' == typeof supportsBinary) {
-	    callback = supportsBinary;
-	    supportsBinary = false;
-	  }
-
-	  if ('function' == typeof utf8encode) {
-	    callback = utf8encode;
-	    utf8encode = null;
-	  }
-
-	  var data = (packet.data === undefined)
-	    ? undefined
-	    : packet.data.buffer || packet.data;
-
-	  if (global.ArrayBuffer && data instanceof ArrayBuffer) {
-	    return encodeArrayBuffer(packet, supportsBinary, callback);
-	  } else if (Blob && data instanceof global.Blob) {
-	    return encodeBlob(packet, supportsBinary, callback);
-	  }
-
-	  // might be an object with { base64: true, data: dataAsBase64String }
-	  if (data && data.base64) {
-	    return encodeBase64Object(packet, callback);
-	  }
-
-	  // Sending data as a utf-8 string
-	  var encoded = packets[packet.type];
-
-	  // data fragment is optional
-	  if (undefined !== packet.data) {
-	    encoded += utf8encode ? utf8.encode(String(packet.data)) : String(packet.data);
-	  }
-
-	  return callback('' + encoded);
-
-	};
-
-	function encodeBase64Object(packet, callback) {
-	  // packet data is an object { base64: true, data: dataAsBase64String }
-	  var message = 'b' + exports.packets[packet.type] + packet.data.data;
-	  return callback(message);
-	}
-
-	/**
-	 * Encode packet helpers for binary types
-	 */
-
-	function encodeArrayBuffer(packet, supportsBinary, callback) {
-	  if (!supportsBinary) {
-	    return exports.encodeBase64Packet(packet, callback);
-	  }
-
-	  var data = packet.data;
-	  var contentArray = new Uint8Array(data);
-	  var resultBuffer = new Uint8Array(1 + data.byteLength);
-
-	  resultBuffer[0] = packets[packet.type];
-	  for (var i = 0; i < contentArray.length; i++) {
-	    resultBuffer[i+1] = contentArray[i];
-	  }
-
-	  return callback(resultBuffer.buffer);
-	}
-
-	function encodeBlobAsArrayBuffer(packet, supportsBinary, callback) {
-	  if (!supportsBinary) {
-	    return exports.encodeBase64Packet(packet, callback);
-	  }
-
-	  var fr = new FileReader();
-	  fr.onload = function() {
-	    packet.data = fr.result;
-	    exports.encodePacket(packet, supportsBinary, true, callback);
-	  };
-	  return fr.readAsArrayBuffer(packet.data);
-	}
-
-	function encodeBlob(packet, supportsBinary, callback) {
-	  if (!supportsBinary) {
-	    return exports.encodeBase64Packet(packet, callback);
-	  }
-
-	  if (dontSendBlobs) {
-	    return encodeBlobAsArrayBuffer(packet, supportsBinary, callback);
-	  }
-
-	  var length = new Uint8Array(1);
-	  length[0] = packets[packet.type];
-	  var blob = new Blob([length.buffer, packet.data]);
-
-	  return callback(blob);
-	}
-
-	/**
-	 * Encodes a packet with binary data in a base64 string
-	 *
-	 * @param {Object} packet, has `type` and `data`
-	 * @return {String} base64 encoded message
-	 */
-
-	exports.encodeBase64Packet = function(packet, callback) {
-	  var message = 'b' + exports.packets[packet.type];
-	  if (Blob && packet.data instanceof global.Blob) {
-	    var fr = new FileReader();
-	    fr.onload = function() {
-	      var b64 = fr.result.split(',')[1];
-	      callback(message + b64);
-	    };
-	    return fr.readAsDataURL(packet.data);
-	  }
-
-	  var b64data;
-	  try {
-	    b64data = String.fromCharCode.apply(null, new Uint8Array(packet.data));
-	  } catch (e) {
-	    // iPhone Safari doesn't let you apply with typed arrays
-	    var typed = new Uint8Array(packet.data);
-	    var basic = new Array(typed.length);
-	    for (var i = 0; i < typed.length; i++) {
-	      basic[i] = typed[i];
-	    }
-	    b64data = String.fromCharCode.apply(null, basic);
-	  }
-	  message += global.btoa(b64data);
-	  return callback(message);
-	};
-
-	/**
-	 * Decodes a packet. Changes format to Blob if requested.
-	 *
-	 * @return {Object} with `type` and `data` (if any)
-	 * @api private
-	 */
-
-	exports.decodePacket = function (data, binaryType, utf8decode) {
-	  // String data
-	  if (typeof data == 'string' || data === undefined) {
-	    if (data.charAt(0) == 'b') {
-	      return exports.decodeBase64Packet(data.substr(1), binaryType);
-	    }
-
-	    if (utf8decode) {
-	      try {
-	        data = utf8.decode(data);
-	      } catch (e) {
-	        return err;
-	      }
-	    }
-	    var type = data.charAt(0);
-
-	    if (Number(type) != type || !packetslist[type]) {
-	      return err;
-	    }
-
-	    if (data.length > 1) {
-	      return { type: packetslist[type], data: data.substring(1) };
-	    } else {
-	      return { type: packetslist[type] };
-	    }
-	  }
-
-	  var asArray = new Uint8Array(data);
-	  var type = asArray[0];
-	  var rest = sliceBuffer(data, 1);
-	  if (Blob && binaryType === 'blob') {
-	    rest = new Blob([rest]);
-	  }
-	  return { type: packetslist[type], data: rest };
-	};
-
-	/**
-	 * Decodes a packet encoded in a base64 string
-	 *
-	 * @param {String} base64 encoded message
-	 * @return {Object} with `type` and `data` (if any)
-	 */
-
-	exports.decodeBase64Packet = function(msg, binaryType) {
-	  var type = packetslist[msg.charAt(0)];
-	  if (!global.ArrayBuffer) {
-	    return { type: type, data: { base64: true, data: msg.substr(1) } };
-	  }
-
-	  var data = base64encoder.decode(msg.substr(1));
-
-	  if (binaryType === 'blob' && Blob) {
-	    data = new Blob([data]);
-	  }
-
-	  return { type: type, data: data };
-	};
-
-	/**
-	 * Encodes multiple messages (payload).
-	 *
-	 *     <length>:data
-	 *
-	 * Example:
-	 *
-	 *     11:hello world2:hi
-	 *
-	 * If any contents are binary, they will be encoded as base64 strings. Base64
-	 * encoded strings are marked with a b before the length specifier
-	 *
-	 * @param {Array} packets
-	 * @api private
-	 */
-
-	exports.encodePayload = function (packets, supportsBinary, callback) {
-	  if (typeof supportsBinary == 'function') {
-	    callback = supportsBinary;
-	    supportsBinary = null;
-	  }
-
-	  var isBinary = hasBinary(packets);
-
-	  if (supportsBinary && isBinary) {
-	    if (Blob && !dontSendBlobs) {
-	      return exports.encodePayloadAsBlob(packets, callback);
-	    }
-
-	    return exports.encodePayloadAsArrayBuffer(packets, callback);
-	  }
-
-	  if (!packets.length) {
-	    return callback('0:');
-	  }
-
-	  function setLengthHeader(message) {
-	    return message.length + ':' + message;
-	  }
-
-	  function encodeOne(packet, doneCallback) {
-	    exports.encodePacket(packet, !isBinary ? false : supportsBinary, true, function(message) {
-	      doneCallback(null, setLengthHeader(message));
-	    });
-	  }
-
-	  map(packets, encodeOne, function(err, results) {
-	    return callback(results.join(''));
-	  });
-	};
-
-	/**
-	 * Async array map using after
-	 */
-
-	function map(ary, each, done) {
-	  var result = new Array(ary.length);
-	  var next = after(ary.length, done);
-
-	  var eachWithIndex = function(i, el, cb) {
-	    each(el, function(error, msg) {
-	      result[i] = msg;
-	      cb(error, result);
-	    });
-	  };
-
-	  for (var i = 0; i < ary.length; i++) {
-	    eachWithIndex(i, ary[i], next);
-	  }
-	}
-
-	/*
-	 * Decodes data when a payload is maybe expected. Possible binary contents are
-	 * decoded from their base64 representation
-	 *
-	 * @param {String} data, callback method
-	 * @api public
-	 */
-
-	exports.decodePayload = function (data, binaryType, callback) {
-	  if (typeof data != 'string') {
-	    return exports.decodePayloadAsBinary(data, binaryType, callback);
-	  }
-
-	  if (typeof binaryType === 'function') {
-	    callback = binaryType;
-	    binaryType = null;
-	  }
-
-	  var packet;
-	  if (data == '') {
-	    // parser error - ignoring payload
-	    return callback(err, 0, 1);
-	  }
-
-	  var length = ''
-	    , n, msg;
-
-	  for (var i = 0, l = data.length; i < l; i++) {
-	    var chr = data.charAt(i);
-
-	    if (':' != chr) {
-	      length += chr;
-	    } else {
-	      if ('' == length || (length != (n = Number(length)))) {
-	        // parser error - ignoring payload
-	        return callback(err, 0, 1);
-	      }
-
-	      msg = data.substr(i + 1, n);
-
-	      if (length != msg.length) {
-	        // parser error - ignoring payload
-	        return callback(err, 0, 1);
-	      }
-
-	      if (msg.length) {
-	        packet = exports.decodePacket(msg, binaryType, true);
-
-	        if (err.type == packet.type && err.data == packet.data) {
-	          // parser error in individual packet - ignoring payload
-	          return callback(err, 0, 1);
-	        }
-
-	        var ret = callback(packet, i + n, l);
-	        if (false === ret) return;
-	      }
-
-	      // advance cursor
-	      i += n;
-	      length = '';
-	    }
-	  }
-
-	  if (length != '') {
-	    // parser error - ignoring payload
-	    return callback(err, 0, 1);
-	  }
-
-	};
-
-	/**
-	 * Encodes multiple messages (payload) as binary.
-	 *
-	 * <1 = binary, 0 = string><number from 0-9><number from 0-9>[...]<number
-	 * 255><data>
-	 *
-	 * Example:
-	 * 1 3 255 1 2 3, if the binary contents are interpreted as 8 bit integers
-	 *
-	 * @param {Array} packets
-	 * @return {ArrayBuffer} encoded payload
-	 * @api private
-	 */
-
-	exports.encodePayloadAsArrayBuffer = function(packets, callback) {
-	  if (!packets.length) {
-	    return callback(new ArrayBuffer(0));
-	  }
-
-	  function encodeOne(packet, doneCallback) {
-	    exports.encodePacket(packet, true, true, function(data) {
-	      return doneCallback(null, data);
-	    });
-	  }
-
-	  map(packets, encodeOne, function(err, encodedPackets) {
-	    var totalLength = encodedPackets.reduce(function(acc, p) {
-	      var len;
-	      if (typeof p === 'string'){
-	        len = p.length;
-	      } else {
-	        len = p.byteLength;
-	      }
-	      return acc + len.toString().length + len + 2; // string/binary identifier + separator = 2
-	    }, 0);
-
-	    var resultArray = new Uint8Array(totalLength);
-
-	    var bufferIndex = 0;
-	    encodedPackets.forEach(function(p) {
-	      var isString = typeof p === 'string';
-	      var ab = p;
-	      if (isString) {
-	        var view = new Uint8Array(p.length);
-	        for (var i = 0; i < p.length; i++) {
-	          view[i] = p.charCodeAt(i);
-	        }
-	        ab = view.buffer;
-	      }
-
-	      if (isString) { // not true binary
-	        resultArray[bufferIndex++] = 0;
-	      } else { // true binary
-	        resultArray[bufferIndex++] = 1;
-	      }
-
-	      var lenStr = ab.byteLength.toString();
-	      for (var i = 0; i < lenStr.length; i++) {
-	        resultArray[bufferIndex++] = parseInt(lenStr[i]);
-	      }
-	      resultArray[bufferIndex++] = 255;
-
-	      var view = new Uint8Array(ab);
-	      for (var i = 0; i < view.length; i++) {
-	        resultArray[bufferIndex++] = view[i];
-	      }
-	    });
-
-	    return callback(resultArray.buffer);
-	  });
-	};
-
-	/**
-	 * Encode as Blob
-	 */
-
-	exports.encodePayloadAsBlob = function(packets, callback) {
-	  function encodeOne(packet, doneCallback) {
-	    exports.encodePacket(packet, true, true, function(encoded) {
-	      var binaryIdentifier = new Uint8Array(1);
-	      binaryIdentifier[0] = 1;
-	      if (typeof encoded === 'string') {
-	        var view = new Uint8Array(encoded.length);
-	        for (var i = 0; i < encoded.length; i++) {
-	          view[i] = encoded.charCodeAt(i);
-	        }
-	        encoded = view.buffer;
-	        binaryIdentifier[0] = 0;
-	      }
-
-	      var len = (encoded instanceof ArrayBuffer)
-	        ? encoded.byteLength
-	        : encoded.size;
-
-	      var lenStr = len.toString();
-	      var lengthAry = new Uint8Array(lenStr.length + 1);
-	      for (var i = 0; i < lenStr.length; i++) {
-	        lengthAry[i] = parseInt(lenStr[i]);
-	      }
-	      lengthAry[lenStr.length] = 255;
-
-	      if (Blob) {
-	        var blob = new Blob([binaryIdentifier.buffer, lengthAry.buffer, encoded]);
-	        doneCallback(null, blob);
-	      }
-	    });
-	  }
-
-	  map(packets, encodeOne, function(err, results) {
-	    return callback(new Blob(results));
-	  });
-	};
-
-	/*
-	 * Decodes data when a payload is maybe expected. Strings are decoded by
-	 * interpreting each byte as a key code for entries marked to start with 0. See
-	 * description of encodePayloadAsBinary
-	 *
-	 * @param {ArrayBuffer} data, callback method
-	 * @api public
-	 */
-
-	exports.decodePayloadAsBinary = function (data, binaryType, callback) {
-	  if (typeof binaryType === 'function') {
-	    callback = binaryType;
-	    binaryType = null;
-	  }
-
-	  var bufferTail = data;
-	  var buffers = [];
-
-	  var numberTooLong = false;
-	  while (bufferTail.byteLength > 0) {
-	    var tailArray = new Uint8Array(bufferTail);
-	    var isString = tailArray[0] === 0;
-	    var msgLength = '';
-
-	    for (var i = 1; ; i++) {
-	      if (tailArray[i] == 255) break;
-
-	      if (msgLength.length > 310) {
-	        numberTooLong = true;
-	        break;
-	      }
-
-	      msgLength += tailArray[i];
-	    }
-
-	    if(numberTooLong) return callback(err, 0, 1);
-
-	    bufferTail = sliceBuffer(bufferTail, 2 + msgLength.length);
-	    msgLength = parseInt(msgLength);
-
-	    var msg = sliceBuffer(bufferTail, 0, msgLength);
-	    if (isString) {
-	      try {
-	        msg = String.fromCharCode.apply(null, new Uint8Array(msg));
-	      } catch (e) {
-	        // iPhone Safari doesn't let you apply to typed arrays
-	        var typed = new Uint8Array(msg);
-	        msg = '';
-	        for (var i = 0; i < typed.length; i++) {
-	          msg += String.fromCharCode(typed[i]);
-	        }
-	      }
-	    }
-
-	    buffers.push(msg);
-	    bufferTail = sliceBuffer(bufferTail, msgLength);
-	  }
-
-	  var total = buffers.length;
-	  buffers.forEach(function(buffer, i) {
-	    callback(exports.decodePacket(buffer, binaryType, true), i, total);
-	  });
-	};
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 256 */
-/***/ function(module, exports) {
-
-	
-	/**
-	 * Gets the keys for an object.
-	 *
-	 * @return {Array} keys
-	 * @api private
-	 */
-
-	module.exports = Object.keys || function keys (obj){
-	  var arr = [];
-	  var has = Object.prototype.hasOwnProperty;
-
-	  for (var i in obj) {
-	    if (has.call(obj, i)) {
-	      arr.push(i);
-	    }
-	  }
-	  return arr;
-	};
-
-
-/***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {
-	/*
-	 * Module requirements.
-	 */
-
-	var isArray = __webpack_require__(208);
+	var url = __webpack_require__(182);
+	var parser = __webpack_require__(187);
+	var Manager = __webpack_require__(194);
+	var debug = __webpack_require__(184)('socket.io-client');
 
 	/**
 	 * Module exports.
 	 */
 
-	module.exports = hasBinary;
+	module.exports = exports = lookup;
 
 	/**
-	 * Checks for binary data.
-	 *
-	 * Right now only Buffer and ArrayBuffer are supported..
-	 *
-	 * @param {Object} anything
-	 * @api public
+	 * Managers cache.
 	 */
 
-	function hasBinary(data) {
-
-	  function _hasBinary(obj) {
-	    if (!obj) return false;
-
-	    if ( (global.Buffer && global.Buffer.isBuffer(obj)) ||
-	         (global.ArrayBuffer && obj instanceof ArrayBuffer) ||
-	         (global.Blob && obj instanceof Blob) ||
-	         (global.File && obj instanceof File)
-	        ) {
-	      return true;
-	    }
-
-	    if (isArray(obj)) {
-	      for (var i = 0; i < obj.length; i++) {
-	          if (_hasBinary(obj[i])) {
-	              return true;
-	          }
-	      }
-	    } else if (obj && 'object' == typeof obj) {
-	      if (obj.toJSON) {
-	        obj = obj.toJSON();
-	      }
-
-	      for (var key in obj) {
-	        if (Object.prototype.hasOwnProperty.call(obj, key) && _hasBinary(obj[key])) {
-	          return true;
-	        }
-	      }
-	    }
-
-	    return false;
-	  }
-
-	  return _hasBinary(data);
-	}
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 258 */
-/***/ function(module, exports) {
+	var cache = exports.managers = {};
 
 	/**
-	 * An abstraction for slicing an arraybuffer even when
-	 * ArrayBuffer.prototype.slice is not supported
+	 * Looks up an existing `Manager` for multiplexing.
+	 * If the user summons:
+	 *
+	 *   `io('http://localhost/a');`
+	 *   `io('http://localhost/b');`
+	 *
+	 * We reuse the existing instance based on same scheme/port/host,
+	 * and we initialize sockets for each namespace.
 	 *
 	 * @api public
 	 */
 
-	module.exports = function(arraybuffer, start, end) {
-	  var bytes = arraybuffer.byteLength;
-	  start = start || 0;
-	  end = end || bytes;
-
-	  if (arraybuffer.slice) { return arraybuffer.slice(start, end); }
-
-	  if (start < 0) { start += bytes; }
-	  if (end < 0) { end += bytes; }
-	  if (end > bytes) { end = bytes; }
-
-	  if (start >= bytes || start >= end || bytes === 0) {
-	    return new ArrayBuffer(0);
+	function lookup(uri, opts) {
+	  if (typeof uri == 'object') {
+	    opts = uri;
+	    uri = undefined;
 	  }
 
-	  var abv = new Uint8Array(arraybuffer);
-	  var result = new Uint8Array(end - start);
-	  for (var i = start, ii = 0; i < end; i++, ii++) {
-	    result[ii] = abv[i];
+	  opts = opts || {};
+
+	  var parsed = url(uri);
+	  var source = parsed.source;
+	  var id = parsed.id;
+	  var path = parsed.path;
+	  var sameNamespace = cache[id] && path in cache[id].nsps;
+	  var newConnection = opts.forceNew || opts['force new connection'] ||
+	                      false === opts.multiplex || sameNamespace;
+
+	  var io;
+
+	  if (newConnection) {
+	    debug('ignoring socket cache for %s', source);
+	    io = Manager(source, opts);
+	  } else {
+	    if (!cache[id]) {
+	      debug('new io instance for %s', source);
+	      cache[id] = Manager(source, opts);
+	    }
+	    io = cache[id];
 	  }
-	  return result.buffer;
-	};
 
-
-/***/ },
-/* 259 */
-/***/ function(module, exports) {
-
-	/*
-	 * base64-arraybuffer
-	 * https://github.com/niklasvh/base64-arraybuffer
-	 *
-	 * Copyright (c) 2012 Niklas von Hertzen
-	 * Licensed under the MIT license.
-	 */
-	(function(chars){
-	  "use strict";
-
-	  exports.encode = function(arraybuffer) {
-	    var bytes = new Uint8Array(arraybuffer),
-	    i, len = bytes.length, base64 = "";
-
-	    for (i = 0; i < len; i+=3) {
-	      base64 += chars[bytes[i] >> 2];
-	      base64 += chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
-	      base64 += chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)];
-	      base64 += chars[bytes[i + 2] & 63];
-	    }
-
-	    if ((len % 3) === 2) {
-	      base64 = base64.substring(0, base64.length - 1) + "=";
-	    } else if (len % 3 === 1) {
-	      base64 = base64.substring(0, base64.length - 2) + "==";
-	    }
-
-	    return base64;
-	  };
-
-	  exports.decode =  function(base64) {
-	    var bufferLength = base64.length * 0.75,
-	    len = base64.length, i, p = 0,
-	    encoded1, encoded2, encoded3, encoded4;
-
-	    if (base64[base64.length - 1] === "=") {
-	      bufferLength--;
-	      if (base64[base64.length - 2] === "=") {
-	        bufferLength--;
-	      }
-	    }
-
-	    var arraybuffer = new ArrayBuffer(bufferLength),
-	    bytes = new Uint8Array(arraybuffer);
-
-	    for (i = 0; i < len; i+=4) {
-	      encoded1 = chars.indexOf(base64[i]);
-	      encoded2 = chars.indexOf(base64[i+1]);
-	      encoded3 = chars.indexOf(base64[i+2]);
-	      encoded4 = chars.indexOf(base64[i+3]);
-
-	      bytes[p++] = (encoded1 << 2) | (encoded2 >> 4);
-	      bytes[p++] = ((encoded2 & 15) << 4) | (encoded3 >> 2);
-	      bytes[p++] = ((encoded3 & 3) << 6) | (encoded4 & 63);
-	    }
-
-	    return arraybuffer;
-	  };
-	})("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
-
-
-/***/ },
-/* 260 */
-/***/ function(module, exports) {
-
-	module.exports = after
-
-	function after(count, callback, err_cb) {
-	    var bail = false
-	    err_cb = err_cb || noop
-	    proxy.count = count
-
-	    return (count === 0) ? callback() : proxy
-
-	    function proxy(err, result) {
-	        if (proxy.count <= 0) {
-	            throw new Error('after called too many times')
-	        }
-	        --proxy.count
-
-	        // after first error, rest are passed to err_cb
-	        if (err) {
-	            bail = true
-	            callback(err)
-	            // future error callbacks will go to error handler
-	            callback = err_cb
-	        } else if (proxy.count === 0 && !bail) {
-	            callback(null, result)
-	        }
-	    }
+	  return io.socket(parsed.path);
 	}
 
-	function noop() {}
+	/**
+	 * Protocol version.
+	 *
+	 * @api public
+	 */
+
+	exports.protocol = parser.protocol;
+
+	/**
+	 * `connect`.
+	 *
+	 * @param {String} uri
+	 * @api public
+	 */
+
+	exports.connect = lookup;
+
+	/**
+	 * Expose constructors for standalone build.
+	 *
+	 * @api public
+	 */
+
+	exports.Manager = __webpack_require__(194);
+	exports.Socket = __webpack_require__(220);
 
 
 /***/ },
-/* 261 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! https://mths.be/utf8js v2.0.0 by @mathias */
-	;(function(root) {
-
-		// Detect free variables `exports`
-		var freeExports = typeof exports == 'object' && exports;
-
-		// Detect free variable `module`
-		var freeModule = typeof module == 'object' && module &&
-			module.exports == freeExports && module;
-
-		// Detect free variable `global`, from Node.js or Browserified code,
-		// and use it as `root`
-		var freeGlobal = typeof global == 'object' && global;
-		if (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal) {
-			root = freeGlobal;
-		}
-
-		/*--------------------------------------------------------------------------*/
-
-		var stringFromCharCode = String.fromCharCode;
-
-		// Taken from https://mths.be/punycode
-		function ucs2decode(string) {
-			var output = [];
-			var counter = 0;
-			var length = string.length;
-			var value;
-			var extra;
-			while (counter < length) {
-				value = string.charCodeAt(counter++);
-				if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
-					// high surrogate, and there is a next character
-					extra = string.charCodeAt(counter++);
-					if ((extra & 0xFC00) == 0xDC00) { // low surrogate
-						output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
-					} else {
-						// unmatched surrogate; only append this code unit, in case the next
-						// code unit is the high surrogate of a surrogate pair
-						output.push(value);
-						counter--;
-					}
-				} else {
-					output.push(value);
-				}
-			}
-			return output;
-		}
-
-		// Taken from https://mths.be/punycode
-		function ucs2encode(array) {
-			var length = array.length;
-			var index = -1;
-			var value;
-			var output = '';
-			while (++index < length) {
-				value = array[index];
-				if (value > 0xFFFF) {
-					value -= 0x10000;
-					output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
-					value = 0xDC00 | value & 0x3FF;
-				}
-				output += stringFromCharCode(value);
-			}
-			return output;
-		}
-
-		function checkScalarValue(codePoint) {
-			if (codePoint >= 0xD800 && codePoint <= 0xDFFF) {
-				throw Error(
-					'Lone surrogate U+' + codePoint.toString(16).toUpperCase() +
-					' is not a scalar value'
-				);
-			}
-		}
-		/*--------------------------------------------------------------------------*/
-
-		function createByte(codePoint, shift) {
-			return stringFromCharCode(((codePoint >> shift) & 0x3F) | 0x80);
-		}
-
-		function encodeCodePoint(codePoint) {
-			if ((codePoint & 0xFFFFFF80) == 0) { // 1-byte sequence
-				return stringFromCharCode(codePoint);
-			}
-			var symbol = '';
-			if ((codePoint & 0xFFFFF800) == 0) { // 2-byte sequence
-				symbol = stringFromCharCode(((codePoint >> 6) & 0x1F) | 0xC0);
-			}
-			else if ((codePoint & 0xFFFF0000) == 0) { // 3-byte sequence
-				checkScalarValue(codePoint);
-				symbol = stringFromCharCode(((codePoint >> 12) & 0x0F) | 0xE0);
-				symbol += createByte(codePoint, 6);
-			}
-			else if ((codePoint & 0xFFE00000) == 0) { // 4-byte sequence
-				symbol = stringFromCharCode(((codePoint >> 18) & 0x07) | 0xF0);
-				symbol += createByte(codePoint, 12);
-				symbol += createByte(codePoint, 6);
-			}
-			symbol += stringFromCharCode((codePoint & 0x3F) | 0x80);
-			return symbol;
-		}
-
-		function utf8encode(string) {
-			var codePoints = ucs2decode(string);
-			var length = codePoints.length;
-			var index = -1;
-			var codePoint;
-			var byteString = '';
-			while (++index < length) {
-				codePoint = codePoints[index];
-				byteString += encodeCodePoint(codePoint);
-			}
-			return byteString;
-		}
-
-		/*--------------------------------------------------------------------------*/
-
-		function readContinuationByte() {
-			if (byteIndex >= byteCount) {
-				throw Error('Invalid byte index');
-			}
-
-			var continuationByte = byteArray[byteIndex] & 0xFF;
-			byteIndex++;
-
-			if ((continuationByte & 0xC0) == 0x80) {
-				return continuationByte & 0x3F;
-			}
-
-			// If we end up here, it’s not a continuation byte
-			throw Error('Invalid continuation byte');
-		}
-
-		function decodeSymbol() {
-			var byte1;
-			var byte2;
-			var byte3;
-			var byte4;
-			var codePoint;
-
-			if (byteIndex > byteCount) {
-				throw Error('Invalid byte index');
-			}
-
-			if (byteIndex == byteCount) {
-				return false;
-			}
-
-			// Read first byte
-			byte1 = byteArray[byteIndex] & 0xFF;
-			byteIndex++;
-
-			// 1-byte sequence (no continuation bytes)
-			if ((byte1 & 0x80) == 0) {
-				return byte1;
-			}
-
-			// 2-byte sequence
-			if ((byte1 & 0xE0) == 0xC0) {
-				var byte2 = readContinuationByte();
-				codePoint = ((byte1 & 0x1F) << 6) | byte2;
-				if (codePoint >= 0x80) {
-					return codePoint;
-				} else {
-					throw Error('Invalid continuation byte');
-				}
-			}
-
-			// 3-byte sequence (may include unpaired surrogates)
-			if ((byte1 & 0xF0) == 0xE0) {
-				byte2 = readContinuationByte();
-				byte3 = readContinuationByte();
-				codePoint = ((byte1 & 0x0F) << 12) | (byte2 << 6) | byte3;
-				if (codePoint >= 0x0800) {
-					checkScalarValue(codePoint);
-					return codePoint;
-				} else {
-					throw Error('Invalid continuation byte');
-				}
-			}
-
-			// 4-byte sequence
-			if ((byte1 & 0xF8) == 0xF0) {
-				byte2 = readContinuationByte();
-				byte3 = readContinuationByte();
-				byte4 = readContinuationByte();
-				codePoint = ((byte1 & 0x0F) << 0x12) | (byte2 << 0x0C) |
-					(byte3 << 0x06) | byte4;
-				if (codePoint >= 0x010000 && codePoint <= 0x10FFFF) {
-					return codePoint;
-				}
-			}
-
-			throw Error('Invalid UTF-8 detected');
-		}
-
-		var byteArray;
-		var byteCount;
-		var byteIndex;
-		function utf8decode(byteString) {
-			byteArray = ucs2decode(byteString);
-			byteCount = byteArray.length;
-			byteIndex = 0;
-			var codePoints = [];
-			var tmp;
-			while ((tmp = decodeSymbol()) !== false) {
-				codePoints.push(tmp);
-			}
-			return ucs2encode(codePoints);
-		}
-
-		/*--------------------------------------------------------------------------*/
-
-		var utf8 = {
-			'version': '2.0.0',
-			'encode': utf8encode,
-			'decode': utf8decode
-		};
-
-		// Some AMD build optimizers, like r.js, check for specific condition patterns
-		// like the following:
-		if (
-			true
-		) {
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
-				return utf8;
-			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		}	else if (freeExports && !freeExports.nodeType) {
-			if (freeModule) { // in Node.js or RingoJS v0.8.0+
-				freeModule.exports = utf8;
-			} else { // in Narwhal or RingoJS v0.7.0-
-				var object = {};
-				var hasOwnProperty = object.hasOwnProperty;
-				for (var key in utf8) {
-					hasOwnProperty.call(utf8, key) && (freeExports[key] = utf8[key]);
-				}
-			}
-		} else { // in Rhino or a web browser
-			root.utf8 = utf8;
-		}
-
-	}(this));
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(179)(module), (function() { return this; }())))
-
-/***/ },
-/* 262 */
-/***/ function(module, exports) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * Create a blob builder even when vendor prefixes exist
+	/* WEBPACK VAR INJECTION */(function(global) {
+	/**
+	 * Module dependencies.
 	 */
 
-	var BlobBuilder = global.BlobBuilder
-	  || global.WebKitBlobBuilder
-	  || global.MSBlobBuilder
-	  || global.MozBlobBuilder;
+	var parseuri = __webpack_require__(183);
+	var debug = __webpack_require__(184)('socket.io-client:url');
 
 	/**
-	 * Check if Blob constructor is supported
+	 * Module exports.
 	 */
 
-	var blobSupported = (function() {
-	  try {
-	    var a = new Blob(['hi']);
-	    return a.size === 2;
-	  } catch(e) {
-	    return false;
-	  }
-	})();
+	module.exports = url;
 
 	/**
-	 * Check if Blob constructor supports ArrayBufferViews
-	 * Fails in Safari 6, so we need to map to ArrayBuffers there.
+	 * URL parser.
+	 *
+	 * @param {String} url
+	 * @param {Object} An object meant to mimic window.location.
+	 *                 Defaults to window.location.
+	 * @api public
 	 */
 
-	var blobSupportsArrayBufferView = blobSupported && (function() {
-	  try {
-	    var b = new Blob([new Uint8Array([1,2])]);
-	    return b.size === 2;
-	  } catch(e) {
-	    return false;
-	  }
-	})();
+	function url(uri, loc){
+	  var obj = uri;
 
-	/**
-	 * Check if BlobBuilder is supported
-	 */
+	  // default to window.location
+	  var loc = loc || global.location;
+	  if (null == uri) uri = loc.protocol + '//' + loc.host;
 
-	var blobBuilderSupported = BlobBuilder
-	  && BlobBuilder.prototype.append
-	  && BlobBuilder.prototype.getBlob;
-
-	/**
-	 * Helper function that maps ArrayBufferViews to ArrayBuffers
-	 * Used by BlobBuilder constructor and old browsers that didn't
-	 * support it in the Blob constructor.
-	 */
-
-	function mapArrayBufferViews(ary) {
-	  for (var i = 0; i < ary.length; i++) {
-	    var chunk = ary[i];
-	    if (chunk.buffer instanceof ArrayBuffer) {
-	      var buf = chunk.buffer;
-
-	      // if this is a subarray, make a copy so we only
-	      // include the subarray region from the underlying buffer
-	      if (chunk.byteLength !== buf.byteLength) {
-	        var copy = new Uint8Array(chunk.byteLength);
-	        copy.set(new Uint8Array(buf, chunk.byteOffset, chunk.byteLength));
-	        buf = copy.buffer;
+	  // relative path support
+	  if ('string' == typeof uri) {
+	    if ('/' == uri.charAt(0)) {
+	      if ('/' == uri.charAt(1)) {
+	        uri = loc.protocol + uri;
+	      } else {
+	        uri = loc.host + uri;
 	      }
+	    }
 
-	      ary[i] = buf;
+	    if (!/^(https?|wss?):\/\//.test(uri)) {
+	      debug('protocol-less url %s', uri);
+	      if ('undefined' != typeof loc) {
+	        uri = loc.protocol + '//' + uri;
+	      } else {
+	        uri = 'https://' + uri;
+	      }
+	    }
+
+	    // parse
+	    debug('parse %s', uri);
+	    obj = parseuri(uri);
+	  }
+
+	  // make sure we treat `localhost:80` and `localhost` equally
+	  if (!obj.port) {
+	    if (/^(http|ws)$/.test(obj.protocol)) {
+	      obj.port = '80';
+	    }
+	    else if (/^(http|ws)s$/.test(obj.protocol)) {
+	      obj.port = '443';
 	    }
 	  }
+
+	  obj.path = obj.path || '/';
+
+	  var ipv6 = obj.host.indexOf(':') !== -1;
+	  var host = ipv6 ? '[' + obj.host + ']' : obj.host;
+
+	  // define unique id
+	  obj.id = obj.protocol + '://' + host + ':' + obj.port;
+	  // define href
+	  obj.href = obj.protocol + '://' + host + (loc && loc.port == obj.port ? '' : (':' + obj.port));
+
+	  return obj;
 	}
-
-	function BlobBuilderConstructor(ary, options) {
-	  options = options || {};
-
-	  var bb = new BlobBuilder();
-	  mapArrayBufferViews(ary);
-
-	  for (var i = 0; i < ary.length; i++) {
-	    bb.append(ary[i]);
-	  }
-
-	  return (options.type) ? bb.getBlob(options.type) : bb.getBlob();
-	};
-
-	function BlobConstructor(ary, options) {
-	  mapArrayBufferViews(ary);
-	  return new Blob(ary, options || {});
-	};
-
-	module.exports = (function() {
-	  if (blobSupported) {
-	    return blobSupportsArrayBufferView ? global.Blob : BlobConstructor;
-	  } else if (blobBuilderSupported) {
-	    return BlobBuilderConstructor;
-	  } else {
-	    return undefined;
-	  }
-	})();
 
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 263 */
+/* 183 */
+/***/ function(module, exports) {
+
+	/**
+	 * Parses an URI
+	 *
+	 * @author Steven Levithan <stevenlevithan.com> (MIT license)
+	 * @api private
+	 */
+
+	var re = /^(?:(?![^:@]+:[^:@\/]*@)(http|https|ws|wss):\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?((?:[a-f0-9]{0,4}:){2,7}[a-f0-9]{0,4}|[^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/;
+
+	var parts = [
+	    'source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port', 'relative', 'path', 'directory', 'file', 'query', 'anchor'
+	];
+
+	module.exports = function parseuri(str) {
+	    var src = str,
+	        b = str.indexOf('['),
+	        e = str.indexOf(']');
+
+	    if (b != -1 && e != -1) {
+	        str = str.substring(0, b) + str.substring(b, e).replace(/:/g, ';') + str.substring(e, str.length);
+	    }
+
+	    var m = re.exec(str || ''),
+	        uri = {},
+	        i = 14;
+
+	    while (i--) {
+	        uri[parts[i]] = m[i] || '';
+	    }
+
+	    if (b != -1 && e != -1) {
+	        uri.source = src;
+	        uri.host = uri.host.substring(1, uri.host.length - 1).replace(/;/g, ':');
+	        uri.authority = uri.authority.replace('[', '').replace(']', '').replace(/;/g, ':');
+	        uri.ipv6uri = true;
+	    }
+
+	    return uri;
+	};
+
+
+/***/ },
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -37163,7 +35601,7 @@
 	 * Expose `debug()` as the module.
 	 */
 
-	exports = module.exports = __webpack_require__(264);
+	exports = module.exports = __webpack_require__(185);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -37327,7 +35765,7 @@
 
 
 /***/ },
-/* 264 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -37343,7 +35781,7 @@
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(265);
+	exports.humanize = __webpack_require__(186);
 
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -37530,7 +35968,7 @@
 
 
 /***/ },
-/* 265 */
+/* 186 */
 /***/ function(module, exports) {
 
 	/**
@@ -37661,52 +36099,7 @@
 
 
 /***/ },
-/* 266 */,
-/* 267 */,
-/* 268 */,
-/* 269 */,
-/* 270 */,
-/* 271 */,
-/* 272 */,
-/* 273 */,
-/* 274 */,
-/* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */,
-/* 279 */,
-/* 280 */,
-/* 281 */,
-/* 282 */,
-/* 283 */,
-/* 284 */,
-/* 285 */,
-/* 286 */,
-/* 287 */,
-/* 288 */,
-/* 289 */,
-/* 290 */,
-/* 291 */,
-/* 292 */,
-/* 293 */,
-/* 294 */,
-/* 295 */,
-/* 296 */,
-/* 297 */,
-/* 298 */,
-/* 299 */,
-/* 300 */,
-/* 301 */,
-/* 302 */,
-/* 303 */,
-/* 304 */,
-/* 305 */,
-/* 306 */,
-/* 307 */,
-/* 308 */,
-/* 309 */,
-/* 310 */,
-/* 311 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -37714,238 +36107,12 @@
 	 * Module dependencies.
 	 */
 
-	var url = __webpack_require__(312);
-	var parser = __webpack_require__(314);
-	var Manager = __webpack_require__(320);
-	var debug = __webpack_require__(263)('socket.io-client');
-
-	/**
-	 * Module exports.
-	 */
-
-	module.exports = exports = lookup;
-
-	/**
-	 * Managers cache.
-	 */
-
-	var cache = exports.managers = {};
-
-	/**
-	 * Looks up an existing `Manager` for multiplexing.
-	 * If the user summons:
-	 *
-	 *   `io('http://localhost/a');`
-	 *   `io('http://localhost/b');`
-	 *
-	 * We reuse the existing instance based on same scheme/port/host,
-	 * and we initialize sockets for each namespace.
-	 *
-	 * @api public
-	 */
-
-	function lookup(uri, opts) {
-	  if (typeof uri == 'object') {
-	    opts = uri;
-	    uri = undefined;
-	  }
-
-	  opts = opts || {};
-
-	  var parsed = url(uri);
-	  var source = parsed.source;
-	  var id = parsed.id;
-	  var path = parsed.path;
-	  var sameNamespace = cache[id] && path in cache[id].nsps;
-	  var newConnection = opts.forceNew || opts['force new connection'] ||
-	                      false === opts.multiplex || sameNamespace;
-
-	  var io;
-
-	  if (newConnection) {
-	    debug('ignoring socket cache for %s', source);
-	    io = Manager(source, opts);
-	  } else {
-	    if (!cache[id]) {
-	      debug('new io instance for %s', source);
-	      cache[id] = Manager(source, opts);
-	    }
-	    io = cache[id];
-	  }
-
-	  return io.socket(parsed.path);
-	}
-
-	/**
-	 * Protocol version.
-	 *
-	 * @api public
-	 */
-
-	exports.protocol = parser.protocol;
-
-	/**
-	 * `connect`.
-	 *
-	 * @param {String} uri
-	 * @api public
-	 */
-
-	exports.connect = lookup;
-
-	/**
-	 * Expose constructors for standalone build.
-	 *
-	 * @api public
-	 */
-
-	exports.Manager = __webpack_require__(320);
-	exports.Socket = __webpack_require__(338);
-
-
-/***/ },
-/* 312 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {
-	/**
-	 * Module dependencies.
-	 */
-
-	var parseuri = __webpack_require__(313);
-	var debug = __webpack_require__(263)('socket.io-client:url');
-
-	/**
-	 * Module exports.
-	 */
-
-	module.exports = url;
-
-	/**
-	 * URL parser.
-	 *
-	 * @param {String} url
-	 * @param {Object} An object meant to mimic window.location.
-	 *                 Defaults to window.location.
-	 * @api public
-	 */
-
-	function url(uri, loc){
-	  var obj = uri;
-
-	  // default to window.location
-	  var loc = loc || global.location;
-	  if (null == uri) uri = loc.protocol + '//' + loc.host;
-
-	  // relative path support
-	  if ('string' == typeof uri) {
-	    if ('/' == uri.charAt(0)) {
-	      if ('/' == uri.charAt(1)) {
-	        uri = loc.protocol + uri;
-	      } else {
-	        uri = loc.host + uri;
-	      }
-	    }
-
-	    if (!/^(https?|wss?):\/\//.test(uri)) {
-	      debug('protocol-less url %s', uri);
-	      if ('undefined' != typeof loc) {
-	        uri = loc.protocol + '//' + uri;
-	      } else {
-	        uri = 'https://' + uri;
-	      }
-	    }
-
-	    // parse
-	    debug('parse %s', uri);
-	    obj = parseuri(uri);
-	  }
-
-	  // make sure we treat `localhost:80` and `localhost` equally
-	  if (!obj.port) {
-	    if (/^(http|ws)$/.test(obj.protocol)) {
-	      obj.port = '80';
-	    }
-	    else if (/^(http|ws)s$/.test(obj.protocol)) {
-	      obj.port = '443';
-	    }
-	  }
-
-	  obj.path = obj.path || '/';
-
-	  var ipv6 = obj.host.indexOf(':') !== -1;
-	  var host = ipv6 ? '[' + obj.host + ']' : obj.host;
-
-	  // define unique id
-	  obj.id = obj.protocol + '://' + host + ':' + obj.port;
-	  // define href
-	  obj.href = obj.protocol + '://' + host + (loc && loc.port == obj.port ? '' : (':' + obj.port));
-
-	  return obj;
-	}
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 313 */
-/***/ function(module, exports) {
-
-	/**
-	 * Parses an URI
-	 *
-	 * @author Steven Levithan <stevenlevithan.com> (MIT license)
-	 * @api private
-	 */
-
-	var re = /^(?:(?![^:@]+:[^:@\/]*@)(http|https|ws|wss):\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?((?:[a-f0-9]{0,4}:){2,7}[a-f0-9]{0,4}|[^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/;
-
-	var parts = [
-	    'source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port', 'relative', 'path', 'directory', 'file', 'query', 'anchor'
-	];
-
-	module.exports = function parseuri(str) {
-	    var src = str,
-	        b = str.indexOf('['),
-	        e = str.indexOf(']');
-
-	    if (b != -1 && e != -1) {
-	        str = str.substring(0, b) + str.substring(b, e).replace(/:/g, ';') + str.substring(e, str.length);
-	    }
-
-	    var m = re.exec(str || ''),
-	        uri = {},
-	        i = 14;
-
-	    while (i--) {
-	        uri[parts[i]] = m[i] || '';
-	    }
-
-	    if (b != -1 && e != -1) {
-	        uri.source = src;
-	        uri.host = uri.host.substring(1, uri.host.length - 1).replace(/;/g, ':');
-	        uri.authority = uri.authority.replace('[', '').replace(']', '').replace(/;/g, ':');
-	        uri.ipv6uri = true;
-	    }
-
-	    return uri;
-	};
-
-
-/***/ },
-/* 314 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Module dependencies.
-	 */
-
-	var debug = __webpack_require__(263)('socket.io-parser');
-	var json = __webpack_require__(315);
-	var isArray = __webpack_require__(208);
-	var Emitter = __webpack_require__(317);
-	var binary = __webpack_require__(318);
-	var isBuf = __webpack_require__(319);
+	var debug = __webpack_require__(184)('socket.io-parser');
+	var json = __webpack_require__(188);
+	var isArray = __webpack_require__(190);
+	var Emitter = __webpack_require__(191);
+	var binary = __webpack_require__(192);
+	var isBuf = __webpack_require__(193);
 
 	/**
 	 * Protocol version.
@@ -38338,14 +36505,14 @@
 
 
 /***/ },
-/* 315 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! JSON v3.3.2 | http://bestiejs.github.io/json3 | Copyright 2012-2014, Kit Cambridge | http://kit.mit-license.org */
 	;(function () {
 	  // Detect the `define` function exposed by asynchronous module loaders. The
 	  // strict `define` check is necessary for compatibility with `r.js`.
-	  var isLoader = "function" === "function" && __webpack_require__(316);
+	  var isLoader = "function" === "function" && __webpack_require__(189);
 
 	  // A set of types used to distinguish objects from primitives.
 	  var objectTypes = {
@@ -39244,10 +37411,10 @@
 	  }
 	}).call(this);
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(179)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(180)(module), (function() { return this; }())))
 
 /***/ },
-/* 316 */
+/* 189 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
@@ -39255,7 +37422,16 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, {}))
 
 /***/ },
-/* 317 */
+/* 190 */
+/***/ function(module, exports) {
+
+	module.exports = Array.isArray || function (arr) {
+	  return Object.prototype.toString.call(arr) == '[object Array]';
+	};
+
+
+/***/ },
+/* 191 */
 /***/ function(module, exports) {
 
 	
@@ -39425,7 +37601,7 @@
 
 
 /***/ },
-/* 318 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/*global Blob,File*/
@@ -39434,8 +37610,8 @@
 	 * Module requirements
 	 */
 
-	var isArray = __webpack_require__(208);
-	var isBuf = __webpack_require__(319);
+	var isArray = __webpack_require__(190);
+	var isBuf = __webpack_require__(193);
 
 	/**
 	 * Replaces every Buffer | ArrayBuffer in packet with a numbered placeholder.
@@ -39573,7 +37749,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 319 */
+/* 193 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -39593,7 +37769,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 320 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -39601,15 +37777,15 @@
 	 * Module dependencies.
 	 */
 
-	var eio = __webpack_require__(321);
-	var Socket = __webpack_require__(338);
-	var Emitter = __webpack_require__(339);
-	var parser = __webpack_require__(314);
-	var on = __webpack_require__(341);
-	var bind = __webpack_require__(342);
-	var debug = __webpack_require__(263)('socket.io-client:manager');
-	var indexOf = __webpack_require__(336);
-	var Backoff = __webpack_require__(344);
+	var eio = __webpack_require__(195);
+	var Socket = __webpack_require__(220);
+	var Emitter = __webpack_require__(221);
+	var parser = __webpack_require__(187);
+	var on = __webpack_require__(223);
+	var bind = __webpack_require__(224);
+	var debug = __webpack_require__(184)('socket.io-client:manager');
+	var indexOf = __webpack_require__(218);
+	var Backoff = __webpack_require__(226);
 
 	/**
 	 * IE6+ hasOwnProperty
@@ -40156,19 +38332,19 @@
 
 
 /***/ },
-/* 321 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	module.exports =  __webpack_require__(322);
+	module.exports =  __webpack_require__(196);
 
 
 /***/ },
-/* 322 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	module.exports = __webpack_require__(323);
+	module.exports = __webpack_require__(197);
 
 	/**
 	 * Exports parser
@@ -40176,25 +38352,25 @@
 	 * @api public
 	 *
 	 */
-	module.exports.parser = __webpack_require__(255);
+	module.exports.parser = __webpack_require__(204);
 
 
 /***/ },
-/* 323 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
 	 * Module dependencies.
 	 */
 
-	var transports = __webpack_require__(324);
-	var Emitter = __webpack_require__(317);
-	var debug = __webpack_require__(263)('engine.io-client:socket');
-	var index = __webpack_require__(336);
-	var parser = __webpack_require__(255);
-	var parseuri = __webpack_require__(313);
-	var parsejson = __webpack_require__(337);
-	var parseqs = __webpack_require__(330);
+	var transports = __webpack_require__(198);
+	var Emitter = __webpack_require__(191);
+	var debug = __webpack_require__(184)('engine.io-client:socket');
+	var index = __webpack_require__(218);
+	var parser = __webpack_require__(204);
+	var parseuri = __webpack_require__(183);
+	var parsejson = __webpack_require__(219);
+	var parseqs = __webpack_require__(212);
 
 	/**
 	 * Module exports.
@@ -40318,9 +38494,9 @@
 	 */
 
 	Socket.Socket = Socket;
-	Socket.Transport = __webpack_require__(329);
-	Socket.transports = __webpack_require__(324);
-	Socket.parser = __webpack_require__(255);
+	Socket.Transport = __webpack_require__(203);
+	Socket.transports = __webpack_require__(198);
+	Socket.parser = __webpack_require__(204);
 
 	/**
 	 * Creates transport of the given type.
@@ -40915,17 +39091,17 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 324 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
 	 * Module dependencies
 	 */
 
-	var XMLHttpRequest = __webpack_require__(325);
-	var XHR = __webpack_require__(327);
-	var JSONP = __webpack_require__(333);
-	var websocket = __webpack_require__(334);
+	var XMLHttpRequest = __webpack_require__(199);
+	var XHR = __webpack_require__(201);
+	var JSONP = __webpack_require__(215);
+	var websocket = __webpack_require__(216);
 
 	/**
 	 * Export transports.
@@ -40975,11 +39151,11 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 325 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// browser shim for xmlhttprequest module
-	var hasCORS = __webpack_require__(326);
+	var hasCORS = __webpack_require__(200);
 
 	module.exports = function(opts) {
 	  var xdomain = opts.xdomain;
@@ -41017,7 +39193,7 @@
 
 
 /***/ },
-/* 326 */
+/* 200 */
 /***/ function(module, exports) {
 
 	
@@ -41040,18 +39216,18 @@
 
 
 /***/ },
-/* 327 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
 	 * Module requirements.
 	 */
 
-	var XMLHttpRequest = __webpack_require__(325);
-	var Polling = __webpack_require__(328);
-	var Emitter = __webpack_require__(317);
-	var inherit = __webpack_require__(331);
-	var debug = __webpack_require__(263)('engine.io-client:polling-xhr');
+	var XMLHttpRequest = __webpack_require__(199);
+	var Polling = __webpack_require__(202);
+	var Emitter = __webpack_require__(191);
+	var inherit = __webpack_require__(213);
+	var debug = __webpack_require__(184)('engine.io-client:polling-xhr');
 
 	/**
 	 * Module exports.
@@ -41459,19 +39635,19 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 328 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 
-	var Transport = __webpack_require__(329);
-	var parseqs = __webpack_require__(330);
-	var parser = __webpack_require__(255);
-	var inherit = __webpack_require__(331);
-	var yeast = __webpack_require__(332);
-	var debug = __webpack_require__(263)('engine.io-client:polling');
+	var Transport = __webpack_require__(203);
+	var parseqs = __webpack_require__(212);
+	var parser = __webpack_require__(204);
+	var inherit = __webpack_require__(213);
+	var yeast = __webpack_require__(214);
+	var debug = __webpack_require__(184)('engine.io-client:polling');
 
 	/**
 	 * Module exports.
@@ -41484,7 +39660,7 @@
 	 */
 
 	var hasXHR2 = (function() {
-	  var XMLHttpRequest = __webpack_require__(325);
+	  var XMLHttpRequest = __webpack_require__(199);
 	  var xhr = new XMLHttpRequest({ xdomain: false });
 	  return null != xhr.responseType;
 	})();
@@ -41712,15 +39888,15 @@
 
 
 /***/ },
-/* 329 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 
-	var parser = __webpack_require__(255);
-	var Emitter = __webpack_require__(317);
+	var parser = __webpack_require__(204);
+	var Emitter = __webpack_require__(191);
 
 	/**
 	 * Module exports.
@@ -41873,7 +40049,1184 @@
 
 
 /***/ },
-/* 330 */
+/* 204 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {/**
+	 * Module dependencies.
+	 */
+
+	var keys = __webpack_require__(205);
+	var hasBinary = __webpack_require__(206);
+	var sliceBuffer = __webpack_require__(207);
+	var base64encoder = __webpack_require__(208);
+	var after = __webpack_require__(209);
+	var utf8 = __webpack_require__(210);
+
+	/**
+	 * Check if we are running an android browser. That requires us to use
+	 * ArrayBuffer with polling transports...
+	 *
+	 * http://ghinda.net/jpeg-blob-ajax-android/
+	 */
+
+	var isAndroid = navigator.userAgent.match(/Android/i);
+
+	/**
+	 * Check if we are running in PhantomJS.
+	 * Uploading a Blob with PhantomJS does not work correctly, as reported here:
+	 * https://github.com/ariya/phantomjs/issues/11395
+	 * @type boolean
+	 */
+	var isPhantomJS = /PhantomJS/i.test(navigator.userAgent);
+
+	/**
+	 * When true, avoids using Blobs to encode payloads.
+	 * @type boolean
+	 */
+	var dontSendBlobs = isAndroid || isPhantomJS;
+
+	/**
+	 * Current protocol version.
+	 */
+
+	exports.protocol = 3;
+
+	/**
+	 * Packet types.
+	 */
+
+	var packets = exports.packets = {
+	    open:     0    // non-ws
+	  , close:    1    // non-ws
+	  , ping:     2
+	  , pong:     3
+	  , message:  4
+	  , upgrade:  5
+	  , noop:     6
+	};
+
+	var packetslist = keys(packets);
+
+	/**
+	 * Premade error packet.
+	 */
+
+	var err = { type: 'error', data: 'parser error' };
+
+	/**
+	 * Create a blob api even for blob builder when vendor prefixes exist
+	 */
+
+	var Blob = __webpack_require__(211);
+
+	/**
+	 * Encodes a packet.
+	 *
+	 *     <packet type id> [ <data> ]
+	 *
+	 * Example:
+	 *
+	 *     5hello world
+	 *     3
+	 *     4
+	 *
+	 * Binary is encoded in an identical principle
+	 *
+	 * @api private
+	 */
+
+	exports.encodePacket = function (packet, supportsBinary, utf8encode, callback) {
+	  if ('function' == typeof supportsBinary) {
+	    callback = supportsBinary;
+	    supportsBinary = false;
+	  }
+
+	  if ('function' == typeof utf8encode) {
+	    callback = utf8encode;
+	    utf8encode = null;
+	  }
+
+	  var data = (packet.data === undefined)
+	    ? undefined
+	    : packet.data.buffer || packet.data;
+
+	  if (global.ArrayBuffer && data instanceof ArrayBuffer) {
+	    return encodeArrayBuffer(packet, supportsBinary, callback);
+	  } else if (Blob && data instanceof global.Blob) {
+	    return encodeBlob(packet, supportsBinary, callback);
+	  }
+
+	  // might be an object with { base64: true, data: dataAsBase64String }
+	  if (data && data.base64) {
+	    return encodeBase64Object(packet, callback);
+	  }
+
+	  // Sending data as a utf-8 string
+	  var encoded = packets[packet.type];
+
+	  // data fragment is optional
+	  if (undefined !== packet.data) {
+	    encoded += utf8encode ? utf8.encode(String(packet.data)) : String(packet.data);
+	  }
+
+	  return callback('' + encoded);
+
+	};
+
+	function encodeBase64Object(packet, callback) {
+	  // packet data is an object { base64: true, data: dataAsBase64String }
+	  var message = 'b' + exports.packets[packet.type] + packet.data.data;
+	  return callback(message);
+	}
+
+	/**
+	 * Encode packet helpers for binary types
+	 */
+
+	function encodeArrayBuffer(packet, supportsBinary, callback) {
+	  if (!supportsBinary) {
+	    return exports.encodeBase64Packet(packet, callback);
+	  }
+
+	  var data = packet.data;
+	  var contentArray = new Uint8Array(data);
+	  var resultBuffer = new Uint8Array(1 + data.byteLength);
+
+	  resultBuffer[0] = packets[packet.type];
+	  for (var i = 0; i < contentArray.length; i++) {
+	    resultBuffer[i+1] = contentArray[i];
+	  }
+
+	  return callback(resultBuffer.buffer);
+	}
+
+	function encodeBlobAsArrayBuffer(packet, supportsBinary, callback) {
+	  if (!supportsBinary) {
+	    return exports.encodeBase64Packet(packet, callback);
+	  }
+
+	  var fr = new FileReader();
+	  fr.onload = function() {
+	    packet.data = fr.result;
+	    exports.encodePacket(packet, supportsBinary, true, callback);
+	  };
+	  return fr.readAsArrayBuffer(packet.data);
+	}
+
+	function encodeBlob(packet, supportsBinary, callback) {
+	  if (!supportsBinary) {
+	    return exports.encodeBase64Packet(packet, callback);
+	  }
+
+	  if (dontSendBlobs) {
+	    return encodeBlobAsArrayBuffer(packet, supportsBinary, callback);
+	  }
+
+	  var length = new Uint8Array(1);
+	  length[0] = packets[packet.type];
+	  var blob = new Blob([length.buffer, packet.data]);
+
+	  return callback(blob);
+	}
+
+	/**
+	 * Encodes a packet with binary data in a base64 string
+	 *
+	 * @param {Object} packet, has `type` and `data`
+	 * @return {String} base64 encoded message
+	 */
+
+	exports.encodeBase64Packet = function(packet, callback) {
+	  var message = 'b' + exports.packets[packet.type];
+	  if (Blob && packet.data instanceof global.Blob) {
+	    var fr = new FileReader();
+	    fr.onload = function() {
+	      var b64 = fr.result.split(',')[1];
+	      callback(message + b64);
+	    };
+	    return fr.readAsDataURL(packet.data);
+	  }
+
+	  var b64data;
+	  try {
+	    b64data = String.fromCharCode.apply(null, new Uint8Array(packet.data));
+	  } catch (e) {
+	    // iPhone Safari doesn't let you apply with typed arrays
+	    var typed = new Uint8Array(packet.data);
+	    var basic = new Array(typed.length);
+	    for (var i = 0; i < typed.length; i++) {
+	      basic[i] = typed[i];
+	    }
+	    b64data = String.fromCharCode.apply(null, basic);
+	  }
+	  message += global.btoa(b64data);
+	  return callback(message);
+	};
+
+	/**
+	 * Decodes a packet. Changes format to Blob if requested.
+	 *
+	 * @return {Object} with `type` and `data` (if any)
+	 * @api private
+	 */
+
+	exports.decodePacket = function (data, binaryType, utf8decode) {
+	  // String data
+	  if (typeof data == 'string' || data === undefined) {
+	    if (data.charAt(0) == 'b') {
+	      return exports.decodeBase64Packet(data.substr(1), binaryType);
+	    }
+
+	    if (utf8decode) {
+	      try {
+	        data = utf8.decode(data);
+	      } catch (e) {
+	        return err;
+	      }
+	    }
+	    var type = data.charAt(0);
+
+	    if (Number(type) != type || !packetslist[type]) {
+	      return err;
+	    }
+
+	    if (data.length > 1) {
+	      return { type: packetslist[type], data: data.substring(1) };
+	    } else {
+	      return { type: packetslist[type] };
+	    }
+	  }
+
+	  var asArray = new Uint8Array(data);
+	  var type = asArray[0];
+	  var rest = sliceBuffer(data, 1);
+	  if (Blob && binaryType === 'blob') {
+	    rest = new Blob([rest]);
+	  }
+	  return { type: packetslist[type], data: rest };
+	};
+
+	/**
+	 * Decodes a packet encoded in a base64 string
+	 *
+	 * @param {String} base64 encoded message
+	 * @return {Object} with `type` and `data` (if any)
+	 */
+
+	exports.decodeBase64Packet = function(msg, binaryType) {
+	  var type = packetslist[msg.charAt(0)];
+	  if (!global.ArrayBuffer) {
+	    return { type: type, data: { base64: true, data: msg.substr(1) } };
+	  }
+
+	  var data = base64encoder.decode(msg.substr(1));
+
+	  if (binaryType === 'blob' && Blob) {
+	    data = new Blob([data]);
+	  }
+
+	  return { type: type, data: data };
+	};
+
+	/**
+	 * Encodes multiple messages (payload).
+	 *
+	 *     <length>:data
+	 *
+	 * Example:
+	 *
+	 *     11:hello world2:hi
+	 *
+	 * If any contents are binary, they will be encoded as base64 strings. Base64
+	 * encoded strings are marked with a b before the length specifier
+	 *
+	 * @param {Array} packets
+	 * @api private
+	 */
+
+	exports.encodePayload = function (packets, supportsBinary, callback) {
+	  if (typeof supportsBinary == 'function') {
+	    callback = supportsBinary;
+	    supportsBinary = null;
+	  }
+
+	  var isBinary = hasBinary(packets);
+
+	  if (supportsBinary && isBinary) {
+	    if (Blob && !dontSendBlobs) {
+	      return exports.encodePayloadAsBlob(packets, callback);
+	    }
+
+	    return exports.encodePayloadAsArrayBuffer(packets, callback);
+	  }
+
+	  if (!packets.length) {
+	    return callback('0:');
+	  }
+
+	  function setLengthHeader(message) {
+	    return message.length + ':' + message;
+	  }
+
+	  function encodeOne(packet, doneCallback) {
+	    exports.encodePacket(packet, !isBinary ? false : supportsBinary, true, function(message) {
+	      doneCallback(null, setLengthHeader(message));
+	    });
+	  }
+
+	  map(packets, encodeOne, function(err, results) {
+	    return callback(results.join(''));
+	  });
+	};
+
+	/**
+	 * Async array map using after
+	 */
+
+	function map(ary, each, done) {
+	  var result = new Array(ary.length);
+	  var next = after(ary.length, done);
+
+	  var eachWithIndex = function(i, el, cb) {
+	    each(el, function(error, msg) {
+	      result[i] = msg;
+	      cb(error, result);
+	    });
+	  };
+
+	  for (var i = 0; i < ary.length; i++) {
+	    eachWithIndex(i, ary[i], next);
+	  }
+	}
+
+	/*
+	 * Decodes data when a payload is maybe expected. Possible binary contents are
+	 * decoded from their base64 representation
+	 *
+	 * @param {String} data, callback method
+	 * @api public
+	 */
+
+	exports.decodePayload = function (data, binaryType, callback) {
+	  if (typeof data != 'string') {
+	    return exports.decodePayloadAsBinary(data, binaryType, callback);
+	  }
+
+	  if (typeof binaryType === 'function') {
+	    callback = binaryType;
+	    binaryType = null;
+	  }
+
+	  var packet;
+	  if (data == '') {
+	    // parser error - ignoring payload
+	    return callback(err, 0, 1);
+	  }
+
+	  var length = ''
+	    , n, msg;
+
+	  for (var i = 0, l = data.length; i < l; i++) {
+	    var chr = data.charAt(i);
+
+	    if (':' != chr) {
+	      length += chr;
+	    } else {
+	      if ('' == length || (length != (n = Number(length)))) {
+	        // parser error - ignoring payload
+	        return callback(err, 0, 1);
+	      }
+
+	      msg = data.substr(i + 1, n);
+
+	      if (length != msg.length) {
+	        // parser error - ignoring payload
+	        return callback(err, 0, 1);
+	      }
+
+	      if (msg.length) {
+	        packet = exports.decodePacket(msg, binaryType, true);
+
+	        if (err.type == packet.type && err.data == packet.data) {
+	          // parser error in individual packet - ignoring payload
+	          return callback(err, 0, 1);
+	        }
+
+	        var ret = callback(packet, i + n, l);
+	        if (false === ret) return;
+	      }
+
+	      // advance cursor
+	      i += n;
+	      length = '';
+	    }
+	  }
+
+	  if (length != '') {
+	    // parser error - ignoring payload
+	    return callback(err, 0, 1);
+	  }
+
+	};
+
+	/**
+	 * Encodes multiple messages (payload) as binary.
+	 *
+	 * <1 = binary, 0 = string><number from 0-9><number from 0-9>[...]<number
+	 * 255><data>
+	 *
+	 * Example:
+	 * 1 3 255 1 2 3, if the binary contents are interpreted as 8 bit integers
+	 *
+	 * @param {Array} packets
+	 * @return {ArrayBuffer} encoded payload
+	 * @api private
+	 */
+
+	exports.encodePayloadAsArrayBuffer = function(packets, callback) {
+	  if (!packets.length) {
+	    return callback(new ArrayBuffer(0));
+	  }
+
+	  function encodeOne(packet, doneCallback) {
+	    exports.encodePacket(packet, true, true, function(data) {
+	      return doneCallback(null, data);
+	    });
+	  }
+
+	  map(packets, encodeOne, function(err, encodedPackets) {
+	    var totalLength = encodedPackets.reduce(function(acc, p) {
+	      var len;
+	      if (typeof p === 'string'){
+	        len = p.length;
+	      } else {
+	        len = p.byteLength;
+	      }
+	      return acc + len.toString().length + len + 2; // string/binary identifier + separator = 2
+	    }, 0);
+
+	    var resultArray = new Uint8Array(totalLength);
+
+	    var bufferIndex = 0;
+	    encodedPackets.forEach(function(p) {
+	      var isString = typeof p === 'string';
+	      var ab = p;
+	      if (isString) {
+	        var view = new Uint8Array(p.length);
+	        for (var i = 0; i < p.length; i++) {
+	          view[i] = p.charCodeAt(i);
+	        }
+	        ab = view.buffer;
+	      }
+
+	      if (isString) { // not true binary
+	        resultArray[bufferIndex++] = 0;
+	      } else { // true binary
+	        resultArray[bufferIndex++] = 1;
+	      }
+
+	      var lenStr = ab.byteLength.toString();
+	      for (var i = 0; i < lenStr.length; i++) {
+	        resultArray[bufferIndex++] = parseInt(lenStr[i]);
+	      }
+	      resultArray[bufferIndex++] = 255;
+
+	      var view = new Uint8Array(ab);
+	      for (var i = 0; i < view.length; i++) {
+	        resultArray[bufferIndex++] = view[i];
+	      }
+	    });
+
+	    return callback(resultArray.buffer);
+	  });
+	};
+
+	/**
+	 * Encode as Blob
+	 */
+
+	exports.encodePayloadAsBlob = function(packets, callback) {
+	  function encodeOne(packet, doneCallback) {
+	    exports.encodePacket(packet, true, true, function(encoded) {
+	      var binaryIdentifier = new Uint8Array(1);
+	      binaryIdentifier[0] = 1;
+	      if (typeof encoded === 'string') {
+	        var view = new Uint8Array(encoded.length);
+	        for (var i = 0; i < encoded.length; i++) {
+	          view[i] = encoded.charCodeAt(i);
+	        }
+	        encoded = view.buffer;
+	        binaryIdentifier[0] = 0;
+	      }
+
+	      var len = (encoded instanceof ArrayBuffer)
+	        ? encoded.byteLength
+	        : encoded.size;
+
+	      var lenStr = len.toString();
+	      var lengthAry = new Uint8Array(lenStr.length + 1);
+	      for (var i = 0; i < lenStr.length; i++) {
+	        lengthAry[i] = parseInt(lenStr[i]);
+	      }
+	      lengthAry[lenStr.length] = 255;
+
+	      if (Blob) {
+	        var blob = new Blob([binaryIdentifier.buffer, lengthAry.buffer, encoded]);
+	        doneCallback(null, blob);
+	      }
+	    });
+	  }
+
+	  map(packets, encodeOne, function(err, results) {
+	    return callback(new Blob(results));
+	  });
+	};
+
+	/*
+	 * Decodes data when a payload is maybe expected. Strings are decoded by
+	 * interpreting each byte as a key code for entries marked to start with 0. See
+	 * description of encodePayloadAsBinary
+	 *
+	 * @param {ArrayBuffer} data, callback method
+	 * @api public
+	 */
+
+	exports.decodePayloadAsBinary = function (data, binaryType, callback) {
+	  if (typeof binaryType === 'function') {
+	    callback = binaryType;
+	    binaryType = null;
+	  }
+
+	  var bufferTail = data;
+	  var buffers = [];
+
+	  var numberTooLong = false;
+	  while (bufferTail.byteLength > 0) {
+	    var tailArray = new Uint8Array(bufferTail);
+	    var isString = tailArray[0] === 0;
+	    var msgLength = '';
+
+	    for (var i = 1; ; i++) {
+	      if (tailArray[i] == 255) break;
+
+	      if (msgLength.length > 310) {
+	        numberTooLong = true;
+	        break;
+	      }
+
+	      msgLength += tailArray[i];
+	    }
+
+	    if(numberTooLong) return callback(err, 0, 1);
+
+	    bufferTail = sliceBuffer(bufferTail, 2 + msgLength.length);
+	    msgLength = parseInt(msgLength);
+
+	    var msg = sliceBuffer(bufferTail, 0, msgLength);
+	    if (isString) {
+	      try {
+	        msg = String.fromCharCode.apply(null, new Uint8Array(msg));
+	      } catch (e) {
+	        // iPhone Safari doesn't let you apply to typed arrays
+	        var typed = new Uint8Array(msg);
+	        msg = '';
+	        for (var i = 0; i < typed.length; i++) {
+	          msg += String.fromCharCode(typed[i]);
+	        }
+	      }
+	    }
+
+	    buffers.push(msg);
+	    bufferTail = sliceBuffer(bufferTail, msgLength);
+	  }
+
+	  var total = buffers.length;
+	  buffers.forEach(function(buffer, i) {
+	    callback(exports.decodePacket(buffer, binaryType, true), i, total);
+	  });
+	};
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 205 */
+/***/ function(module, exports) {
+
+	
+	/**
+	 * Gets the keys for an object.
+	 *
+	 * @return {Array} keys
+	 * @api private
+	 */
+
+	module.exports = Object.keys || function keys (obj){
+	  var arr = [];
+	  var has = Object.prototype.hasOwnProperty;
+
+	  for (var i in obj) {
+	    if (has.call(obj, i)) {
+	      arr.push(i);
+	    }
+	  }
+	  return arr;
+	};
+
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {
+	/*
+	 * Module requirements.
+	 */
+
+	var isArray = __webpack_require__(190);
+
+	/**
+	 * Module exports.
+	 */
+
+	module.exports = hasBinary;
+
+	/**
+	 * Checks for binary data.
+	 *
+	 * Right now only Buffer and ArrayBuffer are supported..
+	 *
+	 * @param {Object} anything
+	 * @api public
+	 */
+
+	function hasBinary(data) {
+
+	  function _hasBinary(obj) {
+	    if (!obj) return false;
+
+	    if ( (global.Buffer && global.Buffer.isBuffer(obj)) ||
+	         (global.ArrayBuffer && obj instanceof ArrayBuffer) ||
+	         (global.Blob && obj instanceof Blob) ||
+	         (global.File && obj instanceof File)
+	        ) {
+	      return true;
+	    }
+
+	    if (isArray(obj)) {
+	      for (var i = 0; i < obj.length; i++) {
+	          if (_hasBinary(obj[i])) {
+	              return true;
+	          }
+	      }
+	    } else if (obj && 'object' == typeof obj) {
+	      if (obj.toJSON) {
+	        obj = obj.toJSON();
+	      }
+
+	      for (var key in obj) {
+	        if (Object.prototype.hasOwnProperty.call(obj, key) && _hasBinary(obj[key])) {
+	          return true;
+	        }
+	      }
+	    }
+
+	    return false;
+	  }
+
+	  return _hasBinary(data);
+	}
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 207 */
+/***/ function(module, exports) {
+
+	/**
+	 * An abstraction for slicing an arraybuffer even when
+	 * ArrayBuffer.prototype.slice is not supported
+	 *
+	 * @api public
+	 */
+
+	module.exports = function(arraybuffer, start, end) {
+	  var bytes = arraybuffer.byteLength;
+	  start = start || 0;
+	  end = end || bytes;
+
+	  if (arraybuffer.slice) { return arraybuffer.slice(start, end); }
+
+	  if (start < 0) { start += bytes; }
+	  if (end < 0) { end += bytes; }
+	  if (end > bytes) { end = bytes; }
+
+	  if (start >= bytes || start >= end || bytes === 0) {
+	    return new ArrayBuffer(0);
+	  }
+
+	  var abv = new Uint8Array(arraybuffer);
+	  var result = new Uint8Array(end - start);
+	  for (var i = start, ii = 0; i < end; i++, ii++) {
+	    result[ii] = abv[i];
+	  }
+	  return result.buffer;
+	};
+
+
+/***/ },
+/* 208 */
+/***/ function(module, exports) {
+
+	/*
+	 * base64-arraybuffer
+	 * https://github.com/niklasvh/base64-arraybuffer
+	 *
+	 * Copyright (c) 2012 Niklas von Hertzen
+	 * Licensed under the MIT license.
+	 */
+	(function(chars){
+	  "use strict";
+
+	  exports.encode = function(arraybuffer) {
+	    var bytes = new Uint8Array(arraybuffer),
+	    i, len = bytes.length, base64 = "";
+
+	    for (i = 0; i < len; i+=3) {
+	      base64 += chars[bytes[i] >> 2];
+	      base64 += chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
+	      base64 += chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)];
+	      base64 += chars[bytes[i + 2] & 63];
+	    }
+
+	    if ((len % 3) === 2) {
+	      base64 = base64.substring(0, base64.length - 1) + "=";
+	    } else if (len % 3 === 1) {
+	      base64 = base64.substring(0, base64.length - 2) + "==";
+	    }
+
+	    return base64;
+	  };
+
+	  exports.decode =  function(base64) {
+	    var bufferLength = base64.length * 0.75,
+	    len = base64.length, i, p = 0,
+	    encoded1, encoded2, encoded3, encoded4;
+
+	    if (base64[base64.length - 1] === "=") {
+	      bufferLength--;
+	      if (base64[base64.length - 2] === "=") {
+	        bufferLength--;
+	      }
+	    }
+
+	    var arraybuffer = new ArrayBuffer(bufferLength),
+	    bytes = new Uint8Array(arraybuffer);
+
+	    for (i = 0; i < len; i+=4) {
+	      encoded1 = chars.indexOf(base64[i]);
+	      encoded2 = chars.indexOf(base64[i+1]);
+	      encoded3 = chars.indexOf(base64[i+2]);
+	      encoded4 = chars.indexOf(base64[i+3]);
+
+	      bytes[p++] = (encoded1 << 2) | (encoded2 >> 4);
+	      bytes[p++] = ((encoded2 & 15) << 4) | (encoded3 >> 2);
+	      bytes[p++] = ((encoded3 & 3) << 6) | (encoded4 & 63);
+	    }
+
+	    return arraybuffer;
+	  };
+	})("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
+
+
+/***/ },
+/* 209 */
+/***/ function(module, exports) {
+
+	module.exports = after
+
+	function after(count, callback, err_cb) {
+	    var bail = false
+	    err_cb = err_cb || noop
+	    proxy.count = count
+
+	    return (count === 0) ? callback() : proxy
+
+	    function proxy(err, result) {
+	        if (proxy.count <= 0) {
+	            throw new Error('after called too many times')
+	        }
+	        --proxy.count
+
+	        // after first error, rest are passed to err_cb
+	        if (err) {
+	            bail = true
+	            callback(err)
+	            // future error callbacks will go to error handler
+	            callback = err_cb
+	        } else if (proxy.count === 0 && !bail) {
+	            callback(null, result)
+	        }
+	    }
+	}
+
+	function noop() {}
+
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! https://mths.be/utf8js v2.0.0 by @mathias */
+	;(function(root) {
+
+		// Detect free variables `exports`
+		var freeExports = typeof exports == 'object' && exports;
+
+		// Detect free variable `module`
+		var freeModule = typeof module == 'object' && module &&
+			module.exports == freeExports && module;
+
+		// Detect free variable `global`, from Node.js or Browserified code,
+		// and use it as `root`
+		var freeGlobal = typeof global == 'object' && global;
+		if (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal) {
+			root = freeGlobal;
+		}
+
+		/*--------------------------------------------------------------------------*/
+
+		var stringFromCharCode = String.fromCharCode;
+
+		// Taken from https://mths.be/punycode
+		function ucs2decode(string) {
+			var output = [];
+			var counter = 0;
+			var length = string.length;
+			var value;
+			var extra;
+			while (counter < length) {
+				value = string.charCodeAt(counter++);
+				if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
+					// high surrogate, and there is a next character
+					extra = string.charCodeAt(counter++);
+					if ((extra & 0xFC00) == 0xDC00) { // low surrogate
+						output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
+					} else {
+						// unmatched surrogate; only append this code unit, in case the next
+						// code unit is the high surrogate of a surrogate pair
+						output.push(value);
+						counter--;
+					}
+				} else {
+					output.push(value);
+				}
+			}
+			return output;
+		}
+
+		// Taken from https://mths.be/punycode
+		function ucs2encode(array) {
+			var length = array.length;
+			var index = -1;
+			var value;
+			var output = '';
+			while (++index < length) {
+				value = array[index];
+				if (value > 0xFFFF) {
+					value -= 0x10000;
+					output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
+					value = 0xDC00 | value & 0x3FF;
+				}
+				output += stringFromCharCode(value);
+			}
+			return output;
+		}
+
+		function checkScalarValue(codePoint) {
+			if (codePoint >= 0xD800 && codePoint <= 0xDFFF) {
+				throw Error(
+					'Lone surrogate U+' + codePoint.toString(16).toUpperCase() +
+					' is not a scalar value'
+				);
+			}
+		}
+		/*--------------------------------------------------------------------------*/
+
+		function createByte(codePoint, shift) {
+			return stringFromCharCode(((codePoint >> shift) & 0x3F) | 0x80);
+		}
+
+		function encodeCodePoint(codePoint) {
+			if ((codePoint & 0xFFFFFF80) == 0) { // 1-byte sequence
+				return stringFromCharCode(codePoint);
+			}
+			var symbol = '';
+			if ((codePoint & 0xFFFFF800) == 0) { // 2-byte sequence
+				symbol = stringFromCharCode(((codePoint >> 6) & 0x1F) | 0xC0);
+			}
+			else if ((codePoint & 0xFFFF0000) == 0) { // 3-byte sequence
+				checkScalarValue(codePoint);
+				symbol = stringFromCharCode(((codePoint >> 12) & 0x0F) | 0xE0);
+				symbol += createByte(codePoint, 6);
+			}
+			else if ((codePoint & 0xFFE00000) == 0) { // 4-byte sequence
+				symbol = stringFromCharCode(((codePoint >> 18) & 0x07) | 0xF0);
+				symbol += createByte(codePoint, 12);
+				symbol += createByte(codePoint, 6);
+			}
+			symbol += stringFromCharCode((codePoint & 0x3F) | 0x80);
+			return symbol;
+		}
+
+		function utf8encode(string) {
+			var codePoints = ucs2decode(string);
+			var length = codePoints.length;
+			var index = -1;
+			var codePoint;
+			var byteString = '';
+			while (++index < length) {
+				codePoint = codePoints[index];
+				byteString += encodeCodePoint(codePoint);
+			}
+			return byteString;
+		}
+
+		/*--------------------------------------------------------------------------*/
+
+		function readContinuationByte() {
+			if (byteIndex >= byteCount) {
+				throw Error('Invalid byte index');
+			}
+
+			var continuationByte = byteArray[byteIndex] & 0xFF;
+			byteIndex++;
+
+			if ((continuationByte & 0xC0) == 0x80) {
+				return continuationByte & 0x3F;
+			}
+
+			// If we end up here, it’s not a continuation byte
+			throw Error('Invalid continuation byte');
+		}
+
+		function decodeSymbol() {
+			var byte1;
+			var byte2;
+			var byte3;
+			var byte4;
+			var codePoint;
+
+			if (byteIndex > byteCount) {
+				throw Error('Invalid byte index');
+			}
+
+			if (byteIndex == byteCount) {
+				return false;
+			}
+
+			// Read first byte
+			byte1 = byteArray[byteIndex] & 0xFF;
+			byteIndex++;
+
+			// 1-byte sequence (no continuation bytes)
+			if ((byte1 & 0x80) == 0) {
+				return byte1;
+			}
+
+			// 2-byte sequence
+			if ((byte1 & 0xE0) == 0xC0) {
+				var byte2 = readContinuationByte();
+				codePoint = ((byte1 & 0x1F) << 6) | byte2;
+				if (codePoint >= 0x80) {
+					return codePoint;
+				} else {
+					throw Error('Invalid continuation byte');
+				}
+			}
+
+			// 3-byte sequence (may include unpaired surrogates)
+			if ((byte1 & 0xF0) == 0xE0) {
+				byte2 = readContinuationByte();
+				byte3 = readContinuationByte();
+				codePoint = ((byte1 & 0x0F) << 12) | (byte2 << 6) | byte3;
+				if (codePoint >= 0x0800) {
+					checkScalarValue(codePoint);
+					return codePoint;
+				} else {
+					throw Error('Invalid continuation byte');
+				}
+			}
+
+			// 4-byte sequence
+			if ((byte1 & 0xF8) == 0xF0) {
+				byte2 = readContinuationByte();
+				byte3 = readContinuationByte();
+				byte4 = readContinuationByte();
+				codePoint = ((byte1 & 0x0F) << 0x12) | (byte2 << 0x0C) |
+					(byte3 << 0x06) | byte4;
+				if (codePoint >= 0x010000 && codePoint <= 0x10FFFF) {
+					return codePoint;
+				}
+			}
+
+			throw Error('Invalid UTF-8 detected');
+		}
+
+		var byteArray;
+		var byteCount;
+		var byteIndex;
+		function utf8decode(byteString) {
+			byteArray = ucs2decode(byteString);
+			byteCount = byteArray.length;
+			byteIndex = 0;
+			var codePoints = [];
+			var tmp;
+			while ((tmp = decodeSymbol()) !== false) {
+				codePoints.push(tmp);
+			}
+			return ucs2encode(codePoints);
+		}
+
+		/*--------------------------------------------------------------------------*/
+
+		var utf8 = {
+			'version': '2.0.0',
+			'encode': utf8encode,
+			'decode': utf8decode
+		};
+
+		// Some AMD build optimizers, like r.js, check for specific condition patterns
+		// like the following:
+		if (
+			true
+		) {
+			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+				return utf8;
+			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		}	else if (freeExports && !freeExports.nodeType) {
+			if (freeModule) { // in Node.js or RingoJS v0.8.0+
+				freeModule.exports = utf8;
+			} else { // in Narwhal or RingoJS v0.7.0-
+				var object = {};
+				var hasOwnProperty = object.hasOwnProperty;
+				for (var key in utf8) {
+					hasOwnProperty.call(utf8, key) && (freeExports[key] = utf8[key]);
+				}
+			}
+		} else { // in Rhino or a web browser
+			root.utf8 = utf8;
+		}
+
+	}(this));
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(180)(module), (function() { return this; }())))
+
+/***/ },
+/* 211 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {/**
+	 * Create a blob builder even when vendor prefixes exist
+	 */
+
+	var BlobBuilder = global.BlobBuilder
+	  || global.WebKitBlobBuilder
+	  || global.MSBlobBuilder
+	  || global.MozBlobBuilder;
+
+	/**
+	 * Check if Blob constructor is supported
+	 */
+
+	var blobSupported = (function() {
+	  try {
+	    var a = new Blob(['hi']);
+	    return a.size === 2;
+	  } catch(e) {
+	    return false;
+	  }
+	})();
+
+	/**
+	 * Check if Blob constructor supports ArrayBufferViews
+	 * Fails in Safari 6, so we need to map to ArrayBuffers there.
+	 */
+
+	var blobSupportsArrayBufferView = blobSupported && (function() {
+	  try {
+	    var b = new Blob([new Uint8Array([1,2])]);
+	    return b.size === 2;
+	  } catch(e) {
+	    return false;
+	  }
+	})();
+
+	/**
+	 * Check if BlobBuilder is supported
+	 */
+
+	var blobBuilderSupported = BlobBuilder
+	  && BlobBuilder.prototype.append
+	  && BlobBuilder.prototype.getBlob;
+
+	/**
+	 * Helper function that maps ArrayBufferViews to ArrayBuffers
+	 * Used by BlobBuilder constructor and old browsers that didn't
+	 * support it in the Blob constructor.
+	 */
+
+	function mapArrayBufferViews(ary) {
+	  for (var i = 0; i < ary.length; i++) {
+	    var chunk = ary[i];
+	    if (chunk.buffer instanceof ArrayBuffer) {
+	      var buf = chunk.buffer;
+
+	      // if this is a subarray, make a copy so we only
+	      // include the subarray region from the underlying buffer
+	      if (chunk.byteLength !== buf.byteLength) {
+	        var copy = new Uint8Array(chunk.byteLength);
+	        copy.set(new Uint8Array(buf, chunk.byteOffset, chunk.byteLength));
+	        buf = copy.buffer;
+	      }
+
+	      ary[i] = buf;
+	    }
+	  }
+	}
+
+	function BlobBuilderConstructor(ary, options) {
+	  options = options || {};
+
+	  var bb = new BlobBuilder();
+	  mapArrayBufferViews(ary);
+
+	  for (var i = 0; i < ary.length; i++) {
+	    bb.append(ary[i]);
+	  }
+
+	  return (options.type) ? bb.getBlob(options.type) : bb.getBlob();
+	};
+
+	function BlobConstructor(ary, options) {
+	  mapArrayBufferViews(ary);
+	  return new Blob(ary, options || {});
+	};
+
+	module.exports = (function() {
+	  if (blobSupported) {
+	    return blobSupportsArrayBufferView ? global.Blob : BlobConstructor;
+	  } else if (blobBuilderSupported) {
+	    return BlobBuilderConstructor;
+	  } else {
+	    return undefined;
+	  }
+	})();
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 212 */
 /***/ function(module, exports) {
 
 	/**
@@ -41916,7 +41269,7 @@
 
 
 /***/ },
-/* 331 */
+/* 213 */
 /***/ function(module, exports) {
 
 	
@@ -41928,7 +41281,7 @@
 	};
 
 /***/ },
-/* 332 */
+/* 214 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -42002,7 +41355,7 @@
 
 
 /***/ },
-/* 333 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -42010,8 +41363,8 @@
 	 * Module requirements.
 	 */
 
-	var Polling = __webpack_require__(328);
-	var inherit = __webpack_require__(331);
+	var Polling = __webpack_require__(202);
+	var inherit = __webpack_require__(213);
 
 	/**
 	 * Module exports.
@@ -42247,19 +41600,19 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 334 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
 	 * Module dependencies.
 	 */
 
-	var Transport = __webpack_require__(329);
-	var parser = __webpack_require__(255);
-	var parseqs = __webpack_require__(330);
-	var inherit = __webpack_require__(331);
-	var yeast = __webpack_require__(332);
-	var debug = __webpack_require__(263)('engine.io-client:websocket');
+	var Transport = __webpack_require__(203);
+	var parser = __webpack_require__(204);
+	var parseqs = __webpack_require__(212);
+	var inherit = __webpack_require__(213);
+	var yeast = __webpack_require__(214);
+	var debug = __webpack_require__(184)('engine.io-client:websocket');
 	var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
 
 	/**
@@ -42271,7 +41624,7 @@
 	var WebSocket = BrowserWebSocket;
 	if (!WebSocket && typeof window === 'undefined') {
 	  try {
-	    WebSocket = __webpack_require__(335);
+	    WebSocket = __webpack_require__(217);
 	  } catch (e) { }
 	}
 
@@ -42542,13 +41895,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 335 */
+/* 217 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 336 */
+/* 218 */
 /***/ function(module, exports) {
 
 	
@@ -42563,7 +41916,7 @@
 	};
 
 /***/ },
-/* 337 */
+/* 219 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -42601,7 +41954,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 338 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -42609,13 +41962,13 @@
 	 * Module dependencies.
 	 */
 
-	var parser = __webpack_require__(314);
-	var Emitter = __webpack_require__(339);
-	var toArray = __webpack_require__(340);
-	var on = __webpack_require__(341);
-	var bind = __webpack_require__(342);
-	var debug = __webpack_require__(263)('socket.io-client:socket');
-	var hasBin = __webpack_require__(343);
+	var parser = __webpack_require__(187);
+	var Emitter = __webpack_require__(221);
+	var toArray = __webpack_require__(222);
+	var on = __webpack_require__(223);
+	var bind = __webpack_require__(224);
+	var debug = __webpack_require__(184)('socket.io-client:socket');
+	var hasBin = __webpack_require__(225);
 
 	/**
 	 * Module exports.
@@ -43019,7 +42372,7 @@
 
 
 /***/ },
-/* 339 */
+/* 221 */
 /***/ function(module, exports) {
 
 	
@@ -43186,7 +42539,7 @@
 
 
 /***/ },
-/* 340 */
+/* 222 */
 /***/ function(module, exports) {
 
 	module.exports = toArray
@@ -43205,7 +42558,7 @@
 
 
 /***/ },
-/* 341 */
+/* 223 */
 /***/ function(module, exports) {
 
 	
@@ -43235,7 +42588,7 @@
 
 
 /***/ },
-/* 342 */
+/* 224 */
 /***/ function(module, exports) {
 
 	/**
@@ -43264,7 +42617,7 @@
 
 
 /***/ },
-/* 343 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -43272,7 +42625,7 @@
 	 * Module requirements.
 	 */
 
-	var isArray = __webpack_require__(208);
+	var isArray = __webpack_require__(190);
 
 	/**
 	 * Module exports.
@@ -43330,7 +42683,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 344 */
+/* 226 */
 /***/ function(module, exports) {
 
 	
@@ -43419,6 +42772,1009 @@
 	};
 
 
+
+/***/ },
+/* 227 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = {
+	  navActions: __webpack_require__(228),
+
+	  loginActions: __webpack_require__(232),
+
+	  stagingActions: __webpack_require__(233),
+
+	  arenaActions: __webpack_require__(231),
+
+	  leaderboardActions: __webpack_require__(234)
+
+	};
+
+/***/ },
+/* 228 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var actions = __webpack_require__(229).action;
+
+	var socket = __webpack_require__(230);
+
+	var navStaging = function navStaging() {
+	  return {
+	    type: actions.NAV_STAGING
+	  };
+	};
+
+	var navSoloStaging = function navSoloStaging(github_handle) {
+	  return function (dispatch) {
+	    $.ajax({
+	      method: 'GET',
+	      dataType: 'json',
+	      url: '/api/solutions/user/' + github_handle,
+	      success: function success(data) {
+	        dispatch({
+	          type: actions.STORE_USER_PROBLEMS,
+	          payload: data
+	        });
+	        dispatch({
+	          type: actions.NAV_SOLO_STAGING
+	        });
+	      },
+	      error: function error(err) {
+	        dispatch({
+	          type: actions.NAV_SOLO_STAGING
+	        });
+	      }
+	    });
+	  };
+	};
+
+	var navSoloArena = function navSoloArena(payload) {
+	  console.log(payload);
+	  return function (dispatch) {
+	    $.ajax({
+	      method: 'GET',
+	      url: '/api/challenges/' + payload.challenge_id,
+	      dataType: 'json',
+	      success: function success(results) {
+	        dispatch({
+	          type: actions.STORE_SOLO_PROBLEM,
+	          payload: results
+	        });
+	        dispatch({
+	          type: actions.NAV_SOLO_ARENA
+	        });
+	      },
+	      error: function error(_error) {
+	        console.log('error fetching problem', _error);
+	        dispatch({
+	          type: actions.NAV_SOLO_STAGING
+	        });
+	      }
+	    });
+
+	    dispatch({
+	      type: actions.STORE_SOLO_PROBLEM,
+	      payload: payload
+	    });
+	    dispatch({
+	      type: actions.NAV_SOLO_ARENA
+	    });
+	  };
+	};
+
+	var spoofSolo = function spoofSolo() {
+	  return function (dispatch) {
+	    $.ajax({
+	      method: 'GET',
+	      url: '/api/challenges/1',
+	      dataType: 'json',
+	      success: function success(data) {
+	        console.log('hey');
+	        dispatch({
+	          type: actions.STORE_SOLO_PROBLEM,
+	          payload: data
+	        });
+	        dispatch({
+	          type: actions.NAV_SOLO_ARENA
+	        });
+	      },
+	      error: function error(err) {
+	        console.log('Change the url to the spoofed challenge_id from the db', err);
+	      }
+	    });
+	  };
+	};
+
+	var navChallengeArena = function navChallengeArena() {
+	  return {
+	    type: actions.NAV_CHALLENGE_ARENA
+	  };
+	};
+
+	//Currently Not used
+	var navLogout = function navLogout() {
+	  //need to send request to route to LOGOUT
+	  //on success, dispatch LOGOUT statement
+	  return {
+	    type: actions.LOGOUT
+	  };
+	};
+
+	var navProfile = function navProfile() {
+
+	  return {
+	    type: actions.NAV_PROFILE
+	  };
+	};
+
+	module.exports = {
+	  navStaging: navStaging,
+	  navLogout: navLogout,
+	  navSoloArena: navSoloArena,
+	  navSoloStaging: navSoloStaging,
+	  navChallengeArena: navChallengeArena,
+	  navProfile: navProfile,
+	  spoofSolo: spoofSolo
+	};
+
+/***/ },
+/* 229 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = {
+	  //ACTION CONSTANTS
+	  action: {
+	    //NavBar
+	    LOGOUT: 'LOGOUT',
+	    NAV_LOGIN: 'NAV_LOGIN',
+	    NAV_PROFILE: 'NAV_PROFILE',
+
+	    //Login
+	    LOGIN: 'LOGIN',
+	    NAV_STAGING: 'NAV_STAGING',
+	    IS_LOGGED_IN: 'IS_LOGGED_IN',
+	    IS_LOGGED_OUT: 'IS_LOGGED_OUT',
+
+	    //Staging
+	    NAV_SOLO_ARENA: 'NAV_SOLO_ARENA',
+	    NAV_CHALLENGE_ARENA: 'NAV_CHALLENGE_ARENA',
+	    CREATE_SOCKET: 'CREATE_SOCKET',
+	    NAV_SOLO_STAGING: 'NAV_SOLO_STAGING',
+	    STORE_USER_PROBLEMS: 'STORE_USER_PROBLEMS',
+
+	    //Arena
+	    GET_PROBLEM: 'GET_PROBLEM',
+	    GET_PROBLEM_SUCCESS: 'GET_PROBLEM_SUCCESS',
+	    GET_PROBLEM_ERROR: 'GET_PROBLEM_ERROR',
+	    SUBMIT_PROBLEM: 'SUBMIT_PROBLEM',
+	    SUBMIT_PROBLEM_WRONG: 'SUBMIT_PROBLEM_WRONG',
+	    SUBMIT_PROBLEM_SUCCESS: 'SUBMIT_PROBLEM_SUCCESS',
+	    NAV_LEADERBOARD: 'NAV_LEADERBOARD',
+	    STORE_EDITOR: 'STORE_EDITOR',
+	    SYNTAX_ERROR: 'SYNTAX_ERROR',
+	    NO_SYNTAX_ERROR: 'NO_SYNTAX_ERROR',
+	    STORE_SOLO_PROBLEM: 'STORE_SOLO_PROBLEM',
+
+	    //Arena - Sockets
+	    ENTER_ROOM: 'ENTER_ROOM',
+	    PROBLEM_START: 'PROBLEM_START',
+	    EXIT_ROOM: 'EXIT_ROOM',
+	    OPPONENT_FINISH: 'OPPONENT_FINISH',
+	    OPPONENT_KEYSTROKE: 'OPPONENT_KEYSTROKE',
+
+	    //Leaderboard
+	    GET_LEADERBOARD: 'GET_LEADERBOARD',
+	    GET_LEADERBOARD_SUCCESS: 'GET_LEADERBOARD_SUCCESS',
+	    GET_LEADERBOARD_ERROR: 'GET_LEADERBOARD_ERROR'
+	  },
+
+	  //VIEW CONSTANTS
+	  view: {
+	    LOGIN: 'LOGIN',
+	    STAGING: 'STAGING',
+	    SOLO_ARENA: 'SOLO_ARENA',
+	    SOLO_STAGING: 'SOLO_STAGING',
+	    CHALLENGE_ARENA: 'CHALLENGE_ARENA',
+	    LEADERBOARD: 'LEADERBOARD',
+	    PROFILE: 'PROFILE'
+	  }
+	};
+
+/***/ },
+/* 230 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var io = __webpack_require__(181);
+	var arenaAction = __webpack_require__(231);
+	//var stagingActions = require('../actions/stagingActions');
+
+	var socket = io();
+	// should be stored on state herestore.dispatch(stagingActions.createSocket());
+
+	socket.on('start', function (data) {
+	  store.dispatch(arenaAction.getProblem(data));
+	});
+
+	socket.on('eval', function (submissionMessage) {
+	  console.log('eval here', submissionMessage);
+	  store.dispatch(arenaAction.handleSubmissionResponse(submissionMessage));
+	});
+
+	module.exports = socket;
+
+/***/ },
+/* 231 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var actions = __webpack_require__(229).action;
+
+	var storeEditor = function storeEditor(payload) {
+	  return {
+	    type: actions.STORE_EDITOR,
+	    payload: payload
+	  };
+	};
+	var getProblem = function getProblem(payload) {
+	  return function (dispatch) {
+	    $.ajax({
+	      method: 'GET',
+	      url: '/api/challenges/:' + payload.challenge_id,
+	      dataType: 'json',
+	      cache: false,
+	      success: function success(data) {
+	        dispatch({
+	          type: actions.GET_PROBLEM_SUCCESS,
+	          payload: data
+	        });
+	      },
+	      error: function error(_error) {
+	        dispatch({
+	          type: actions.GET_PROBLEM_ERROR
+	        });
+	      }
+	    });
+	  };
+	};
+
+	var submitProblem = function submitProblem(errors, solution_str, socket_id, problem_id, user_handle) {
+	  if (errors.length === 0) {
+	    return function (dispatch) {
+
+	      dispatch({
+	        type: actions.NO_SYNTAX_ERROR
+	      });
+
+	      console.log({
+	        soln_str: solution_str,
+	        user_handle: user_handle,
+	        socket_id: socket_id
+	      });
+	      $.ajax({
+	        method: 'POST',
+	        url: '/api/solutions/' + problem_id,
+	        contentType: 'application/json',
+	        data: JSON.stringify({
+	          soln_str: JSON.stringify(solution_str),
+	          user_handle: user_handle,
+	          socket_id: socket_id
+	        }),
+	        success: function success() {
+	          dispatch({
+	            type: actions.SUBMIT_PROBLEM
+	          });
+	        }
+	      });
+	    };
+	  } else {
+
+	    return {
+	      type: actions.SYNTAX_ERROR,
+	      payload: errors
+	    };
+	  }
+	};
+
+	var handleSubmissionResponse = function handleSubmissionResponse(payload) {
+	  if (payload === 'victory!') {
+	    return {
+	      type: actions.SUBMIT_PROBLEM_SUCCESS
+	    };
+	  } else {
+	    return {
+	      type: actions.SUBMIT_PROBLEM_WRONG,
+	      payload: payload
+	    };
+	  }
+	};
+
+	module.exports = {
+	  getProblem: getProblem,
+	  submitProblem: submitProblem,
+	  handleSubmissionResponse: handleSubmissionResponse,
+	  storeEditor: storeEditor
+	};
+
+/***/ },
+/* 232 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var actions = __webpack_require__(229).action;
+
+	var checkLoggedIn = function checkLoggedIn() {
+	  return function (dispatch) {
+	    $.ajax({
+	      method: 'GET',
+	      url: '/auth-verify',
+	      dataType: 'json',
+	      cache: false,
+	      success: function success(data) {
+	        dispatch({
+	          type: actions.IS_LOGGED_IN,
+	          payload: data
+	        });
+	      },
+	      error: function error(_error) {
+	        dispatch({
+	          type: actions.IS_LOGGED_OUT
+	        });
+	      }
+	    });
+	  };
+	};
+
+	module.exports = {
+	  checkLoggedIn: checkLoggedIn
+	};
+
+/***/ },
+/* 233 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var socket = __webpack_require__(230);
+	var actions = __webpack_require__(229).action;
+
+	var createSocket = function createSocket() {
+	  return {
+	    type: actions.CREATE_SOCKET,
+	    payload: socket
+	  };
+	};
+
+	module.exports = {
+	  createSocket: createSocket
+	};
+
+/***/ },
+/* 234 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var actions = __webpack_require__(229).action;
+	module.exports = {};
+
+/***/ },
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = {
+	  ChallengeArena: __webpack_require__(236),
+	  ErrorList: __webpack_require__(237),
+	  Leaderboard: __webpack_require__(238),
+	  Login: __webpack_require__(239),
+	  NavBar: __webpack_require__(240),
+	  Profile: __webpack_require__(241),
+	  SoloArena: __webpack_require__(242),
+	  SoloStaging: __webpack_require__(243),
+	  Staging: __webpack_require__(244)
+	};
+
+/***/ },
+/* 236 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var ChallengeArena = React.createClass({
+	  displayName: "ChallengeArena",
+
+	  componentDidMount: function componentDidMount() {
+	    var editor = ace.edit("editor");
+	    editor.setTheme("ace/theme/monokai");
+	    editor.getSession().setMode("ace/mode/javascript");
+
+	    //getProblem - action
+	    //getProblem_Success
+	    //set current prompt = response.body
+	    //editor.SetValue
+	  },
+	  render: function render() {
+	    return React.createElement("div", { id: "editor" });
+	  }
+	});
+
+	module.exports = ChallengeArena;
+
+/***/ },
+/* 237 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var ErrorList = React.createClass({
+	  displayName: 'ErrorList',
+
+	  render: function render() {
+	    var errors = this.props.errors.map(function (error) {
+	      return React.createElement(
+	        'li',
+	        null,
+	        'Row: ',
+	        error.row,
+	        ' - ',
+	        error.text
+	      );
+	    });
+	    return React.createElement(
+	      'div',
+	      null,
+	      this.props.syntaxMessage,
+	      React.createElement(
+	        'ul',
+	        null,
+	        errors
+	      )
+	    );
+	  }
+	});
+
+	module.exports = ErrorList;
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var Leaderboard = React.createClass({
+	  displayName: 'Leaderboard',
+
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      'Leaderboard'
+	    );
+	  }
+	});
+
+	module.exports = Leaderboard;
+
+/***/ },
+/* 239 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Login = React.createClass({
+	  displayName: "Login",
+
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "a",
+	        { href: "/auth/github" },
+	        "Login with GitHub"
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Login;
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var Nav = React.createClass({
+	  displayName: 'Nav',
+
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'ul',
+	        null,
+	        React.createElement(
+	          'li',
+	          null,
+	          React.createElement(
+	            'a',
+	            { href: '/logout' },
+	            'Log Out'
+	          )
+	        ),
+	        this.props.user.isLoggedIn ? React.createElement(
+	          'li',
+	          null,
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: this.props.navActions.navProfile },
+	            'Profile'
+	          )
+	        ) : null,
+	        this.props.user.isLoggedIn ? React.createElement(
+	          'li',
+	          null,
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: this.props.navActions.navStaging },
+	            'Modes'
+	          )
+	        ) : null
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Nav;
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Profile = React.createClass({
+	  displayName: "Profile",
+
+	  render: function render() {
+	    var that = this;
+	    var listOfProblems = this.props.user.user_problems.map(function (problem) {
+	      var linkToProblem = function () {
+	        this.props.navActions.navSoloArena(problem);
+	      }.bind(that);
+	      return React.createElement(
+	        "a",
+	        { href: "#", onClick: linkToProblem },
+	        React.createElement(
+	          "li",
+	          null,
+	          "Challenge ID:",
+	          problem.challenge_id,
+	          " - Completed ",
+	          problem.end_time
+	        )
+	      );
+	    });
+
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "div",
+	        null,
+	        React.createElement("img", { src: this.props.user.github_avatar_url })
+	      ),
+	      React.createElement(
+	        "div",
+	        null,
+	        React.createElement(
+	          "a",
+	          { href: this.props.user.github_profileUrl },
+	          this.props.user.github_handle
+	        )
+	      ),
+	      React.createElement(
+	        "div",
+	        null,
+	        this.props.user.github_display_name
+	      ),
+	      React.createElement(
+	        "div",
+	        null,
+	        listOfProblems
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Profile;
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var io = __webpack_require__(181);
+
+	var ErrorList = __webpack_require__(237);
+	var socket = __webpack_require__(230);
+
+	var SoloArena = React.createClass({
+	  displayName: 'SoloArena',
+
+	  componentDidMount: function componentDidMount() {
+	    var editor = ace.edit("editor");
+	    editor.setTheme("ace/theme/monokai");
+	    editor.getSession().setMode("ace/mode/javascript");
+	    this.props.arenaActions.storeEditor(editor);
+	  },
+	  componentDidUpdate: function componentDidUpdate() {
+	    this.props.arena.editor.setValue(this.props.arena.content);
+	  },
+
+	  render: function render() {
+	    var submitProblem = function () {
+	      var errors = this.props.arena.editor.getSession().getAnnotations();
+	      var content = this.props.arena.editor.getSession().getValue();
+	      this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle);
+	    }.bind(this);
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement('div', { id: 'editor' }),
+	      React.createElement(
+	        'button',
+	        { onClick: submitProblem },
+	        'Submit Solution'
+	      ),
+	      React.createElement(ErrorList, { syntaxMessage: this.props.arena.syntaxMessage, errors: this.props.arena.errors }),
+	      React.createElement(
+	        'div',
+	        null,
+	        this.props.arena.submissionMessage
+	      )
+	    );
+	  }
+	});
+
+	module.exports = SoloArena;
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var SoloStaging = React.createClass({
+	  displayName: "SoloStaging",
+
+	  render: function render() {
+	    var that = this;
+	    var listOfProblems = this.props.user.user_problems.map(function (problem) {
+	      var linkToProblem = function () {
+	        this.props.navActions.navSoloArena(problem);
+	      }.bind(that);
+	      return React.createElement(
+	        "a",
+	        { href: "#", onClick: linkToProblem },
+	        React.createElement(
+	          "li",
+	          null,
+	          "Challenge ID:",
+	          problem.challenge_id,
+	          " - Completed ",
+	          problem.end_time
+	        )
+	      );
+	    });
+
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "h1",
+	        null,
+	        "Practice Problem Archive"
+	      ),
+	      listOfProblems.length > 0 ? React.createElement(
+	        "ul",
+	        null,
+	        listOfProblems
+	      ) : React.createElement(
+	        "div",
+	        null,
+	        "Sorry, you do not have any problems to practice on. Please play challenge or pair mode to unlock more problems."
+	      ),
+	      React.createElement(
+	        "button",
+	        { onClick: this.props.navActions.spoofSolo },
+	        "Spoof Solo"
+	      )
+	    );
+	  }
+	});
+
+	module.exports = SoloStaging;
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var Staging = React.createClass({
+	  displayName: 'Staging',
+
+	  componentDidMount: function componentDidMount() {
+	    this.props.stagingActions.createSocket();
+	  },
+	  render: function render() {
+	    var getListofProblemsAndNav = function () {
+	      this.props.navActions.navSoloStaging(this.props.user.github_handle);
+	    }.bind(this);
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'button',
+	        { onClick: getListofProblemsAndNav },
+	        'PRACTICE'
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.props.navActions.navChallengeArena },
+	        'CHALLENGE'
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Staging;
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var createStore = __webpack_require__(166).createStore;
+	var applyMiddleware = __webpack_require__(166).applyMiddleware;
+	var thunk = __webpack_require__(246);
+	var reducer = __webpack_require__(247);
+
+	var createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+
+	function configureStore(initialState) {
+	  var store = createStoreWithMiddleware(reducer, initialState);
+
+	  // IF YOU WANT TO USE HOT RELOADING
+	  // if (module.hot) {
+	  //   // Enable Webpack hot module replacement for reducers
+	  //   module.hot.accept('../reducers', function(){
+	  //     var nextReducer = require('../reducers');
+	  //     store.replaceReducer(nextReducer);
+	  //   });
+	  // }
+
+	  return store;
+	}
+
+	module.exports = configureStore;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	function thunkMiddleware(_ref) {
+	  var dispatch = _ref.dispatch;
+	  var getState = _ref.getState;
+
+	  return function (next) {
+	    return function (action) {
+	      return typeof action === 'function' ? action(dispatch, getState) : next(action);
+	    };
+	  };
+	}
+
+	module.exports = thunkMiddleware;
+
+/***/ },
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var combineReducers = __webpack_require__(166).combineReducers;
+
+	var reducers = {
+	  arena: __webpack_require__(248),
+
+	  user: __webpack_require__(249),
+
+	  view: __webpack_require__(250)
+
+	};
+
+	module.exports = combineReducers(reducers);
+
+/***/ },
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _ = __webpack_require__(178);
+
+	var actions = __webpack_require__(229).action;
+
+	var initial = {
+	  problem_id: 0,
+	  content: "",
+	  opponent_content: "",
+	  submissionMessage: "Nothing passing so far...(From initial arena reducer)",
+	  socket: {},
+	  editor: {},
+	  syntaxMessage: '',
+	  errors: []
+	};
+
+	function arenaReducer(state, action) {
+	  state = state || initial;
+	  switch (action.type) {
+	    case actions.CREATE_SOCKET:
+	      return _.extend({}, state, {
+	        socket: action.payload
+	      });
+	    case actions.GET_PROBLEM_SUCCESS:
+	      return _.extend({}, state, {
+	        content: action.payload.content,
+	        problem_id: action.payload.id
+	      });
+	    case actions.SUBMIT_PROBLEM_WRONG:
+	      return _.extend({}, state, {
+	        submissionMessage: action.payload
+	      });
+	    case actions.SUBMIT_PROBLEM_SUCCESS:
+	      return _.extend({}, state, {
+	        submissionMessage: "Victory!"
+	      });
+	    case actions.STORE_EDITOR:
+	      return _.extend({}, state, {
+	        editor: action.payload
+	      });
+	    case actions.SYNTAX_ERROR:
+	      return _.extend({}, state, {
+	        syntaxMessage: 'There are syntax errors in your code. Please fix them and re-submit.',
+	        errors: action.payload
+	      });
+	    case actions.NO_SYNTAX_ERROR:
+	      return _.extend({}, state, {
+	        syntaxMessage: '',
+	        errors: []
+	      });
+	    case actions.STORE_SOLO_PROBLEM:
+	      return _.extend({}, state, {
+	        content: action.payload.prompt,
+	        problem_id: action.payload.id
+	      });
+	    default:
+	      return state;
+	  }
+	};
+
+	module.exports = arenaReducer;
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var actions = __webpack_require__(229).action;
+
+	var _ = __webpack_require__(178);
+
+	var initial = {
+	  isLoggedIn: false,
+	  github_handle: "",
+	  github_display_name: '',
+	  github_profileUrl: '',
+	  github_avatar_url: '',
+	  user_problems: []
+	};
+
+	function userReducer(state, action) {
+	  state = state || initial;
+	  switch (action.type) {
+	    case actions.IS_LOGGED_IN:
+	      return _.extend({}, state, {
+	        isLoggedIn: true,
+	        github_handle: action.payload.github_handle,
+	        github_display_name: action.payload.github_display_name,
+	        github_profileUrl: action.payload.github_profileUrl,
+	        github_avatar_url: action.payload.github_avatar_url
+	      });
+	    case actions.IS_LOGGED_OUT:
+	      return _.extend({}, state, {
+	        isLoggedIn: false,
+	        user_handle: ""
+	      });
+	    case actions.STORE_USER_PROBLEMS:
+	      return _.extend({}, state, {
+	        user_problems: action.payload
+	      });
+	  }
+	  return state;
+	};
+
+	module.exports = userReducer;
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _ = __webpack_require__(178);
+	//view strings
+	var views = __webpack_require__(229).view;
+	var actions = __webpack_require__(229).action;
+
+	function viewReducer(state, action) {
+	  state = state || views.STAGING;
+	  switch (action.type) {
+	    case actions.NAV_STAGING:
+	      return views.STAGING;
+	    case actions.NAV_SOLO_STAGING:
+	      return views.SOLO_STAGING;
+	    case actions.NAV_SOLO_ARENA:
+	      return views.SOLO_ARENA;
+	    case actions.NAV_CHALLENGE_ARENA:
+	      return views.CHALLENGE_ARENA;
+	    case actions.LOGOUT:
+	      return views.LOGIN;
+	    case actions.NAV_PROFILE:
+	      return views.PROFILE;
+	    default:
+	      return state;
+	  }
+	};
+
+	module.exports = viewReducer;
 
 /***/ }
 /******/ ]);

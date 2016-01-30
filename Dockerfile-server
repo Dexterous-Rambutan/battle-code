@@ -5,12 +5,14 @@ RUN mkdir server
 WORKDIR server
 
 # TODO: ADD all the application code into /server
-ADD . /server
+ADD ./server /server
+ADD package.json /server
+ADD ./node_modules /server/node_modules
 
 # TODO: RUN `npm install`
-RUN npm install
+# RUN npm install
 
 EXPOSE 3000 
 # This command allows us to access the web server port from outside the container
 
-CMD ["npm", "start"] # `package.json` already provides this command
+CMD ["node", "server.js"] # `package.json` already provides this command
