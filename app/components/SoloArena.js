@@ -10,10 +10,12 @@ var SoloArena = React.createClass({
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/javascript");
+    editor.$blockScrolling = Infinity
     this.props.arenaActions.storeEditor(editor);
+
   },
   componentDidUpdate: function(){
-    this.props.arena.editor.setValue(this.props.arena.content);
+    this.props.arena.editor.setValue(this.props.arena.content,1);
   },
 
   render: function() {

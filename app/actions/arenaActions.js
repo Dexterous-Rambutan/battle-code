@@ -35,7 +35,8 @@ var submitProblem = function(errors, solution_str, socket_id, problem_id, user_h
     return function(dispatch){
 
       dispatch({
-        type: actions.NO_SYNTAX_ERROR
+        type: actions.NO_SYNTAX_ERROR,
+        payload: solution_str
       });
 
       console.log({
@@ -63,7 +64,10 @@ var submitProblem = function(errors, solution_str, socket_id, problem_id, user_h
 
     return {
       type: actions.SYNTAX_ERROR,
-      payload: errors
+      payload: {
+        errors: errors,
+        solution_str: solution_str
+      }
     }
   }
 };
