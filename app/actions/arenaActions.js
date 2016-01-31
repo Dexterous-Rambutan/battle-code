@@ -49,7 +49,7 @@ var submitProblem = function(errors, solution_str, socket_id, problem_id, user_h
         url: '/api/solutions/' + problem_id,
         contentType: 'application/json',
         data: JSON.stringify({
-          soln_str: JSON.stringify(solution_str),
+          soln_str: solution_str,
           user_handle: user_handle,
           socket_id: socket_id
         }),
