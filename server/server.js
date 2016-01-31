@@ -1,11 +1,18 @@
 var port = process.env.PORT || 3000;
+// console.log(process.env);
 
 var express = require('express');
 var bodyParser = require('body-parser');
 var passport = require('./helpers/psConfig.js');
 var session = require('express-session');
 var redis = require('redis');
-var redisClient = redis.createClient();
+var client;
+
+if (process.env.DEPLOYED) {
+  client = redis.createClient(6379, 'redis');
+} else {
+  client = redis.createClient();
+}
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
@@ -35,7 +42,7 @@ var authUser = function(req, res, next){
 };
 
 ////////////////////////////////////////////////
-require('./routes.js')(app, redisClient);
+require('./routes.js')(app, client);
 ////////////////////////////////////////////////
 
 // Start server

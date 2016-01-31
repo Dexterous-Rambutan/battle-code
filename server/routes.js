@@ -32,7 +32,7 @@ module.exports = function (app, redisClient) {
   app.get('/auth-verify', function(req, res) {
     console.log('GET request to /auth-verify', req.session.loggedIn);
     if (req.session.loggedIn) {
-      req.params.github_handle = req.session.passport.user.username || '';
+      req.params.githubHandle = req.session.passport.user.username || '';
       userController.getUserById(req, res);
     } else {
       res.status(403).json(null);

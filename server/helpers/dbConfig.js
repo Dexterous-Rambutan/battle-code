@@ -1,11 +1,25 @@
-var knex = require('knex')({
-  client: 'pg',
-  connection: {
-    host     : 'localhost',
-    database : 'myDB',
-    charset  : 'utf8',
-  }
-});
+var knex;
+if (process.env.DEPLOYED) {
+  knex = require('knex')({  
+    client: 'pg',
+    connection: {
+      host: 'postgres',
+      user: 'postgres',
+      password: 'mysecretpassword',
+      database : 'postgres',
+      charset  : 'utf8'
+    }
+  });  
+} else {
+  knex = require('knex')({
+    client: 'pg',
+    connection: {
+      host: 'localhost',
+      database: 'myDB',
+      charset: 'utf8'
+    }
+  });
+}
 
 var db = require('bookshelf')(knex);
 
