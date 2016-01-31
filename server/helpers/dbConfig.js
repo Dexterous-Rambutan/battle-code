@@ -1,6 +1,6 @@
 var knex;
 if (process.env.DEPLOYED) {
-  knex = require('knex')({  
+  knex = require('knex')({
     client: 'pg',
     connection: {
       host: 'postgres',
@@ -9,7 +9,7 @@ if (process.env.DEPLOYED) {
       database : 'postgres',
       charset  : 'utf8'
     }
-  });  
+  });
 } else {
   knex = require('knex')({
     client: 'pg',
@@ -66,6 +66,15 @@ var createChallengesTable = function () {
   });
 };
 
+var createMatchesTable = function () {
+  return db.knex.schema.createTable('matches', function (match) {
+    match.increments('id').primary();
+    match.boolean('win');
+  }).then(function (table) {
+    console.log('Created matches Table', table);
+  });
+};
+
 // Shortcut function to reset users
 var resetUsersTable = function () {
   return db.knex.schema.dropTable('users').then(createUsersTable);
@@ -81,12 +90,19 @@ var resetChallengesTable = function () {
   return db.knex.schema.dropTable('challenges').then(createChallengesTable);
 };
 
+// Shortcut function to reset matches
+var resetMatchesTable = function () {
+  return db.knex.schema.dropTable('matches').then(createMatchesTable);
+};
+
 // Exposed function that resets the entire database
 db.resetEverything = function (req, res) {
   resetUsersTable().then(function() {
     resetSolutionsTable();
   }).then(function() {
     resetChallengesTable();
+  }).then(function() {
+    resetMatchesTable();
   }).then(function() {
     res.status(201).end();
   });
@@ -97,6 +113,8 @@ db.resetEverythingPromise = function () {
     return resetChallengesTable();
   }).then(function() {
     return resetSolutionsTable();
+  }).then(function() {
+    return resetMatchesTable();
   }).catch(function(e) {
     console.log(e);
   });
@@ -120,6 +138,13 @@ db.knex.schema.hasTable('solutions').then(function (exists) {
 db.knex.schema.hasTable('challenges').then(function(exists) {
   if (!exists) {
     createChallengesTable();
+  }
+});
+
+// Create challenges table with id, user_id, opponent_id, win
+db.knex.schema.hasTable('matches').then(function(exists) {
+  if (!exists) {
+    createMatchesTable();
   }
 });
 
