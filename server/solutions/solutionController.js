@@ -12,7 +12,7 @@ module.exports = {
     })
     .fetch()
     .then(function (solution) {
-      if (solution) { 
+      if (solution) {
         res.json(solution);
       } else {
         res.status(404).json(null);
@@ -47,6 +47,7 @@ module.exports = {
     })
 
   },
+
 
   // POST /api/solutions/:challengeId
   testSolution: function (req, res, redisClient) {
@@ -85,6 +86,13 @@ module.exports = {
     .catch(function (err) {
       console.log('addSolution error: ', err);
     });
+  },
+
+  //TODO: internally invoked when two players enter a room and a challenge ID is assigned
+  initializeChallengeSolutions: function(player1_socket_id, player2_socket_id, challenge_id){
+    //get user_1 id from db based on socket
+    //get user_2 id
+    //
   },
 
   resetWithData: function () {
