@@ -2,7 +2,7 @@ var React = require('react');
 var io = require('socket.io-client');
 var socket = require('../sockets/socket-helper');
 var ChallengeArena = React.createClass({
-  componentDidMount: function(){
+  componentDidMount: function() {
     //setting up solo (player) editor
     var editor = ace.edit('editor');
     editor.setTheme("ace/theme/solarized_light");
@@ -28,13 +28,11 @@ var ChallengeArena = React.createClass({
       var array = data.split('');
       var obf = [];
       for(var i =0; i<array.length;i++){
-        if(array[i] === ' ' || array[i] === '\n' || array[i] === ')' || array[i] === '(' || array[i] === '{' || array[i] === '}'){
+        if (array[i] === ' ' || array[i] === '\n' || array[i] === ')' || array[i] === '(' || array[i] === '{' || array[i] === '}') {
           obf.push(array[i])
-        }  else {
-           obf.push(String.fromCharCode(Math.floor(Math.random() * 52) + 65 ))
-
-         }
-
+        } else {
+          obf.push(String.fromCharCode(Math.floor(Math.random() * 52) + 65 ))
+        }
       }
       this.props.arena.editorOpponent.setValue(obf.join(''))
     }.bind(this))
@@ -51,16 +49,12 @@ var ChallengeArena = React.createClass({
     }.bind(this)
     return (
       <div>
-      <div id="editor" onKeyPress={emitSocket}className='player'>
+        <div id="editor" onKeyPress={emitSocket} className='player'>
+        </div>
+        <div id="editor2" className='opponent'>
+        </div>
       </div>
-      <div id="editor2" className='opponent'>
-      </div>
-    </div>
     )
-  },
-
-  componentDidUpdate: function(){
-
   }
 });
 

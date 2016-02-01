@@ -6,6 +6,7 @@ var passport = require('./helpers/psConfig.js');
 var session = require('express-session');
 var redis = require('redis');
 var redisClient = redis.createClient();
+var challengeController = require('./challenges/challengeController');
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
@@ -67,7 +68,7 @@ io.on('connection', function (socket) {
     socket.to(room).broadcast.emit('keypress', data)
   })
   console.log('server.js line-57, Socket connected:', socket.id, socket.rooms);
-  socket.on('arena', function () {
+  socket.on('arena', function (github_handle) {
     // if there aren't any open room, create a room and join it
     if (openQ.length === 0) {
       // create a room
@@ -75,17 +76,29 @@ io.on('connection', function (socket) {
       console.log('server.js line-63, Creating and joining new room', roomCounter);
       socket.join(String(roomCounter));
       // add this room to the openQ
-      openQ.push(roomCounter);
+      openQ.push({
+        name: roomCounter,
+        players: [github_handle]
+      });
 
     // Otherwise, there is an open room, join that one
     } else {
       var existingRoom = openQ.shift();
       // join the first existing room
       console.log('server.js line-72, Joining existing room:', existingRoom);
-      socket.join(String(existingRoom));
+      socket.join(String(existingRoom.name));
       // remove this room from the openQ and add to inProgressRooms
-      // emit start event to this entire room
-      io.to(String(existingRoom)).emit('start');
+      // find all players in the room and find a challenge neither player has seen
+      var otherPlayer = existingRoom.players[0];
+      challengeController.getChallengeMultiplayer({
+        body: {
+          player1_github_handle: otherPlayer,
+          player2_github_handle: github_handle
+        }
+      }, function () {
+        // emit start event to this entire room
+        io.to(String(existingRoom.name)).emit('start');
+      });
     }
   });
   socket.on('leaveArena', function(data){
