@@ -3,7 +3,7 @@ var arenaAction = require('../actions/arenaActions');
 var actions = require('../constants').action;
 //var stagingActions = require('../actions/stagingActions');
 
-var socket = io();
+var socket = io('http://127.0.0.1:3000');
 // should be stored on state herestore.dispatch(stagingActions.createSocket());
 
 socket.on('start', function(data){
