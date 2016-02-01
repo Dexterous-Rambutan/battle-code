@@ -7,8 +7,11 @@ var ChallengeArena = React.createClass({
     editor.setTheme("ace/theme/solarized_light");
     editor.session.setMode("ace/mode/javascript");
     this.props.arenaActions.storeEditor(editor);
-
+    editor.getSession().setUseWrapMode(true);
+    editor.$blockScrolling = Infinity;
     var editor2 = ace.edit('editor2');
+    editor2.$blockScrolling = Infinity;
+    editor2.getSession().setUseWrapMode(true);
     editor2.setOptions({
     readOnly: true,
     highlightActiveLine: false,

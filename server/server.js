@@ -47,7 +47,6 @@ var server = app.listen(port, function () {
 var io = require('socket.io').listen(server);
 io.sockets.on('connection', function(socket){
   socket.on('update', function(data){
-
     socket.broadcast.emit('keypress', data)
   })
 console.log('connected socket')
