@@ -56,3 +56,34 @@ console.log('connected socket')
 // Start redisQueue listener for evaluated solutions
 var solutionEvalResponse = require('./responseRedis/responseRedisRunner.js');
 solutionEvalResponse(io);
+
+// Socket matchmaking system here:
+var openQ = [];
+var roomCounter = 0;
+io.on('connection', function (socket) {
+  console.log('server.js line-57, Socket connected:', socket.id, socket.rooms);
+  socket.on('arena', function () {
+    // if there aren't any open room, create a room and join it
+    if (openQ.length === 0) {
+      // create a room
+      roomCounter++;
+      console.log('server.js line-63, Creating and joining new room', roomCounter);
+      socket.join(String(roomCounter));
+      // add this room to the openQ
+      openQ.push(roomCounter);
+
+    // Otherwise, there is an open room, join that one
+    } else {
+      var existingRoom = openQ.shift();
+      // join the first existing room
+      console.log('server.js line-72, Joining existing room:', existingRoom);
+      socket.join(String(existingRoom));
+      // remove this room from the openQ and add to inProgressRooms
+      // emit start event to this entire room
+      io.to(String(existingRoom)).emit('start');
+    }
+  });
+  socket.on('disconnect', function () {
+    console.log('server.js line-80, Client disconnected', socket.id);
+  });
+});

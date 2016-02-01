@@ -11,6 +11,7 @@ var checkLoggedIn = function(){
       dataType: 'json',
       cache: false,
       success: function(data){
+          console.log('login data',data);
           dispatch({
             type: actions.IS_LOGGED_IN,
             payload: data
