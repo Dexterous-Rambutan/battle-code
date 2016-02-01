@@ -45,12 +45,6 @@ var server = app.listen(port, function () {
 
 // Start socket listener
 var io = require('socket.io').listen(server);
-io.sockets.on('connection', function(socket){
-  socket.on('update', function(data){
-    socket.broadcast.emit('keypress', data)
-  })
-console.log('connected socket')
-})
 
 
 // Start redisQueue listener for evaluated solutions
@@ -61,6 +55,17 @@ solutionEvalResponse(io);
 var openQ = [];
 var roomCounter = 0;
 io.on('connection', function (socket) {
+   socket.on('update', function(data){
+    console.log('room is:', socket.rooms)
+    var room
+    for(var key in socket.rooms){
+      if(key[0] !== '/'){
+        room = key[0];
+      }
+    }
+
+    socket.to(room).broadcast.emit('keypress', data)
+  })
   console.log('server.js line-57, Socket connected:', socket.id, socket.rooms);
   socket.on('arena', function () {
     // if there aren't any open room, create a room and join it
@@ -83,7 +88,23 @@ io.on('connection', function (socket) {
       io.to(String(existingRoom)).emit('start');
     }
   });
+  socket.on('leaveArena', function(data){
+    var room;
+    for(var key in socket.rooms){
+      if(key[0] !== '/'){
+        room = key[0];
+      }
+    }
+    socket.leave(room);
+    console.log('server.js line 99, leaving room: ', room);
+    if(openQ.length !== 0){
+      openQ.shift();
+    }
+  });
   socket.on('disconnect', function () {
-    console.log('server.js line-80, Client disconnected', socket.id);
+    console.log('server.js line-105, Client disconnected', socket.id);
+    if(openQ.length !== 0){
+      openQ.shift();
+    }
   });
 });

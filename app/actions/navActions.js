@@ -99,6 +99,13 @@ var navChallengeArena = function(){
   }
 };
 
+var navAwayFromArena = function(){
+  socket.emit('leaveArena');
+  return {
+    type: actions.NAV_STAGING
+  }
+}
+
 //Currently Not used
 var navLogout = function(){
   //need to send request to route to LOGOUT
@@ -122,6 +129,7 @@ module.exports = {
   navSoloArena: navSoloArena,
   navSoloStaging: navSoloStaging,
   navChallengeArena: navChallengeArena,
+  navAwayFromArena: navAwayFromArena,
   navProfile: navProfile,
   spoofSolo: spoofSolo
 }

@@ -3,20 +3,23 @@ var io = require('socket.io-client');
 var socket = require('../sockets/socket-helper');
 var ChallengeArena = React.createClass({
   componentDidMount: function(){
+    //setting up solo (player) editor
     var editor = ace.edit('editor');
     editor.setTheme("ace/theme/solarized_light");
     editor.session.setMode("ace/mode/javascript");
-    this.props.arenaActions.storeEditor(editor);
     editor.getSession().setUseWrapMode(true);
     editor.$blockScrolling = Infinity;
+    this.props.arenaActions.storeEditor(editor);
+
+    //setting up opponnent editor
     var editor2 = ace.edit('editor2');
     editor2.$blockScrolling = Infinity;
     editor2.getSession().setUseWrapMode(true);
     editor2.setOptions({
-    readOnly: true,
-    highlightActiveLine: false,
-    highlightGutterLine: false
-})
+      readOnly: true,
+      highlightActiveLine: false,
+      highlightGutterLine: false
+    })
     editor2.setTheme("ace/theme/solarized_dark")
     this.props.arenaActions.storeEditor(editor2);
 
