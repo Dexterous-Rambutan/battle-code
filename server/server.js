@@ -1,18 +1,11 @@
 var port = process.env.PORT || 3000;
-// console.log(process.env);
 
 var express = require('express');
 var bodyParser = require('body-parser');
 var passport = require('./helpers/psConfig.js');
 var session = require('express-session');
 var redis = require('redis');
-var client;
-
-if (process.env.DEPLOYED) {
-  client = redis.createClient(6379, 'redis');
-} else {
-  client = redis.createClient();
-}
+var redisClient = redis.createClient();
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
@@ -42,7 +35,7 @@ var authUser = function(req, res, next){
 };
 
 ////////////////////////////////////////////////
-require('./routes.js')(app, client);
+require('./routes.js')(app, redisClient);
 ////////////////////////////////////////////////
 
 // Start server
@@ -52,6 +45,14 @@ var server = app.listen(port, function () {
 
 // Start socket listener
 var io = require('socket.io').listen(server);
+io.sockets.on('connection', function(socket){
+  socket.on('update', function(data){
+
+    socket.broadcast.emit('keypress', data)
+  })
+console.log('connected socket')
+})
+
 
 // Start redisQueue listener for evaluated solutions
 var solutionEvalResponse = require('./responseRedis/responseRedisRunner.js');
