@@ -1,5 +1,8 @@
 var db = require('../helpers/dbConfig');
 var Challenge = require('./challengeModel.js');
+var User = require('../users/userModel.js');
+var Solution = require('../solutions/solutionModel.js');
+var _ = require('lodash');
 
 module.exports = {
   // GET /api/challenges
@@ -12,6 +15,79 @@ module.exports = {
       res.status(500).json({error: true, data: {message: err.message}});
     });
   },
+
+  // NOT an HTTP route, will be called by sockets
+  getChallengeMultiplayer: function (req, callback) {
+    var p1 = req.body.player1_github_handle;
+    var p2 = req.body.player2_github_handle;
+    var completedChallenges = {
+      p1: [],
+      p2: []
+    };
+    var completed = [];
+    var total = [];
+
+    // Get list of challenges completed by player1
+    User.forge({
+      github_handle: p1
+    }).fetch({withRelated: ['solutions']})
+    .then(function (user) {
+      completedChallenges.p1 = user.related('solutions').map(function (s) {
+        return s.get('challenge_id');
+      });
+    // Get list of challenges completed by player2
+      return User.forge({
+        github_handle: p2
+      }).fetch({withRelated: ['solutions']})
+    })
+    .then(function (user) {
+      completedChallenges.p2 = user.related('solutions').map(function (s) {
+        return s.get('challenge_id');
+      });
+    // Get list of all challenges
+      return Challenge.forge({}).fetchAll();
+    })
+    .then(function (challenges) {
+      // return a challenge neither player has seen
+      completed = _.union(completedChallenges.p1, completedChallenges.p2);
+      total = challenges.map(function (c) {
+        return c.get('id');
+      })
+      var available = _.difference(total, completed);
+      // if no challenges are available
+      if (available.length === 0) {
+        return null;
+      } 
+      // otherwise continue to fetch challenge
+      else {
+        var challenge = _.sample(available);
+        return challenge;
+      }
+    })
+    .then(function (id) {
+      if (id === null) {
+        return null;
+      }
+      return Challenge.forge({id: id}).fetch()
+    })
+    .then(function (challenge) {
+      if (challenge !== null) {
+        var attrs = {
+          id: challenge.get('id'),
+          name: challenge.get('name'),
+          prompt: challenge.get('prompt')
+        };
+        if (callback) {
+          callback(attrs);
+        }
+      } else {
+        if (callback) {
+          callback(null);
+        }
+      }
+    });
+  },
+
   // GET /api/challenges/:challengeId
   getChallengeById: function (req, res) {
     var challengeId = req.params.challengeId;
