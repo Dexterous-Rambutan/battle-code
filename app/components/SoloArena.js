@@ -27,6 +27,7 @@ var SoloArena = React.createClass({
     return (
       <div>
         <div id="editor">
+          {this.props.arena.content}
         </div>
         <button onClick={submitProblem}>Submit Solution</button>
         <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors} />
