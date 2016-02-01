@@ -26,6 +26,25 @@ describe('challengeController', function () {
       });
     });
   });
+
+  describe('getChallengeMultiplayer', function () {
+    it('should be a function', function() {
+      assert.isFunction(challengeController.getChallengeMultiplayer);
+    });
+    it('should get a random challenge that two players have not seen', function (done) {
+      challengeController.getChallengeMultiplayer({
+        body: {
+          player1_github_handle: 'kweng2',
+          player2_github_handle: 'alanzfu'
+        }
+      }, function (challenge) {
+        assert.isAbove(challenge.id, 3);
+        assert.isBelow(challenge.id, 6);
+        done();
+      })
+    });
+  });
+
   describe('getChallengeById', function () {
     it('should be a function', function () {
       assert.isFunction(challengeController.getChallengeById);
