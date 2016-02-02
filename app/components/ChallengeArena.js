@@ -43,7 +43,6 @@ var ChallengeArena = React.createClass({
     var emitSocket = function () {
 
       if(this.props.arena.editorSolo.getSession().getValue()){
-        console.log('emitting socket')
         this.props.arena.socket.emit('update', this.props.arena.editorSolo.getSession().getValue())
       }
     }.bind(this)
@@ -58,7 +57,6 @@ var ChallengeArena = React.createClass({
   },
 
   componentDidUpdate: function(){
-    console.log('got here')
     this.props.arena.editorSolo.setValue(this.props.arena.content,1);
   }
 });
