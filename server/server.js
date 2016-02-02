@@ -17,7 +17,6 @@ var challengeController = require('./challenges/challengeController');
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/public'));
 
 //////////// SESSION SECRETS ////////////////////
 app.use(session({
@@ -30,19 +29,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// middleware to check to see if user is logged in
-var authUser = function(req, res, next){
-  if (req.session.loggedIn) {
-    next();
-  } else if(req.url!=='/login' && req.url!=='/signup') {
-    res.redirect('/login');
-  } else {
-    next();
-  }
-};
-
 ////////////////////////////////////////////////
 require('./routes.js')(app, client);
+app.use(express.static(__dirname + '/public'));
 ////////////////////////////////////////////////
 
 // Start server
