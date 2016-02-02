@@ -15,13 +15,13 @@ var SoloArena = React.createClass({
 
   },
   componentDidUpdate: function(){
-    this.props.arena.editor.setValue(this.props.arena.content,1);
+    this.props.arena.editorSolo.setValue(this.props.arena.content,1);
   },
 
   render: function() {
     var submitProblem = function(){
-      var errors = this.props.arena.editor.getSession().getAnnotations();
-      var content = this.props.arena.editor.getSession().getValue();
+      var errors = this.props.arena.editorSolo.getSession().getAnnotations();
+      var content = this.props.arena.editorSolo.getSession().getValue();
       this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle);
     }.bind(this);
     return (
