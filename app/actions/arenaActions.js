@@ -2,26 +2,33 @@
 var actions = require('../constants').action;
 
 
-var storeEditor= function(payload){
+var storeEditor = function(payload) {
   return {
     type: actions.STORE_EDITOR,
     payload: payload
-  }
-}
-var getProblem = function(payload){
+  };
+};
+
+var storeEditorOpponent = function (payload) {
+  return {
+    type: actions.STORE_EDITOR_OPPONENT,
+    payload: payload
+  };
+};
+var getProblem = function (payload) {
   return function(dispatch){
     $.ajax({
       method: 'GET',
       url: '/api/challenges/:' + payload.challenge_id,
       dataType: 'json',
       cache: false,
-      success: function(data){
+      success: function (data) {
           dispatch({
             type: actions.GET_PROBLEM_SUCCESS,
             payload: data
           });
       },
-      error: function(error){
+      error: function (error) {
         dispatch({
           type: actions.GET_PROBLEM_ERROR
         });
@@ -30,9 +37,9 @@ var getProblem = function(payload){
   }
 };
 
-var submitProblem = function(errors, solution_str, socket_id, problem_id, user_handle){
-  if(errors.length === 0){
-    return function(dispatch){
+var submitProblem = function (errors, solution_str, socket_id, problem_id, user_handle) {
+  if(errors.length === 0) {
+    return function (dispatch) {
 
       dispatch({
         type: actions.NO_SYNTAX_ERROR,
@@ -90,5 +97,6 @@ module.exports = {
   getProblem: getProblem,
   submitProblem: submitProblem,
   handleSubmissionResponse: handleSubmissionResponse,
-  storeEditor: storeEditor
+  storeEditor: storeEditor,
+  storeEditorOpponent: storeEditorOpponent
 }

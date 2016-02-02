@@ -96,15 +96,20 @@ var navChallengeArena = function(github_handle){
   socket.emit('arena', github_handle);
   return {
     type: actions.NAV_CHALLENGE_ARENA
-  }
+  };
 };
 
 var navAwayFromArena = function(){
   socket.emit('leaveArena');
-  return {
-    type: actions.NAV_STAGING
-  }
-}
+  return function (dispatch) {
+    dispatch({
+      type: actions.NAV_STAGING
+    });
+    dispatch({
+      type: actions.CLEAR_EDITOR
+    });
+  };
+};
 
 //Currently Not used
 var navLogout = function(){

@@ -12,6 +12,7 @@ var initial = {
   submissionMessage: "Nothing passing so far...(From initial arena reducer)",
   socket: {},
   editorSolo: {},
+  editorOpponent: {},
   syntaxMessage: '',
   errors: []
 }
@@ -37,18 +38,13 @@ function arenaReducer (state, action){
         submissionMessage: "Victory!"
       });
     case actions.STORE_EDITOR:
-      console.log(state.hasOwnProperty('editorOpponent'))
-      if(!state.hasOwnProperty('editorOpponent')){
-        return _.extend({}, state, {
-          editorSolo: action.payload,
-          editorOpponent: {}
-        });
-      } else {
-        return _.extend({}, state, {
-          editorOpponent: action.payload
-        });
-      }
-
+      return _.extend({}, state, {
+        editorSolo: action.payload,
+      });
+    case actions.STORE_EDITOR_OPPONENT:
+      return _.extend({}, state, {
+        editorOpponent: action.payload,
+      });
     case actions.SYNTAX_ERROR:
       return _.extend({}, state, {
         syntaxMessage: 'There are syntax errors in your code. Please fix them and re-submit.',
@@ -63,6 +59,10 @@ function arenaReducer (state, action){
       return _.extend({}, state, {
         content: action.payload.prompt,
         problem_id: action.payload.id
+      });
+    case actions.CLEAR_EDITOR:
+      return _.extend({}, state, {
+        content: ''
       });
     default:
       return state;

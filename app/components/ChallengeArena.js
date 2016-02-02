@@ -21,7 +21,7 @@ var ChallengeArena = React.createClass({
       highlightGutterLine: false
     })
     editor2.setTheme("ace/theme/solarized_dark")
-    this.props.arenaActions.storeEditor(editor2);
+    this.props.arenaActions.storeEditorOpponent(editor2);
 
 
     this.props.arena.socket.on('keypress', function(data){
