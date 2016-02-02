@@ -3,6 +3,7 @@ var userController = require('./users/userController.js');
 var solutionController = require('./solutions/solutionController.js');
 var passport = require('./helpers/psConfig.js');
 var db = require('./helpers/dbConfig.js');
+var adminPrivilege = require('./users/adminPrivilege.js');
 
 module.exports = function (app, redisClient) {
 
@@ -39,6 +40,7 @@ module.exports = function (app, redisClient) {
     }
   });
 
+  app.get('/addProblemsSolutions.html', adminPrivilege);
   app.get('/api/challenges', challengeController.getChallenge);
   app.get('/api/challenges/:challengeId', challengeController.getChallengeById);
   app.post('/api/challenges', challengeController.addChallenge);
@@ -53,8 +55,8 @@ module.exports = function (app, redisClient) {
     req.session.loggedIn = false;
     res.redirect('/');
   });
-  app.get('/api/resetDB', db.resetEverything);
-  app.get('/api/resetDBWithData', function (req, res) {
+  app.get('/api/resetDB', adminPrivilege, db.resetEverything);
+  app.get('/api/resetDBWithData', adminPrivilege, function (req, res) {
     db.resetEverythingPromise()
     .then(function() {
       return userController.resetWithData();
