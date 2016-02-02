@@ -112,7 +112,7 @@ module.exports = {
         total_time: null,
         content: 'Initial Value',
         user_id: playerIds.player1_id,
-        challenge_id, challenge_id,
+        challenge_id: challenge_id,
         valid: false
       }).save()
     })
@@ -123,7 +123,7 @@ module.exports = {
         total_time: null,
         content: 'Initial Value',
         user_id: playerIds.player2_id,
-        challenge_id, challenge_id,
+        challenge_id: challenge_id,
         valid: false
       }).save()
     })
