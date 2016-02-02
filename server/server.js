@@ -6,12 +6,12 @@ var passport = require('./helpers/psConfig.js');
 var session = require('express-session');
 var redis = require('redis');
 var client;
-if(process.env.DEPLOYED) {
+if (process.env.DEPLOYED) {
   client = redis.createClient(6379, 'redis');
 } else {
   client = redis.createClient();
 }
-var redisClient = redis.createClient();
+
 var challengeController = require('./challenges/challengeController');
 
 var app = express();
@@ -115,13 +115,13 @@ io.on('connection', function (socket) {
     }
     socket.leave(room);
     console.log('server.js line 117, leaving room: ', room);
-    if(openQ.length !== 0 && room === openQ[0]){
+    if(openQ.length !== 0 && room === openQ[0]) {
       openQ.shift();
     }
   });
   socket.on('disconnect', function () {
     console.log('server.js line-123, Client disconnected', socket.id);
-    if(openQ.length !== 0){
+    if(openQ.length !== 0 && room === openQ[0]) {
       openQ.shift();
     }
   });
