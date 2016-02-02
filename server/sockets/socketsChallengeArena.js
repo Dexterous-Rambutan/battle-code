@@ -66,6 +66,7 @@ module.exports = function (io) {
         }
       }
       socket.leave(room);
+      socket.to(room).broadcast.emit('playerLeave', data)
       console.log('server.js line 117, Leaving room: ', room);
       if(openQ.length !== 0 && room == openQ[0].name) {
         openQ.shift();

@@ -1,7 +1,6 @@
 'use strict';
 var actions = require('../constants').action;
 
-
 var storeEditor = function(payload) {
   return {
     type: actions.STORE_EDITOR,
@@ -37,7 +36,15 @@ var getProblem = function (payload) {
   }
 };
 
+
+var lostChallenge = function () {
+  return {
+    type: actions.LOST_CHALLENGE
+  }
+}
+
 var submitProblem = function (errors, solution_str, socket_id, problem_id, user_handle, type) {
+
   if(errors.length === 0) {
     return function (dispatch) {
 
@@ -81,17 +88,22 @@ var submitProblem = function (errors, solution_str, socket_id, problem_id, user_
 };
 
 var handleSubmissionResponse = function(payload){
-  if(payload === 'victory!'){
-    return {
-      type: actions.SUBMIT_PROBLEM_SUCCESS
-    }
-  } else {
-    return {
-      type: actions.SUBMIT_PROBLEM_WRONG,
-      payload: payload
-    }
-  }
-}
+  return function (dispatch) {
+    if(payload === 'victory!'){
+      dispatch({
+        type: actions.SUBMIT_PROBLEM_SUCCESS
+      })
+      dispatch({
+        type: actions.COMPLETE_CHALLENGE
+      })
+    } else {
+      dispatch({
+        type: actions.SUBMIT_PROBLEM_WRONG,
+        payload: payload
+      })
+    };
+  };
+};
 
 
 module.exports = {
@@ -99,5 +111,6 @@ module.exports = {
   submitProblem: submitProblem,
   handleSubmissionResponse: handleSubmissionResponse,
   storeEditor: storeEditor,
-  storeEditorOpponent: storeEditorOpponent
+  storeEditorOpponent: storeEditorOpponent,
+  lostChallenge: lostChallenge
 }

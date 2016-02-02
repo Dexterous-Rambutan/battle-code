@@ -31,6 +31,10 @@ var ChallengeArena = React.createClass({
     editor2.setOptions(challengerEditorOptions);
     this.props.arenaActions.storeEditorOpponent(editor2);
 
+    this.props.arena.socket.on('won', function(data){
+      this.props.arenaActions.lostChallenge();
+    }.bind(this))
+
     this.props.arena.socket.on('keypress', function(data){
       var array = data.split('');
       var obf = [];
@@ -55,7 +59,7 @@ var ChallengeArena = React.createClass({
   submitProblem: function(){
       var errors = this.props.arena.editorSolo.getSession().getAnnotations();
       var content = this.props.arena.editorSolo.getSession().getValue();
-      this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle);
+      this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle, 'battle');
   },
   render: function() {
 

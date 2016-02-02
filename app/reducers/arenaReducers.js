@@ -8,6 +8,7 @@ var actions = require('../constants').action;
 var initial = {
   problem_id: 0,
   content: "",
+  status: '',
   opponent_content: "",
   submissionMessage: "Nothing passing so far...(From initial arena reducer)",
   socket: {},
@@ -66,6 +67,16 @@ function arenaReducer (state, action){
       return _.extend({}, state, {
         content: ''
       });
+    case actions.COMPLETE_CHALLENGE:
+      if(state.status === ''){
+        return _.extend({}, state, {
+          status: 'won'
+        });
+      }
+    case actions.LOST_CHALLENGE:
+        return _.extend({}, state, {
+          status: 'lost'
+        });
     default:
       return state;
   }

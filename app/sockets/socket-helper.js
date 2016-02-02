@@ -14,6 +14,9 @@ socket.on('start', function(data){
 });
 
 socket.on('eval', function(submissionMessage){
+  if(submissionMessage === 'victory!'){
+    socket.emit('won', null);
+  }
   console.log('eval here', submissionMessage);
   store.dispatch(arenaAction.handleSubmissionResponse(submissionMessage));
 });

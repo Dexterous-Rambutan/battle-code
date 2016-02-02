@@ -45,4 +45,6 @@ var io = require('socket.io').listen(server);
 var solutionEvalResponse = require('./responseRedis/responseRedisRunner.js');
 solutionEvalResponse(io);
 
+
 require('./sockets/socketsChallengeArena.js')(io);
+
