@@ -6,3 +6,4 @@ server/public/bundle.js
 dump.rdb
 .DS_Store
 logfile
+test/npm-debug.log

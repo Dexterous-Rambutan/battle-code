@@ -78,11 +78,11 @@ module.exports = {
         user_id: solutionAttr.user_id
       }).fetch();
     }).then(function (solution) {
-        if(solutionAttr.type === 'battle') {
-          solutionAttr['valid'] = true;
-          solution.set(solutionAttr).save();
-        }
-        return;
+      if(solutionAttr.type === 'battle' && solutionAttr['valid'] === false) {
+        solutionAttr['valid'] = true;
+        solution.set(solutionAttr).save();
+      }
+      return;
     })
     .catch(function (err) {
       console.log('addSolution error: ', err);
@@ -90,7 +90,7 @@ module.exports = {
   },
 
   //Internally invoked when two players enter a room and a challenge ID is assigned
-  initializeChallengeSolutions: function(player1_github_handle, player2_github_handle, challenge_id){
+  initializeChallengeSolutions: function(player1_github_handle, player2_github_handle, challenge_id, callback){
     var playerIds = {};
 
     User.forge({github_handle: player1_github_handle}).fetch()
@@ -112,7 +112,7 @@ module.exports = {
         total_time: null,
         content: 'Initial Value',
         user_id: playerIds.player1_id,
-        challenge_id, challenge_id,
+        challenge_id: challenge_id,
         valid: false
       }).save()
     })
@@ -123,9 +123,13 @@ module.exports = {
         total_time: null,
         content: 'Initial Value',
         user_id: playerIds.player2_id,
-        challenge_id, challenge_id,
+        challenge_id: challenge_id,
         valid: false
       }).save()
+    }).then(function (solution) {
+      if (callback) {
+        callback(solution);
+      }
     })
     .catch(function(error) {
       console.log('error initializing solutions', error)

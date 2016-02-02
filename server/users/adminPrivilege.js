@@ -5,9 +5,9 @@ module.exports = function (req, res, next) {
     if (isAdmin) {
       next();
     } else {
-      res.status(401).end('Requires admin privilege');
+      res.status(401).end('<html>Requires admin privilege<br><a href="/auth/github">Log In</a></html>');
     }
   } else {
-    res.status(401).end('Requires admin privilege');
+    res.status(401).end('<html>Requires admin privilege<br><a href="/auth/github">Log In</a></html>');
   }
 };
