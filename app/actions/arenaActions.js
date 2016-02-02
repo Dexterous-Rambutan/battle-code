@@ -74,48 +74,37 @@ var submitProblem = function (errors, solution_str, socket_id, problem_id, user_
 };
 
 var handleSubmissionResponse = function (payload) {
-  if (payload.message === 'victory') {
-    return function (dispatch) {
-      // Update the profile with completed challenges
-      $.ajax({
-        method: 'GET',
-        url: '/api/solutions/user/:' + payload.github_handle,
-        dataType: 'json',
-        cache: false,
-        success: function (data) {
-            dispatch({
-              type: actions.STORE_USER_PROBLEMS,
-              payload: data
-            });
-        },
-        error: function (error) {
-          dispatch({
-            type: actions.GET_PROBLEM_ERROR
-          });
-        }
-      });
-      // also inform of submission success
+  return function (dispatch) {
+    // Update the profile with all challenges, attempted and successfully completed
+    $.ajax({
+      method: 'GET',
+      url: '/api/solutions/user/' + payload.github_handle,
+      dataType: 'json',
+      cache: false,
+      success: function (data) {
+        dispatch({
+          type: actions.STORE_USER_PROBLEMS,
+          payload: data
+        });
+      },
+      error: function (error) {
+        dispatch({
+          type: actions.GET_PROBLEM_ERROR
+        });
+      }
+    });
+    if (payload.message === 'victory!') {
+      // inform of submission success
       dispatch({
         type: actions.SUBMIT_PROBLEM_SUCCESS
       });
-    };
-  } else {
-    return {
-      type: actions.SUBMIT_PROBLEM_WRONG,
-      payload: payload.message
-    };
-  }
-  /*
-  if (payload.message === 'victory!') {
-    return {
-      type: actions.SUBMIT_PROBLEM_SUCCESS
-    };
-  } else {
-    return {
-      type: actions.SUBMIT_PROBLEM_WRONG,
-      payload: payload.message
-    };
-  }*/
+    } else {
+      dispatch({
+        type: actions.SUBMIT_PROBLEM_WRONG,
+        payload: payload.message
+      });
+    }
+  };
 };
 
 

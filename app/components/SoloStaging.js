@@ -7,7 +7,7 @@ var SoloStaging = React.createClass({
       var linkToProblem = function(){
         this.props.navActions.navSoloArena(problem);
       }.bind(that);
-      return <a href="#" onClick={linkToProblem}><li>Challenge ID:{problem.challenge_id} - Completed {problem.end_time}</li></a>
+      return <a href="#" onClick={linkToProblem}><li>Challenge ID:{problem.challenge_id} - {problem.valid ? 'Completed:' : 'Attempted:'} - {problem.end_time}</li></a>
     });
 
     return (
