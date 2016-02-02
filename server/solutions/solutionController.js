@@ -78,10 +78,9 @@ module.exports = {
         user_id: solutionAttr.user_id
       }).fetch();
     }).then(function (solution) {
-      if(solutionAttr.type === 'battle') {
+      if(solutionAttr.type === 'battle' && solutionAttr['valid'] === false) {
         solutionAttr['valid'] = true;
         solution.set(solutionAttr).save();
-        console.log('saved')
       }
       return;
     })
