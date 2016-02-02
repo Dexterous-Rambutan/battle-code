@@ -27,17 +27,21 @@ var responds = function (io) {
     var github_handle = reply.github_handle;
     var soln_str = reply.soln_str;
     var message = reply.message;
+    var type = reply.type;
 
     if ( message === 'victory!') {
       solutionController.addSolution({
         content: soln_str,
         challenge_id: challenge_id,
-        github_handle: github_handle
+        github_handle: github_handle,
+        type: type
       });
-      matchController.editOneWhenValid({
-        challenge_id: challenge_id,
-        github_handle: github_handle
-      });
+      if(type === 'battle'){
+        matchController.editOneWhenValid({
+          challenge_id: challenge_id,
+          github_handle: github_handle
+        });
+      }
     }
 
     // Send evaluated response to socket

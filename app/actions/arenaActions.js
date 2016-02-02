@@ -37,7 +37,7 @@ var getProblem = function (payload) {
   }
 };
 
-var submitProblem = function (errors, solution_str, socket_id, problem_id, user_handle) {
+var submitProblem = function (errors, solution_str, socket_id, problem_id, user_handle, type) {
   if(errors.length === 0) {
     return function (dispatch) {
 
@@ -58,7 +58,8 @@ var submitProblem = function (errors, solution_str, socket_id, problem_id, user_
         data: JSON.stringify({
           soln_str: solution_str,
           user_handle: user_handle,
-          socket_id: socket_id
+          socket_id: socket_id,
+          type: type
         }),
         success: function(){
           dispatch({

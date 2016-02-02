@@ -50,7 +50,6 @@ module.exports = {
   editOneWhenValid: function(checkedSolutions){
     var challenge_id = checkedSolutions.challenge_id;
     var github_handle = checkedSolutions.github_handle;
-
     return User.forge({
       github_handle: github_handle
     }).fetch()
@@ -80,7 +79,7 @@ module.exports = {
       }
     })
     .catch(function(err) {
-      console.log(err)
+      console.log('what',err)
       return err;
     })
   },

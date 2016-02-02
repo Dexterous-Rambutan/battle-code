@@ -55,7 +55,8 @@ module.exports = {
       soln_str: req.body.soln_str,
       user_handle: req.body.user_handle,
       socket_id: req.body.socket_id,
-      challenge_id: req.params.challengeId
+      challenge_id: req.params.challengeId,
+      type: req.body.type
     };
     var jobQueue = new Queue('testQueue', redisClient);
     jobQueue.push(JSON.stringify(solutionAttr));
@@ -77,14 +78,11 @@ module.exports = {
         user_id: solutionAttr.user_id
       }).fetch();
     }).then(function (solution) {
-      if (solution) {
-        //edits existing solution with updated solution
-        solutionAttr['valid'] = true;
-        solution.set(solutionAttr).save();
+        if(solutionAttr.type === 'battle') {
+          solutionAttr['valid'] = true;
+          solution.set(solutionAttr).save();
+        }
         return;
-      } else {
-        return Solution.forge(solutionAttr).save();
-      }
     })
     .catch(function (err) {
       console.log('addSolution error: ', err);
