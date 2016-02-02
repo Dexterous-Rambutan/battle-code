@@ -33,8 +33,8 @@ var getProblem = function (payload) {
           type: actions.GET_PROBLEM_ERROR
         });
       }
-    })
-  }
+    });
+  };
 };
 
 var submitProblem = function (errors, solution_str, socket_id, problem_id, user_handle) {
@@ -59,38 +59,64 @@ var submitProblem = function (errors, solution_str, socket_id, problem_id, user_
           soln_str: solution_str,
           user_handle: user_handle,
           socket_id: socket_id
-        }),
-        success: function(){
-          dispatch({
-            type: actions.SUBMIT_PROBLEM
-          });
-        }
+        })
       });
-    }
+    };
   } else {
-
     return {
       type: actions.SYNTAX_ERROR,
       payload: {
         errors: errors,
         solution_str: solution_str
       }
-    }
+    };
   }
 };
 
-var handleSubmissionResponse = function(payload){
-  if(payload === 'victory!'){
-    return {
-      type: actions.SUBMIT_PROBLEM_SUCCESS
-    }
+var handleSubmissionResponse = function (payload) {
+  if (payload.message === 'victory') {
+    return function (dispatch) {
+      // Update the profile with completed challenges
+      $.ajax({
+        method: 'GET',
+        url: '/api/solutions/user/:' + payload.github_handle,
+        dataType: 'json',
+        cache: false,
+        success: function (data) {
+            dispatch({
+              type: actions.STORE_USER_PROBLEMS,
+              payload: data
+            });
+        },
+        error: function (error) {
+          dispatch({
+            type: actions.GET_PROBLEM_ERROR
+          });
+        }
+      });
+      // also inform of submission success
+      dispatch({
+        type: actions.SUBMIT_PROBLEM_SUCCESS
+      });
+    };
   } else {
     return {
       type: actions.SUBMIT_PROBLEM_WRONG,
-      payload: payload
-    }
+      payload: payload.message
+    };
   }
-}
+  /*
+  if (payload.message === 'victory!') {
+    return {
+      type: actions.SUBMIT_PROBLEM_SUCCESS
+    };
+  } else {
+    return {
+      type: actions.SUBMIT_PROBLEM_WRONG,
+      payload: payload.message
+    };
+  }*/
+};
 
 
 module.exports = {
@@ -99,4 +125,4 @@ module.exports = {
   handleSubmissionResponse: handleSubmissionResponse,
   storeEditor: storeEditor,
   storeEditorOpponent: storeEditorOpponent
-}
+};

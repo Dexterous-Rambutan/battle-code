@@ -35,7 +35,11 @@ var responds = function (io) {
     }
 
     // Send evaluated response to socket
-    io.to('/#'+toSocket).emit('eval', message);
+    io.to('/#'+toSocket).emit('eval', {
+      message: message,
+      challenge_id: challenge_id,
+      github_handle: github_handle
+    });
 
     // Keep listening
     responds(io);
