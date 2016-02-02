@@ -1,13 +1,18 @@
+var apiKey;
+var callbackURL;
 var port = process.env.PORT || 3000;
-var callbackURL = "http://127.0.0.1:3000/login/callback";
+
 if (process.env.DEPLOYED) {
   callbackURL = "http://104.131.141.22/login/callback";
+  apiKey = require('../lib/apiKey.js');
+} else {
+  callbackURL = "http://127.0.0.1:3000/login/callback";
+  apiKey = require('../lib/apiKey-dev.js');
 }
 
 ///////////////// API key for GitHub OAuth /////////////
-var apikey = require('../lib/apiKey');
-var GITHUB_CLIENT_ID = apikey.GITHUB_CLIENT_ID;
-var GITHUB_CLIENT_SECRET = apikey.GITHUB_CLIENT_SECRET;
+var GITHUB_CLIENT_ID = apiKey.GITHUB_CLIENT_ID;
+var GITHUB_CLIENT_SECRET = apiKey.GITHUB_CLIENT_SECRET;
 
 ////////// Passport and github passport required //////
 var GitHubStrategy = require('passport-github').Strategy;
@@ -23,8 +28,6 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new GitHubStrategy({
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
-    // callbackURL: "http://104.131.141.22/login/callback"
-    // callbackURL: "http://127.0.0.1:3000/login/callback"
     callbackURL: callbackURL
   },
   function(accessToken, refreshToken, profile, done) {

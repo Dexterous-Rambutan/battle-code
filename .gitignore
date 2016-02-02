@@ -1,6 +1,7 @@
 node_modules
 public/bundle.js
 server/lib/apiKey.js
+server/lib/apiKey-dev.js
 server/public/bundle.js
 dump.rdb
 .DS_Store
