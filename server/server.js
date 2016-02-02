@@ -13,6 +13,8 @@ if (process.env.DEPLOYED) {
 }
 
 var challengeController = require('./challenges/challengeController');
+var solutionController = require('./solutions/solutionController');
+var matchController = require('./matches/matchController');
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
@@ -89,9 +91,13 @@ io.on('connection', function (socket) {
       challengeController.getChallengeMultiplayer({
         body: {
           player1_github_handle: otherPlayer,
-          player2_github_handle: github_handle
+          player2_github_handle: github_handle,
+          type: 'battle'
         }
       }, function (challenge) {
+        //initialize the solutions so that there is record of attempt
+        solutionController.initializeChallengeSolutions(otherPlayer, github_handle, challenge.id);
+        matchController.addForBoth(otherPlayer, github_handle, challenge.id);
         // emit start event to this entire room
         io.to(String(existingRoom.name)).emit('start', challenge);
       });
@@ -116,7 +122,7 @@ io.on('connection', function (socket) {
         console.log('Client disconnected prior to starting a challenge,', socket.id);
         openQ.shift();
       }
-    } else { 
+    } else {
       console.log('Client disconnected after having started a challenge', socket.id);
     }
   });

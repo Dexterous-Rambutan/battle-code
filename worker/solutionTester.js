@@ -62,6 +62,7 @@ function runTest() {
           challenge_id: challenge.get('id'),
           github_handle: solutionInfo.user_handle,
           soln_str: solutionText,
+          type: solutionInfo.type,
           message: 'victory!'
         }), runTest);
       } catch (e) {
@@ -72,7 +73,9 @@ function runTest() {
           challenge_id: challenge.get('id'),
           github_handle: solutionInfo.user_handle,
           soln_str: solutionText,
-          message: e.message
+          type: solutionInfo.type,
+          message: e.message,
+
         }), runTest);
       }
     })

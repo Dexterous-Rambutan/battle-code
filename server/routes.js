@@ -1,6 +1,7 @@
 var challengeController = require('./challenges/challengeController.js');
 var userController = require('./users/userController.js');
 var solutionController = require('./solutions/solutionController.js');
+var matchController = require('./matches/matchController.js');
 var passport = require('./helpers/psConfig.js');
 var db = require('./helpers/dbConfig.js');
 var adminPrivilege = require('./users/adminPrivilege.js');
@@ -51,6 +52,7 @@ module.exports = function (app, redisClient) {
   app.post('/api/solutions/:challengeId', function (req, res) {
     solutionController.testSolution(req, res, redisClient);
   });
+  app.get('/api/users/:githubHandle/matches', matchController.getAllByUser)
   app.get('/logout', function (req, res) {
     req.session.loggedIn = false;
     res.redirect('/');
@@ -66,6 +68,9 @@ module.exports = function (app, redisClient) {
     })
     .then(function() {
       return solutionController.resetWithData();
+    })
+    .then(function() {
+      return matchController.resetWithData();
     })
     .then(function() {
       res.status(201).end();

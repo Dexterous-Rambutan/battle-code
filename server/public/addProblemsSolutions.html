@@ -9,6 +9,7 @@
       var $challengePrompt = $('.challengePrompt');
       var $challengeTest = $('.challengeTest');
       var $submitProblem = $('.submitProblem');
+      var $submitBattleProblem = $('.submitBattleProblem');
 
       var $solution = $('.solution');
       var $challengeId = $('.challengeId');
@@ -19,6 +20,28 @@
             name: $challengeName.val(),
             prompt: $challengePrompt.val(),
             test_suite: $challengeTest.val()
+        });
+        console.log(data);
+        $.ajax({
+          url: 'http://127.0.0.1:3000/api/challenges',
+          method: 'POST',
+          data: data,
+          contentType: 'application/json',
+          success: function(a) {
+            console.log('success');
+          },
+          error: function(a, b) {
+            console.log('error');
+            console.log(b);
+          }
+        });
+      });
+      $submitBattleProblem.on('click', function() {
+        var data = JSON.stringify({
+            name: $challengeName.val(),
+            prompt: $challengePrompt.val(),
+            test_suite: $challengeTest.val(),
+            type: 'battle'
         });
         console.log(data);
         $.ajax({
@@ -57,7 +80,7 @@
           }
         });
       });
-      
+
     });
   </script>
 </head>
@@ -71,16 +94,16 @@
       <textarea class="challengeTest" placeholder="Problem test suite..." style="width:400px; height:350px; float: left"></textarea><br>
     </div>
     <div style="clear: left; padding: 10px">
-      <button class="submitProblem">Submit Problem</button>
+      <button class="submitBattleProblem">Submit Battle Problem</button>
     </div>
   </div>
   <div style="clear: left">
     <div style="width:400px; height:350px; float: left; padding: 10px">
-      <textarea class="solution" placeholder="Solution Code..." style="width:400px; height:350px; float: left"></textarea></div>  
+      <textarea class="solution" placeholder="Solution Code..." style="width:400px; height:350px; float: left"></textarea></div>
     </div>
     <div style="width:400px; height:350px; float: left; padding: 10px">
-      <input class="challengeId" placeholder="Challenge Id" style="width:200px; float: left"></textarea></div>  
-    </div>  
+      <input class="challengeId" placeholder="Challenge Id" style="width:200px; float: left"></textarea></div>
+    </div>
   </div>
   <div style="padding: 10px; clear:left">
     <button class="submitSolution">Submit Solution</button>
