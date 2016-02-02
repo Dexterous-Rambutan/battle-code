@@ -11,7 +11,8 @@ var initial = {
   opponent_content: "",
   submissionMessage: "Nothing passing so far...(From initial arena reducer)",
   socket: {},
-  editor: {},
+  editorSolo: {},
+  editorOpponent: {},
   syntaxMessage: '',
   errors: []
 }
@@ -25,7 +26,7 @@ function arenaReducer (state, action){
       });
     case actions.GET_PROBLEM_SUCCESS:
       return _.extend({}, state, {
-        content: action.payload.content,
+        content: action.payload.prompt,
         problem_id: action.payload.id
       });
     case actions.SUBMIT_PROBLEM_WRONG:
@@ -38,13 +39,17 @@ function arenaReducer (state, action){
       });
     case actions.STORE_EDITOR:
       return _.extend({}, state, {
-        editor: action.payload
+        editorSolo: action.payload,
+      });
+    case actions.STORE_EDITOR_OPPONENT:
+      return _.extend({}, state, {
+        editorOpponent: action.payload,
       });
     case actions.SYNTAX_ERROR:
       return _.extend({}, state, {
         syntaxMessage: 'There are syntax errors in your code. Please fix them and re-submit.',
-        errors: action.payload.errors,
-        content: action.payload.solution_str
+        content: action.payload.solution_str,
+        errors: action.payload.errors
       });
     case actions.NO_SYNTAX_ERROR:
       return _.extend({}, state, {
@@ -56,6 +61,10 @@ function arenaReducer (state, action){
       return _.extend({}, state, {
         content: action.payload.prompt,
         problem_id: action.payload.id
+      });
+    case actions.CLEAR_EDITOR:
+      return _.extend({}, state, {
+        content: ''
       });
     default:
       return state;

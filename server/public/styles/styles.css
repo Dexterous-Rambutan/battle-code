@@ -2,4 +2,12 @@
   min-height: 80%;
   height:50%;
   width:48%;
+  float:left;
+}
+
+#editor2 {
+  min-height: 80%;
+  height:50%;
+  width:48%;
+  float: right;
 }

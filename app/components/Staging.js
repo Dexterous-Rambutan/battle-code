@@ -1,6 +1,9 @@
 var React = require('react');
 
 var Staging = React.createClass({
+  navChallengeArena: function () {
+    this.props.navActions.navChallengeArena(this.props.user.github_handle);
+  },
   componentDidMount: function(){
     this.props.stagingActions.createSocket();
   },
@@ -12,7 +15,7 @@ var Staging = React.createClass({
     return (
       <div>
         <button onClick={getListofProblemsAndNav}>PRACTICE</button>
-        <button onClick={this.props.navActions.navChallengeArena}>CHALLENGE</button>
+        <button onClick={this.navChallengeArena}>CHALLENGE</button>
       </div>
     )
   }
