@@ -1,6 +1,7 @@
 var challengeController = require('./challenges/challengeController.js');
 var userController = require('./users/userController.js');
 var solutionController = require('./solutions/solutionController.js');
+var matchController = require('./matches/matchController.js');
 var passport = require('./helpers/psConfig.js');
 var db = require('./helpers/dbConfig.js');
 var adminPrivilege = require('./users/adminPrivilege.js');
@@ -66,6 +67,9 @@ module.exports = function (app, redisClient) {
     })
     .then(function() {
       return solutionController.resetWithData();
+    })
+    .then(function() {
+      return matchController.resetWithData();
     })
     .then(function() {
       res.status(201).end();

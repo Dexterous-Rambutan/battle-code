@@ -48,6 +48,7 @@ var createSolutionsTable = function () {
     solution.string('content', 80000);  // user input solution string, might be large!
     solution.integer('user_id');
     solution.integer('challenge_id');
+    solution.boolean('valid');
   }).then(function (table) {
     console.log('Created solutions Table', table);
   });
@@ -60,6 +61,7 @@ var createChallengesTable = function () {
     challenge.string('name', 255);
     challenge.string('prompt', 1000);
     challenge.string('test_suite', 8000); // test code that we will write per challenge
+    challenge.string('type', 50);
     challenge.timestamps();
   }).then(function (table) {
     console.log('Created challenges Table', table);
@@ -69,7 +71,11 @@ var createChallengesTable = function () {
 var createMatchesTable = function () {
   return db.knex.schema.createTable('matches', function (match) {
     match.increments('id').primary();
+    match.integer('user_id');
+    match.string('user_github_handle', 50);
+    match.string('opponent_github_handle', 50);
     match.boolean('win');
+    match.integer('challenge_id');
   }).then(function (table) {
     console.log('Created matches Table', table);
   });
