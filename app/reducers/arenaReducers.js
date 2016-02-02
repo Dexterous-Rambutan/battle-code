@@ -36,7 +36,7 @@ function arenaReducer (state, action){
       });
     case actions.SUBMIT_PROBLEM_SUCCESS:
       return _.extend({}, state, {
-        submissionMessage: "Victory!"
+        submissionMessage: "solution submitted successfully with passing results..."
       });
     case actions.STORE_EDITOR:
       return _.extend({}, state, {
@@ -63,19 +63,21 @@ function arenaReducer (state, action){
         content: action.payload.prompt,
         problem_id: action.payload.id
       });
-    case actions.CLEAR_EDITOR:
+    case actions.CLEAR_INFO:
       return _.extend({}, state, {
-        content: ''
+        content: '',
+        status: '',
+        submissionMessage: 'Nothing passing so far...(From initial arena reducer)'
       });
     case actions.COMPLETE_CHALLENGE:
       if(state.status === ''){
         return _.extend({}, state, {
-          status: 'won'
+          status: 'YOU WON!'
         });
       }
     case actions.LOST_CHALLENGE:
         return _.extend({}, state, {
-          status: 'lost'
+          status: 'YOU LOST :('
         });
     default:
       return state;

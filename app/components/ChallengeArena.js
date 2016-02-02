@@ -69,9 +69,11 @@ var ChallengeArena = React.createClass({
         </div>
         <div id="editor2" className='opponent'>
         </div>
-        <button onClick={this.submitProblem}>Submit Solution</button>
-        <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors} />
-        <div>{this.props.arena.submissionMessage}</div>
+        {this.props.user.isLoggedIn && this.props.view !== 'CHALLENGE_ARENA' ? <li><a href='/logout'>Logout</a></li> : null}
+        {this.props.arena.content ? <button onClick={this.submitProblem}>Submit Solution</button>: null}
+        {this.props.arena.content ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : "waiting for other player... when propmt appears, you may begin hacking. be ready."}
+        {this.props.arena.content ? <div>{this.props.arena.submissionMessage}</div> : null}
+        {this.props.arena.status}
       </div>
     )
   },
