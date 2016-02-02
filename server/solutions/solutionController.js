@@ -12,7 +12,7 @@ module.exports = {
     })
     .fetch()
     .then(function (solution) {
-      if (solution) { 
+      if (solution) {
         res.json(solution);
       } else {
         res.status(404).json(null);
@@ -48,13 +48,15 @@ module.exports = {
 
   },
 
+
   // POST /api/solutions/:challengeId
   testSolution: function (req, res, redisClient) {
     var solutionAttr = {
       soln_str: req.body.soln_str,
       user_handle: req.body.user_handle,
       socket_id: req.body.socket_id,
-      challenge_id: req.params.challengeId
+      challenge_id: req.params.challengeId,
+      type: req.body.type
     };
     var jobQueue = new Queue('testQueue', redisClient);
     jobQueue.push(JSON.stringify(solutionAttr));
@@ -76,15 +78,58 @@ module.exports = {
         user_id: solutionAttr.user_id
       }).fetch();
     }).then(function (solution) {
-      if (solution) {
+        if(solutionAttr.type === 'battle') {
+          solutionAttr['valid'] = true;
+          solution.set(solutionAttr).save();
+        }
         return;
-      } else {
-        return Solution.forge(solutionAttr).save();
-      }
     })
     .catch(function (err) {
       console.log('addSolution error: ', err);
     });
+  },
+
+  //Internally invoked when two players enter a room and a challenge ID is assigned
+  initializeChallengeSolutions: function(player1_github_handle, player2_github_handle, challenge_id){
+    var playerIds = {};
+
+    User.forge({github_handle: player1_github_handle}).fetch()
+    .then(function(player1) {
+      playerIds.player1_id = player1.get('id');
+      return player1.get('id');
+    })
+    .then(function(player1_id){
+      return User.forge({github_handle: player2_github_handle}).fetch()
+    })
+    .then(function(player2) {
+      playerIds.player2_id = player2.get('id');
+      return player2.get('id');
+    })
+    .then(function () {
+      return Solution.forge({
+        start_time: new Date(Date.now()),
+        end_time: new Date(Date.now()),
+        total_time: null,
+        content: 'Initial Value',
+        user_id: playerIds.player1_id,
+        challenge_id, challenge_id,
+        valid: false
+      }).save()
+    })
+    .then(function () {
+      return Solution.forge({
+        start_time: new Date(Date.now()),
+        end_time: new Date(Date.now()),
+        total_time: null,
+        content: 'Initial Value',
+        user_id: playerIds.player2_id,
+        challenge_id, challenge_id,
+        valid: false
+      }).save()
+    })
+    .catch(function(error) {
+      console.log('error initializing solutions', error)
+    })
   },
 
   resetWithData: function () {
@@ -94,7 +139,8 @@ module.exports = {
       total_time: null,
       content: 'solved!',
       user_id: 3,
-      challenge_id: 1
+      challenge_id: 1,
+      valid: true
     }).save().then(function () {
       return Solution.forge({
         start_time: new Date(Date.now() - 150*60*60*1000),
@@ -102,7 +148,8 @@ module.exports = {
         total_time: null,
         content: 'solved!',
         user_id: 3,
-        challenge_id: 2
+        challenge_id: 2,
+        valid: true
       }).save();
     }).then(function() {
       return Solution.forge({
@@ -111,7 +158,8 @@ module.exports = {
         total_time: null,
         content: 'solved!',
         user_id: 3,
-        challenge_id: 3
+        challenge_id: 3,
+        valid: true
       }).save();
     }).then(function() {
       return Solution.forge({
@@ -120,7 +168,8 @@ module.exports = {
         total_time: null,
         content: 'solved!',
         user_id: 2,
-        challenge_id: 3
+        challenge_id: 3,
+        valid: true
       }).save();
     }).then(function() {
       return Solution.forge({
@@ -129,7 +178,8 @@ module.exports = {
         total_time: null,
         content: 'solved!',
         user_id: 2,
-        challenge_id: 4
+        challenge_id: 4,
+        valid: true
       }).save();
     }).then(function() {
       return Solution.forge({
@@ -138,7 +188,8 @@ module.exports = {
         total_time: null,
         content: 'solved!',
         user_id: 4,
-        challenge_id: 1
+        challenge_id: 1,
+        valid: true
       }).save();
     }).then(function() {
       return Solution.forge({
@@ -147,7 +198,8 @@ module.exports = {
         total_time: null,
         content: 'solved!',
         user_id: 1,
-        challenge_id: 3
+        challenge_id: 3,
+        valid: true
       }).save();
     }).then(function() {
       return Solution.forge({
@@ -156,7 +208,8 @@ module.exports = {
         total_time: null,
         content: 'solved!',
         user_id: 1,
-        challenge_id: 1
+        challenge_id: 1,
+        valid: true
       }).save();
     })
   }

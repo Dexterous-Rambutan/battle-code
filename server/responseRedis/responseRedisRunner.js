@@ -1,6 +1,8 @@
 var redis = require('redis');
 var redisQueue = require('./redisQueue.js');
 var solutionController = require('../solutions/solutionController.js');
+var matchController = require('../matches/matchController.js');
+
 var client;
 if (process.env.DEPLOYED) {
   client = redis.createClient(6379, 'redis');
@@ -25,13 +27,21 @@ var responds = function (io) {
     var github_handle = reply.github_handle;
     var soln_str = reply.soln_str;
     var message = reply.message;
+    var type = reply.type;
 
     if ( message === 'victory!') {
       solutionController.addSolution({
         content: soln_str,
         challenge_id: challenge_id,
-        github_handle: github_handle
+        github_handle: github_handle,
+        type: type
       });
+      if(type === 'battle'){
+        matchController.editOneWhenValid({
+          challenge_id: challenge_id,
+          github_handle: github_handle
+        });
+      }
     }
 
     // Send evaluated response to socket
