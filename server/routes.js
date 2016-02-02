@@ -52,6 +52,7 @@ module.exports = function (app, redisClient) {
   app.post('/api/solutions/:challengeId', function (req, res) {
     solutionController.testSolution(req, res, redisClient);
   });
+  app.get('/api/users/:githubHandle/matches', matchController.getAllByUser)
   app.get('/logout', function (req, res) {
     req.session.loggedIn = false;
     res.redirect('/');

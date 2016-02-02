@@ -1,6 +1,8 @@
 var redis = require('redis');
 var redisQueue = require('./redisQueue.js');
 var solutionController = require('../solutions/solutionController.js');
+var matchController = require('../matches/matchController.js');
+
 var client;
 if (process.env.DEPLOYED) {
   client = redis.createClient(6379, 'redis');
@@ -29,6 +31,10 @@ var responds = function (io) {
     if ( message === 'victory!') {
       solutionController.addSolution({
         content: soln_str,
+        challenge_id: challenge_id,
+        github_handle: github_handle
+      });
+      matchController.editOneWhenValid({
         challenge_id: challenge_id,
         github_handle: github_handle
       });
