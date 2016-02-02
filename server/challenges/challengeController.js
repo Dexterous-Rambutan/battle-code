@@ -18,8 +18,10 @@ module.exports = {
 
   // NOT an HTTP route, will be called by sockets
   getChallengeMultiplayer: function (req, callback) {
+    //req has to have type
     var p1 = req.body.player1_github_handle;
     var p2 = req.body.player2_github_handle;
+    var type = req.body.type;
     var completedChallenges = {
       p1: [],
       p2: []
@@ -32,7 +34,12 @@ module.exports = {
       github_handle: p1
     }).fetch({withRelated: ['solutions']})
     .then(function (user) {
-      completedChallenges.p1 = user.related('solutions').map(function (s) {
+      completedChallenges.p1 = user.related('solutions').filter(function(s){
+        if(s.type === type) {
+          return true;
+        }
+      });
+      completedChallenges.p1 = completedChallenges.p1.map(function (s) {
         return s.get('challenge_id');
       });
     // Get list of challenges completed by player2
@@ -41,11 +48,16 @@ module.exports = {
       }).fetch({withRelated: ['solutions']})
     })
     .then(function (user) {
-      completedChallenges.p2 = user.related('solutions').map(function (s) {
+      completedChallenges.p2 = user.related('solutions').filter(function(s){
+        if(s.type === type) {
+          return true;
+        }
+      });
+      completedChallenges.p2 = completedChallenges.p2.map(function (s) {
         return s.get('challenge_id');
       });
     // Get list of all challenges
-      return Challenge.forge({}).fetchAll();
+      return Challenge.forge({type: type}).fetchAll();
     })
     .then(function (challenges) {
       // return a challenge neither player has seen
