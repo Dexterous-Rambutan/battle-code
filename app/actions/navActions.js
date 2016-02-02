@@ -91,9 +91,9 @@ var spoofSolo = function(){
   }
 }
 
-var navChallengeArena = function(){
+var navChallengeArena = function(github_handle){
   console.log('should emit arena action');
-  socket.emit('arena');
+  socket.emit('arena', github_handle);
   return {
     type: actions.NAV_CHALLENGE_ARENA
   }

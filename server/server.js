@@ -95,9 +95,9 @@ io.on('connection', function (socket) {
           player1_github_handle: otherPlayer,
           player2_github_handle: github_handle
         }
-      }, function () {
+      }, function (challenge) {
         // emit start event to this entire room
-        io.to(String(existingRoom.name)).emit('start');
+        io.to(String(existingRoom.name)).emit('start', challenge);
       });
     }
   });

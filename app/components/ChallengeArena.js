@@ -55,6 +55,11 @@ var ChallengeArena = React.createClass({
         </div>
       </div>
     )
+  },
+
+  componentDidUpdate: function(){
+    console.log('got here')
+    this.props.arena.editorSolo.setValue(this.props.arena.content,1);
   }
 });
 

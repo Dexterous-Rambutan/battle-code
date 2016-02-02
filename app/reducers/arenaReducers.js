@@ -25,7 +25,7 @@ function arenaReducer (state, action){
       });
     case actions.GET_PROBLEM_SUCCESS:
       return _.extend({}, state, {
-        content: action.payload.content,
+        content: action.payload.prompt,
         problem_id: action.payload.id
       });
     case actions.SUBMIT_PROBLEM_WRONG:
