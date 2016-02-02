@@ -42,6 +42,9 @@ var navSoloArena = function(payload){
       dataType: 'json',
       success: function(results){
         dispatch({
+          type: actions.CLEAR_EDITOR
+        });
+        dispatch({
           type: actions.STORE_SOLO_PROBLEM,
           payload: results
         });
@@ -56,15 +59,6 @@ var navSoloArena = function(payload){
         })
       }
     })
-
-
-    dispatch({
-      type: actions.STORE_SOLO_PROBLEM,
-      payload: payload
-    });
-    dispatch({
-      type: actions.NAV_SOLO_ARENA
-    });
   }
 };
 
@@ -92,10 +86,15 @@ var spoofSolo = function(){
 }
 
 var navChallengeArena = function(github_handle){
-  console.log('should emit arena action');
-  socket.emit('arena', github_handle);
-  return {
-    type: actions.NAV_CHALLENGE_ARENA
+  return function (dispatch) {
+    console.log('should emit arena action');
+    socket.emit('arena', github_handle);
+    dispatch({
+      type: actions.CLEAR_EDITOR
+    });
+    dispatch({
+      type: actions.NAV_CHALLENGE_ARENA
+    });
   };
 };
 
@@ -104,9 +103,6 @@ var navAwayFromArena = function(){
   return function (dispatch) {
     dispatch({
       type: actions.NAV_STAGING
-    });
-    dispatch({
-      type: actions.CLEAR_EDITOR
     });
   };
 };

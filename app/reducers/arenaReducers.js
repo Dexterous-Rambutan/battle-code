@@ -52,7 +52,6 @@ function arenaReducer (state, action){
         errors: action.payload.errors
       });
     case actions.NO_SYNTAX_ERROR:
-      console.log(action.payload)
       return _.extend({}, state, {
         content: action.payload,
         syntaxMessage: '',
