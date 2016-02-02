@@ -114,12 +114,14 @@ io.on('connection', function (socket) {
       }
     }
     socket.leave(room);
-    console.log('server.js line 117, leaving room: ', room);
-    if(openQ.length !== 0 && room === openQ[0]) {
+    console.log('server.js line 117, leaving room: ', room, openQ[0].name);
+    if(openQ.length !== 0 && room == openQ[0].name) {
       openQ.shift();
     }
   });
   socket.on('disconnect', function () {
+    var clients = io.sockets.clients().adapter;
+    console.log('All clients:', clients);
     console.log('server.js line-123, Client disconnected', socket.id);
     if(openQ.length !== 0 && room === openQ[0]) {
       openQ.shift();
