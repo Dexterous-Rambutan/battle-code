@@ -12,10 +12,6 @@ if (process.env.DEPLOYED) {
   client = redis.createClient();
 }
 
-var challengeController = require('./challenges/challengeController');
-var solutionController = require('./solutions/solutionController');
-var matchController = require('./matches/matchController');
-
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());

@@ -57,8 +57,10 @@ module.exports = function (app, redisClient) {
     req.session.loggedIn = false;
     res.redirect('/');
   });
-  app.get('/api/resetDB', adminPrivilege, db.resetEverything);
-  app.get('/api/resetDBWithData', adminPrivilege, function (req, res) {
+  // app.get('/api/resetDB', adminPrivilege, db.resetEverything);
+  app.get('/api/resetDB', db.resetEverything);
+  // app.get('/api/resetDBWithData', adminPrivilege, function (req, res) {
+  app.get('/api/resetDBWithData', function (req, res) {
     db.resetEverythingPromise()
     .then(function() {
       return userController.resetWithData();

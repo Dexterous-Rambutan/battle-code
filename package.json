@@ -41,7 +41,7 @@
     "socket.io-client": "~1.4.5"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test/challengeControllerSpec.js && mocha test/solutionControllerSpec.js && mocha test/userControllerSpec.js",
     "start": "webpack-dev-server --inline --hot --content-base public/"
   },
   "author": "",
