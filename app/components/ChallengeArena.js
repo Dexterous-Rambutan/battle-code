@@ -2,6 +2,7 @@ var React = require('react');
 var io = require('socket.io-client');
 var socket = require('../sockets/socket-helper');
 var _ = require('lodash');
+var ErrorList = require('./ErrorList');
 
 var selfEditorOptions = {
   theme: "ace/theme/solarized_light",
@@ -45,19 +46,28 @@ var ChallengeArena = React.createClass({
 
 
   },
-  render: function() {
-    var emitSocket = function () {
+  emitSocket: function () {
 
-      if(this.props.arena.editorSolo.getSession().getValue()){
-        this.props.arena.socket.emit('update', this.props.arena.editorSolo.getSession().getValue())
-      }
-    }.bind(this)
+    if(this.props.arena.editorSolo.getSession().getValue()){
+      this.props.arena.socket.emit('update', this.props.arena.editorSolo.getSession().getValue())
+    }
+  },
+  submitProblem: function(){
+      var errors = this.props.arena.editorSolo.getSession().getAnnotations();
+      var content = this.props.arena.editorSolo.getSession().getValue();
+      this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle);
+  },
+  render: function() {
+
     return (
       <div>
-        <div id="editor" onKeyPress={emitSocket} className='player'>
+        <div id="editor" onKeyPress={this.emitSocket} className='player'>
         </div>
         <div id="editor2" className='opponent'>
         </div>
+        <button onClick={this.submitProblem}>Submit Solution</button>
+        <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors} />
+        <div>{this.props.arena.submissionMessage}</div>
       </div>
     )
   },
