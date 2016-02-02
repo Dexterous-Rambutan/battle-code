@@ -1,24 +1,18 @@
 var React = require('react');
 var io = require('socket.io-client');
 
+
 var ErrorList = require('./ErrorList');
 var socket = require('../sockets/socket-helper');
-
-var selfEditorOptions = {
-  // theme: "ace/theme/solarized_light",
-  theme: "ace/theme/monokai",
-  mode: "ace/mode/javascript",
-  blockScrolling: Infinity,
-  useSoftTabs: true,
-  tabSize: 2,
-  wrap: true
-};
 
 var SoloArena = React.createClass({
   componentDidMount: function(){
     var editor = ace.edit("editor");
-    editor.setOptions(selfEditorOptions);
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/javascript");
+    editor.$blockScrolling = Infinity
     this.props.arenaActions.storeEditor(editor);
+
   },
   componentDidUpdate: function(){
     this.props.arena.editorSolo.setValue(this.props.arena.content,1);
