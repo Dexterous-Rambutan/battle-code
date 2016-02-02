@@ -31,7 +31,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // middleware to check to see if user is logged in
-var authUser = function(req, res, next){
+var authUser = function (req, res, next) {
   if (req.session.loggedIn) {
     next();
   } else if(req.url!=='/login' && req.url!=='/signup') {
@@ -62,17 +62,18 @@ solutionEvalResponse(io);
 var openQ = [];
 var roomCounter = 0;
 io.on('connection', function (socket) {
-   socket.on('update', function(data){
-    console.log('room is:', socket.rooms)
-    var room
+
+   socket.on('update', function (data) {
+    console.log('room is:', socket.rooms);
+    var room;
     for(var key in socket.rooms){
       if(key[0] !== '/'){
         room = key[0];
       }
     }
+    socket.to(room).broadcast.emit('keypress', data);
+  });
 
-    socket.to(room).broadcast.emit('keypress', data)
-  })
   console.log('server.js line-76, Socket connected:', socket.id, socket.rooms);
   socket.on('arena', function (github_handle) {
     // if there aren't any open room, create a room and join it
@@ -84,13 +85,14 @@ io.on('connection', function (socket) {
       // add this room to the openQ
       openQ.push({
         name: roomCounter,
-        players: [github_handle]
+        players: [github_handle],
+        socket_id: [socket.id]
       });
     // Otherwise, there is an open room, join that one
     } else {
       var existingRoom = openQ.shift();
       // join the first existing room
-      console.log('server.js line-93, Joining existing room:', existingRoom);
+      console.log('server.js line-93, Joining existing room:', existingRoom.name);
       socket.join(String(existingRoom.name));
       // remove this room from the openQ and add to inProgressRooms
       // find all players in the room and find a challenge neither player has seen
@@ -106,25 +108,27 @@ io.on('connection', function (socket) {
       });
     }
   });
-  socket.on('leaveArena', function(data){
+  socket.on('leaveArena', function (data) {
     var room;
-    for(var key in socket.rooms){
-      if(key[0] !== '/'){
+    for (var key in socket.rooms) {
+      if (key[0] !== '/') {
         room = key[0];
       }
     }
     socket.leave(room);
-    console.log('server.js line 117, leaving room: ', room, openQ[0].name);
+    console.log('server.js line 117, Leaving room: ', room);
     if(openQ.length !== 0 && room == openQ[0].name) {
       openQ.shift();
     }
   });
   socket.on('disconnect', function () {
-    var clients = io.sockets.clients().adapter;
-    console.log('All clients:', clients);
-    console.log('server.js line-123, Client disconnected', socket.id);
-    if(openQ.length !== 0 && room === openQ[0]) {
-      openQ.shift();
+    if (openQ[0]) {
+      if (openQ[0]['socket_id'][0] == socket.id) {
+        console.log('Client disconnected prior to starting a challenge,', socket.id);
+        openQ.shift();
+      }
+    } else { 
+      console.log('Client disconnected after having started a challenge', socket.id);
     }
   });
 });
