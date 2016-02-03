@@ -124,7 +124,10 @@ var handleSubmissionResponse = function (payload) {
     } else {
       dispatch({
         type: actions.SUBMIT_PROBLEM_WRONG,
-        payload: payload.message
+        payload: {
+          message: payload.message,
+          stdout: payload.stdout
+        }
       });
     }
   };

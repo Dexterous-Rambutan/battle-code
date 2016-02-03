@@ -81,6 +81,7 @@ var ChallengeArena = React.createClass({
           <li>{this.props.arena.opponentStatus}</li>
           <li>{this.props.arena.status}</li>
         </ul>
+        <div>Console: </div><div>{this.props.arena.stdout}</div>
 
       </div>
     )

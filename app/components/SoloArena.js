@@ -37,6 +37,7 @@ var SoloArena = React.createClass({
         <button onClick={submitProblem}>Submit Solution</button>
         <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors} />
         <div>{this.props.arena.submissionMessage}</div>
+        <div>Console: </div><div>{this.props.arena.stdout}</div>
       </div>
     );
   }
