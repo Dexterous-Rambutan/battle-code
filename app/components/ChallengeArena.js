@@ -30,11 +30,21 @@ var ChallengeArena = React.createClass({
     var editor2 = ace.edit('editor2');
     editor2.setOptions(challengerEditorOptions);
     this.props.arenaActions.storeEditorOpponent(editor2);
-
+    this.props.arena.socket.on('start', function(data){
+      var player = {
+        github_handle: this.props.user.github_handle,
+        github_display_name: this.props.user.github_display_name,
+        github_profileUrl: this.props.user.github_profileUrl,
+        github_avatar_url: this.props.user.github_avatar_url
+      };
+      this.props.arena.socket.emit('playerId', player)
+    }.bind(this))
+    // sockets on won event
     this.props.arena.socket.on('won', function(data){
       this.props.arenaActions.lostChallenge();
     }.bind(this))
 
+    // sockets on playerLeave event
     this.props.arena.socket.on('playerLeave', function(data){
       this.props.arenaActions.playerLeave();
     }.bind(this))
@@ -68,21 +78,18 @@ var ChallengeArena = React.createClass({
   render: function() {
 
     return (
-      <div>
-        <div id="editor" onKeyPress={this.emitSocket} className='player'>
+      <div className="arena">
+        <div id="editor" onKeyPress={this.emitSocket} className='player-editor'></div>
+        <div id="editor2" className='opponent-editor'></div>
+        {this.props.arena.content ? <div><button className="submit" onClick={this.submitProblem}>Submit Solution</button></div>: null}
+        <div className="messages">
+          {!!this.props.arena.opponent_info.github_handle ? <div>OPPONENT: {this.props.arena.opponent_info.github_handle}</div> : null}
+          {this.props.arena.syntaxMessage !== '' ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : null}
+          {this.props.arena.submissionMessage !== "Nothing passing so far...(From initial arena reducer)" ? <div className="submission-message">SUBMISSION RESPONSE: {this.props.arena.submissionMessage}</div> : null}
+          {this.props.arena.stdout !== '' ? <div className="console">Console: <br />{this.props.arena.stdout}</div> : null }
+          {this.props.arena.opponentStatus !== '' ? <div>{this.props.arena.opponentStatus}</div> : null}
+          {this.props.arena.status !== '' ? <div>{this.props.arena.status}</div> : null}
         </div>
-        <div id="editor2" className='opponent'>
-        </div>
-        {this.props.user.isLoggedIn && this.props.view !== 'CHALLENGE_ARENA' ? <li><a href='/logout'>Logout</a></li> : null}
-        {this.props.arena.content ? <button onClick={this.submitProblem}>Submit Solution</button>: null}
-        <ul>
-          <li>SYNTAX ERRORS: {this.props.arena.content ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : 'none'}</li>
-          <li>SUBMISSION RESPONSE: {this.props.arena.content ? <div>{this.props.arena.submissionMessage}</div> : 'N/A'}</li>
-          <li>{this.props.arena.opponentStatus}</li>
-          <li>{this.props.arena.status}</li>
-        </ul>
-        <div>Console: </div><div>{this.props.arena.stdout}</div>
-
       </div>
     )
   },

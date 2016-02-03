@@ -7,7 +7,7 @@ var Nav = React.createClass({
 
   render: function () {
     return (
-      <div>
+      <div className="nav-bar">
         <ul>
           {this.props.user.isLoggedIn && this.props.view !== 'CHALLENGE_ARENA' ? <li><a href='/logout'>Logout</a></li> : null}
           {this.props.user.isLoggedIn && this.props.view !== 'CHALLENGE_ARENA' ? <li><a href='#' onClick={this.navProfile}>Profile</a></li> : null}

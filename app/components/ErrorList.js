@@ -9,8 +9,8 @@ var ErrorList = React.createClass({
 
     })
     return (
-      <div>
-        {this.props.syntaxMessage}
+      <div className="syntax-messages">
+        SYNTAX ERRORS: {this.props.syntaxMessage}
         <ul>
           {errors}
         </ul>
