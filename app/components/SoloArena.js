@@ -31,13 +31,14 @@ var SoloArena = React.createClass({
       this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle, 'solo');
     }.bind(this);
     return (
-      <div>
-        <div id="editor">
+      <div className="arena">
+        <div id="editor" className="solo-editor"></div>
+        <button className="submit" onClick={submitProblem}>Submit Solution</button>
+        <div className="messages">
+          {this.props.arena.syntaxMessage !== '' ? <div className="syntax-messages"><ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/></div> : null}
+          {this.props.arena.submissionMessage !== "Nothing passing so far...(From initial arena reducer)" ? <div className="submission-message">SUBMISSION RESPONSE: {this.props.arena.submissionMessage}</div> : null}
+          {this.props.arena.stdout !== '' ? <div className="console">Console: <br />{this.props.arena.stdout}</div> : null }
         </div>
-        <button onClick={submitProblem}>Submit Solution</button>
-        <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors} />
-        <div>{this.props.arena.submissionMessage}</div>
-        <div>Console: </div><div>{this.props.arena.stdout}</div>
       </div>
     );
   }

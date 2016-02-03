@@ -16,21 +16,21 @@ var Profile = React.createClass({
     });
 
     return (
-      <div>
-        <div>
+      <div className="profile">
+        <div className="profile-img">
           <img src={this.props.user.github_avatar_url}></img>
         </div>
-        <div>
+        <div className="profile-github">
           <a href={this.props.user.github_profileUrl}>{this.props.user.github_handle}</a>
         </div>
-        <div>
+        <div className="profile-name">
           {this.props.user.github_display_name}
         </div>
-        <div>
+        <div className="profile-record">
           Wins: {wins} &nbsp;
           Losses: {loss}
         </div>
-        <div>
+        <div className="profile-challenges">
           {listOfProblems}
         </div>
       </div>

@@ -13,7 +13,7 @@ var Staging = React.createClass({
     }.bind(this);
 
     return (
-      <div>
+      <div className="modes">
         <button onClick={getListofProblemsAndNav}>PRACTICE</button>
         <button onClick={this.navChallengeArena}>CHALLENGE</button>
       </div>
