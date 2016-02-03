@@ -176,6 +176,28 @@ module.exports = {
         test_suite: "assert.equal(nthFibonacci(1), 1);\nassert.equal(nthFibonacci(2), 1);\nassert.equal(nthFibonacci(3), 2);\nassert.equal(nthFibonacci(4), 3);\nassert.equal(nthFibonacci(5), 5);\nassert.equal(nthFibonacci(10), 55);\nassert.equal(nthFibonacci(20), 6765);",
         type:'battle'
       }).save();
-    })
+    });
+  },
+
+  repopulateTable: function (req, res) {
+    var fs = require('fs');
+    var pg = require('pg');
+    var copyFrom = require('pg-copy-streams').from;
+
+    var DB_CONN_STR = "postgres://localhost:5432/myDB";
+    var DB_CSV_PATH = "./challenges.csv";
+    if (process.env.DEPLOYED) {
+      DB_CONN_STR = "postgres://postgres:mysecretpassword@postgres/postgres";
+    }
+
+    pg.connect(DB_CONN_STR, function(err, client, done) {
+      var stream = client.query(copyFrom("COPY challenges FROM STDIN WITH DELIMITER ',' CSV HEADER"));
+      var fileStream = fs.createReadStream(DB_CSV_PATH);
+      fileStream.on('error', done);
+      fileStream.pipe(stream).on('finish', function () {
+        res.end();
+        done();
+      }).on('error', done);
+    });
   }
 };
