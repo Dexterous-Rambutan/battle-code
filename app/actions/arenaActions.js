@@ -33,8 +33,8 @@ var getProblem = function (payload) {
           type: actions.GET_PROBLEM_ERROR
         });
       }
-    })
-  }
+    });
+  };
 };
 
 
@@ -81,34 +81,52 @@ var submitProblem = function (errors, solution_str, socket_id, problem_id, user_
           });
         }
       });
-    }
+    };
   } else {
-
     return {
       type: actions.SYNTAX_ERROR,
       payload: {
         errors: errors,
         solution_str: solution_str
       }
-    }
+    };
   }
 };
 
-var handleSubmissionResponse = function(payload){
+var handleSubmissionResponse = function (payload) {
   return function (dispatch) {
-    if(payload === 'victory!'){
+    // Update the profile with all challenges, attempted and successfully completed
+    // $.ajax({
+    //   method: 'GET',
+    //   url: '/api/solutions/user/' + payload.github_handle,
+    //   dataType: 'json',
+    //   cache: false,
+    //   success: function (data) {
+    //     dispatch({
+    //       type: actions.STORE_USER_PROBLEMS,
+    //       payload: data
+    //     });
+    //   },
+    //   error: function (error) {
+    //     dispatch({
+    //       type: actions.GET_PROBLEM_ERROR
+    //     });
+    //   }
+    // });
+    if (payload.message === 'victory!') {
+      // inform of submission success
       dispatch({
         type: actions.SUBMIT_PROBLEM_SUCCESS
-      })
+      });
       dispatch({
         type: actions.COMPLETE_CHALLENGE
-      })
+      });
     } else {
       dispatch({
         type: actions.SUBMIT_PROBLEM_WRONG,
-        payload: payload
-      })
-    };
+        payload: payload.message
+      });
+    }
   };
 };
 
@@ -121,4 +139,4 @@ module.exports = {
   storeEditorOpponent: storeEditorOpponent,
   lostChallenge: lostChallenge,
   playerLeave: playerLeave
-}
+};

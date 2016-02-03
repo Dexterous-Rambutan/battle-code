@@ -13,12 +13,11 @@ socket.on('start', function(data){
   });
 });
 
-socket.on('eval', function(submissionMessage){
+socket.on('eval', function(submissionMessage, challenge_id){
   if(submissionMessage === 'victory!'){
     socket.emit('won', null);
   }
-  console.log('eval here', submissionMessage);
-  store.dispatch(arenaAction.handleSubmissionResponse(submissionMessage));
+  store.dispatch(arenaAction.handleSubmissionResponse(submissionMessage, challenge_id));
 });
 
 module.exports = socket;
