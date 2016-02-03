@@ -35,6 +35,10 @@ var ChallengeArena = React.createClass({
       this.props.arenaActions.lostChallenge();
     }.bind(this))
 
+    this.props.arena.socket.on('playerLeave', function(data){
+      this.props.arenaActions.playerLeave();
+    }.bind(this))
+
     this.props.arena.socket.on('keypress', function(data){
       var array = data.split('');
       var obf = [];
@@ -71,9 +75,13 @@ var ChallengeArena = React.createClass({
         </div>
         {this.props.user.isLoggedIn && this.props.view !== 'CHALLENGE_ARENA' ? <li><a href='/logout'>Logout</a></li> : null}
         {this.props.arena.content ? <button onClick={this.submitProblem}>Submit Solution</button>: null}
-        {this.props.arena.content ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : "waiting for other player... when propmt appears, you may begin hacking. be ready."}
-        {this.props.arena.content ? <div>{this.props.arena.submissionMessage}</div> : null}
-        {this.props.arena.status}
+        <ul>
+          <li>SYNTAX ERRORS: {this.props.arena.content ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : 'none'}</li>
+          <li>SUBMISSION RESPONSE: {this.props.arena.content ? <div>{this.props.arena.submissionMessage}</div> : 'N/A'}</li>
+          <li>{this.props.arena.opponentStatus}</li>
+          <li>{this.props.arena.status}</li>
+        </ul>
+
       </div>
     )
   },

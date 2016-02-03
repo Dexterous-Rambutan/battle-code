@@ -14,6 +14,7 @@ var storeEditorOpponent = function (payload) {
     payload: payload
   };
 };
+
 var getProblem = function (payload) {
   return function(dispatch){
     $.ajax({
@@ -41,7 +42,13 @@ var lostChallenge = function () {
   return {
     type: actions.LOST_CHALLENGE
   }
-}
+};
+
+var playerLeave = function(){
+  return {
+    type: actions.PLAYER_LEAVE
+  }
+};
 
 var submitProblem = function (errors, solution_str, socket_id, problem_id, user_handle, type) {
 
@@ -112,5 +119,6 @@ module.exports = {
   handleSubmissionResponse: handleSubmissionResponse,
   storeEditor: storeEditor,
   storeEditorOpponent: storeEditorOpponent,
-  lostChallenge: lostChallenge
+  lostChallenge: lostChallenge,
+  playerLeave: playerLeave
 }

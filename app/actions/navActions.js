@@ -42,7 +42,7 @@ var navSoloArena = function(payload){
       dataType: 'json',
       success: function(results){
         dispatch({
-          type: actions.CLEAR_EDITOR
+          type: actions.CLEAR_INFO
         });
         dispatch({
           type: actions.STORE_SOLO_PROBLEM,
