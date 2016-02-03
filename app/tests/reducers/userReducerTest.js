@@ -62,7 +62,6 @@ describe('User Reducer', function(){
       expect(state.github_display_name).toEqual('');
       expect(state.github_profileUrl).toEqual('');
       expect(state.github_avatar_url).toEqual('');
-      expect(state.isLoggedIn).toEqual(false);
 
     })
 
