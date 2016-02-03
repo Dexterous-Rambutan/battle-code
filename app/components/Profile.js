@@ -2,14 +2,18 @@ var React = require('react');
 
 var Profile = React.createClass({
   render: function() {
-    var that = this;
-    var listOfProblems = this.props.user.user_problems.map(function(problem){
+    var listOfProblems = this.props.user.user_problems.map(function (problem) {
       var linkToProblem = function(){
         this.props.navActions.navSoloArena(problem);
-      }.bind(that);
+      }.bind(this);
       return <a href="#" onClick={linkToProblem}><li>Challenge ID:{problem.challenge_id} - {problem.valid ? 'Completed:' : 'Attempted:'} - {problem.end_time}</li></a>
+    }.bind(this));
+    var wins = 0;
+    var loss = 0;
+    this.props.user.user_match_history.forEach(function (match) {
+      wins += match.win ? 1 : 0;
+      loss += match.win ? 0 : 1;
     });
-
 
     return (
       <div>
@@ -21,6 +25,10 @@ var Profile = React.createClass({
         </div>
         <div>
           {this.props.user.github_display_name}
+        </div>
+        <div>
+          Wins: {wins} &nbsp;
+          Losses: {loss}
         </div>
         <div>
           {listOfProblems}

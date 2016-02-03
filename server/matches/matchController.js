@@ -1,4 +1,3 @@
-var db = require('../helpers/dbConfig');
 var User = require('../users/userModel.js');
 var Match = require('../matches/matchModel.js');
 
@@ -86,18 +85,14 @@ module.exports = {
 
   //Gets match history by user
   getAllByUser: function(req, res){
-    User.forge({
-      github_handle: req.params.githubHandle
-    })
-    .fetch()
-    .then(function(user){
-      return Match.forge({
-        user_github_handle: user.get('github_handle')
-      }).fetchAll()
-    })
-    .then(function(matches){
+    User.forge({github_handle: req.params.githubHandle})
+    .fetch({withRelated: ['matches']})
+    .then(function (user) {
+      var matches = user.related('matches');
       res.status(201).json(matches);
-    })
+    }).catch(function (err) {
+      res.status(404).end();
+    });
   },
 
   resetWithData: function() {

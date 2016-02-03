@@ -10,8 +10,9 @@ var initial = {
   github_display_name: '',
   github_profileUrl: '',
   github_avatar_url: '',
-  user_problems: []
-}
+  user_problems: [],
+  user_match_history: []
+};
 
 function userReducer (state, action){
   state = state || initial;
@@ -33,8 +34,14 @@ function userReducer (state, action){
       return _.extend({}, state, {
         user_problems: action.payload
       });
+    case actions.STORE_MATCH_HISTORY:
+      return _.extend({}, state, {
+        user_match_history: action.payload
+      });
+    default:
+      return state;
   }
   return state;
-};
+}
 
 module.exports = userReducer;
