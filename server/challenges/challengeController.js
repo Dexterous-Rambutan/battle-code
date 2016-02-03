@@ -34,12 +34,14 @@ module.exports = {
       github_handle: p1
     }).fetch({withRelated: ['solutions']})
     .then(function (user) {
-      completedChallenges.p1 = user.related('solutions').filter(function(s){
-        if(s.type === type) {
-          return true;
-        }
-      });
-      completedChallenges.p1 = completedChallenges.p1.map(function (s) {
+      var solutions = user.related('solutions');
+      return solutions.fetch({withRelated: ['challenge']});
+    })
+    .then(function (solutions) {
+      var challenges = solutions.filter(function (s) {
+        return s.related('challenge').get('type') === type;
+      })
+      completedChallenges.p1 = challenges.map(function (s) {
         return s.get('challenge_id');
       });
     // Get list of challenges completed by player2
@@ -48,15 +50,16 @@ module.exports = {
       }).fetch({withRelated: ['solutions']})
     })
     .then(function (user) {
-      completedChallenges.p2 = user.related('solutions').filter(function(s){
-        if(s.type === type) {
-          return true;
-        }
-      });
-      completedChallenges.p2 = completedChallenges.p2.map(function (s) {
+      var solutions = user.related('solutions');
+      return solutions.fetch({withRelated: ['challenge']});
+    })
+    .then(function (solutions) {
+      var challenges = solutions.filter(function (s) {
+        return s.related('challenge').get('type') === type;
+      })
+      completedChallenges.p2 = challenges.map(function (s) {
         return s.get('challenge_id');
       });
-    // Get list of all challenges
       return Challenge.forge({type: type}).fetchAll();
     })
     .then(function (challenges) {
@@ -176,3 +179,13 @@ module.exports = {
     })
   }
 };
+
+module.exports.getChallengeMultiplayer({
+  body: {
+    player1_github_handle: 'kweng2',
+    player2_github_handle: 'hahnbi',
+    type: 'battle'
+  }
+}, function(d) {
+  console.log(d)
+})
