@@ -54,31 +54,31 @@ userController.resetWithData = function() {
   return User.forge({
     github_handle: 'alanzfu',
     github_display_name: 'Alan Fu',
-    github_avatar_url: null,
-    github_profileUrl: null,
+    github_avatar_url: 'https://avatars0.githubusercontent.com/u/7851211?v=3&s=460',
+    github_profileUrl: 'https://github.com/alanzfu',
     email: null
   }).save().then(function() {
     return User.forge({
       github_handle: 'puzzlehe4d',
       github_display_name: 'Harun Davood',
-      github_avatar_url: null,
-      github_profileUrl: null,
+      github_avatar_url: 'https://avatars2.githubusercontent.com/u/12518929?v=3&s=460',
+      github_profileUrl: 'https://github.com/puzzlehe4d',
       email: null
     }).save();
   }).then(function() {
     return User.forge({
       github_handle: 'kweng2',
       github_display_name: 'Kevin Weng',
-      github_avatar_url: null,
-      github_profileUrl: null,
+      github_avatar_url: 'https://avatars2.githubusercontent.com/u/13741053?v=3&s=460',
+      github_profileUrl: 'https://github.com/kweng2',
       email: null
     }).save();
   }).then(function() {
     return User.forge({
       github_handle: 'hahnbi',
       github_display_name: 'Hahnbi Sun',
-      github_avatar_url: null,
-      github_profileUrl: null,
+      github_avatar_url: 'https://avatars3.githubusercontent.com/u/12260923?v=3&s=460',
+      github_profileUrl: 'https://github.com/hahnbi',
       email: null
     }).save();
   })
