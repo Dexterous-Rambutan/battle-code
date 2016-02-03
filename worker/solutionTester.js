@@ -70,7 +70,7 @@ function runTest() {
         solutionScript.runInContext(context, {timeout:2000});
 
         // Try to run tests
-        context.assert = require('assert');
+        context.assert = require('chai').assert;
         testScript.runInContext(context,{timeout:2000});
 
         // unhook console.log
@@ -90,7 +90,6 @@ function runTest() {
       } catch (e) {
         // Failed evaluation, add response to rQueue
         unhook();
-        console.log('stdout: ', stdout)
         console.log('Failed while evaluating the solution', e.message);
         responseQueue.push(JSON.stringify({
           socket_id: solutionInfo.socket_id,
