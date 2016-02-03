@@ -30,11 +30,21 @@ var ChallengeArena = React.createClass({
     var editor2 = ace.edit('editor2');
     editor2.setOptions(challengerEditorOptions);
     this.props.arenaActions.storeEditorOpponent(editor2);
-
+    this.props.arena.socket.on('start', function(data){
+      var player = {
+        github_handle: this.props.user.github_handle,
+        github_display_name: this.props.user.github_display_name,
+        github_profileUrl: this.props.user.github_profileUrl,
+        github_avatar_url: this.props.user.github_avatar_url
+      };
+      this.props.arena.socket.emit('playerId', player)
+    }.bind(this))
+    // sockets on won event
     this.props.arena.socket.on('won', function(data){
       this.props.arenaActions.lostChallenge();
     }.bind(this))
 
+    // sockets on playerLeave event
     this.props.arena.socket.on('playerLeave', function(data){
       this.props.arenaActions.playerLeave();
     }.bind(this))
@@ -73,16 +83,13 @@ var ChallengeArena = React.createClass({
         </div>
         <div id="editor2" className='opponent'>
         </div>
-        {this.props.user.isLoggedIn && this.props.view !== 'CHALLENGE_ARENA' ? <li><a href='/logout'>Logout</a></li> : null}
         {this.props.arena.content ? <button onClick={this.submitProblem}>Submit Solution</button>: null}
-        <ul>
-          <li>SYNTAX ERRORS: {this.props.arena.content ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : 'none'}</li>
-          <li>SUBMISSION RESPONSE: {this.props.arena.content ? <div>{this.props.arena.submissionMessage}</div> : 'N/A'}</li>
-          <li>{this.props.arena.opponentStatus}</li>
-          <li>{this.props.arena.status}</li>
-        </ul>
+        <p>{!!this.props.arena.opponent_info.github_handle ? "OPPONENT: " + this.props.arena.opponent_info.github_handle : null}</p>
+        <p>SYNTAX ERRORS: {this.props.arena.content ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : 'none'}</p>
+        <p>SUBMISSION RESPONSE: {this.props.arena.content ? <div>{this.props.arena.submissionMessage}</div> : 'N/A'}</p>
+        <p>{this.props.arena.opponentStatus}</p>
+        <p>{this.props.arena.status}</p>
         <div>Console: </div><div>{this.props.arena.stdout}</div>
-
       </div>
     )
   },

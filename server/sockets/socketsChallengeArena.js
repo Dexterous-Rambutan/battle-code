@@ -1,31 +1,23 @@
 // Socket matchmaking system here:
-var challengeController = require('../challenges/challengeController.js')
-var solutionController = require('../solutions/solutionController.js')
-var matchController = require('../matches/matchController.js')
+var challengeController = require('../challenges/challengeController.js');
+var solutionController = require('../solutions/solutionController.js');
+var matchController = require('../matches/matchController.js');
+var findRoom = require('./findRoom.js');
 
 module.exports = function (io) {
 
   var openQ = [];
   var roomCounter = 0;
   io.on('connection', function (socket) {
+    socket.on('playerId', function(data){
+      socket.to(findRoom(socket)).broadcast.emit('otherPlayer', data)
+    })
     socket.on('won', function(data){
-      var room;
-      for(var key in socket.rooms){
-        if(key[0] !== '/'){
-          room = key[0];
-        }
-      }
-      socket.to(room).broadcast.emit('won', data);
+      socket.to(findRoom(socket)).broadcast.emit('won', data);
     });
     socket.on('update', function (data) {
       console.log('room is:', socket.rooms);
-      var room;
-      for(var key in socket.rooms){
-        if(key[0] !== '/'){
-          room = key[0];
-        }
-      }
-      socket.to(room).broadcast.emit('keypress', data);
+      socket.to(findRoom(socket)).broadcast.emit('keypress', data);
     });
 
     console.log('server.js line-76, Socket connected:', socket.id, socket.rooms);
@@ -77,16 +69,10 @@ module.exports = function (io) {
       }
     });
     socket.on('leaveArena', function (data) {
-      var room;
-      for (var key in socket.rooms) {
-        if (key[0] !== '/') {
-          room = key[0];
-        }
-      }
-      socket.leave(room);
-      socket.to(room).broadcast.emit('playerLeave', data)
-      console.log('server.js line 117, Leaving room: ', room);
-      if(openQ.length !== 0 && room == openQ[0].name) {
+      socket.leave(findRoom(socket));
+      socket.to(findRoom(socket)).broadcast.emit('playerLeave', data)
+      console.log('server.js line 117, Leaving room: ', findRoom(socket));
+      if(openQ.length !== 0 && findRoom(socket) == openQ[0].name) {
         openQ.shift();
       }
     });

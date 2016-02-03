@@ -28,7 +28,10 @@ function userReducer (state, action){
     case actions.IS_LOGGED_OUT:
       return _.extend({}, state, {
         isLoggedIn: false,
-        user_handle: ""
+        github_handle: "",
+        github_display_name: '',
+        github_profileUrl: '',
+        github_avatar_url: ''
       });
     case actions.STORE_USER_PROBLEMS:
       return _.extend({}, state, {

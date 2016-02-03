@@ -9,7 +9,7 @@ var initial = {
   problem_id: 0,
   content: "",
   status: '',
-  opponent_content: "",
+  opponent_info: {},
   submissionMessage: "Nothing passing so far...(From initial arena reducer)",
   socket: {},
   editorSolo: {},
@@ -73,7 +73,8 @@ function arenaReducer (state, action){
         status: '',
         opponentStatus: "waiting for other player... when propmt appears, you may begin hacking. be ready.",
         submissionMessage: 'Nothing passing so far...(From initial arena reducer)',
-        stdout: ''
+        stdout: '',
+        opponent_info: {}
       });
     case actions.COMPLETE_CHALLENGE:
       if(state.status === ''){
@@ -87,7 +88,12 @@ function arenaReducer (state, action){
         });
     case actions.PLAYER_LEAVE:
         return _.extend({}, state, {
-          opponentStatus: 'The other player has left the room.'
+          opponentStatus: 'The other player has left the room.',
+          opponent_info: {}
+        });
+    case actions.GOT_OPPONENT_HANDLE:
+        return _.extend({}, state, {
+          opponent_info: action.payload
         });
     default:
       return state;
