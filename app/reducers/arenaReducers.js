@@ -8,10 +8,12 @@ var actions = require('../constants').action;
 var initial = {
   problem_id: 0,
   content: "",
+  status: '',
   opponent_content: "",
   submissionMessage: "Nothing passing so far...(From initial arena reducer)",
   socket: {},
   editorSolo: {},
+  opponentStatus: "waiting for other player... when propmt appears, you may begin hacking. be ready.",
   editorOpponent: {},
   syntaxMessage: '',
   errors: []
@@ -27,6 +29,7 @@ function arenaReducer (state, action){
     case actions.GET_PROBLEM_SUCCESS:
       return _.extend({}, state, {
         content: action.payload.prompt,
+        opponentStatus: '',
         problem_id: action.payload.id
       });
     case actions.SUBMIT_PROBLEM_WRONG:
@@ -35,7 +38,7 @@ function arenaReducer (state, action){
       });
     case actions.SUBMIT_PROBLEM_SUCCESS:
       return _.extend({}, state, {
-        submissionMessage: "Victory!"
+        submissionMessage: "solution submitted successfully with passing results..."
       });
     case actions.STORE_EDITOR:
       return _.extend({}, state, {
@@ -62,10 +65,27 @@ function arenaReducer (state, action){
         content: action.payload.prompt,
         problem_id: action.payload.id
       });
-    case actions.CLEAR_EDITOR:
+    case actions.CLEAR_INFO:
       return _.extend({}, state, {
-        content: ''
+        content: '',
+        status: '',
+        opponentStatus: "waiting for other player... when propmt appears, you may begin hacking. be ready.",
+        submissionMessage: 'Nothing passing so far...(From initial arena reducer)'
       });
+    case actions.COMPLETE_CHALLENGE:
+      if(state.status === ''){
+        return _.extend({}, state, {
+          status: 'YOU WON!'
+        });
+      }
+    case actions.LOST_CHALLENGE:
+        return _.extend({}, state, {
+          status: 'YOU LOST :('
+        });
+    case actions.PLAYER_LEAVE:
+        return _.extend({}, state, {
+          opponentStatus: 'The other player has left the room.'
+        });
     default:
       return state;
   }

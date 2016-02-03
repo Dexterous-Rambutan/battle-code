@@ -69,7 +69,7 @@ var navSoloArena = function (payload) {
       dataType: 'json',
       success: function (results) {
         dispatch({
-          type: actions.CLEAR_EDITOR
+          type: actions.CLEAR_INFO
         });
         dispatch({
           type: actions.STORE_SOLO_PROBLEM,
@@ -115,7 +115,7 @@ var navChallengeArena = function (github_handle) {
   return function (dispatch) {
     socket.emit('arena', github_handle);
     dispatch({
-      type: actions.CLEAR_EDITOR
+      type: actions.CLEAR_INFO
     });
     dispatch({
       type: actions.NAV_CHALLENGE_ARENA
