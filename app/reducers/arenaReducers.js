@@ -16,7 +16,8 @@ var initial = {
   opponentStatus: "waiting for other player... when propmt appears, you may begin hacking. be ready.",
   editorOpponent: {},
   syntaxMessage: '',
-  errors: []
+  errors: [],
+  stdout: ''
 }
 
 function arenaReducer (state, action){
@@ -34,7 +35,8 @@ function arenaReducer (state, action){
       });
     case actions.SUBMIT_PROBLEM_WRONG:
       return _.extend({}, state, {
-        submissionMessage: action.payload
+        submissionMessage: action.payload.message,
+        stdout: action.payload.stdout
       });
     case actions.SUBMIT_PROBLEM_SUCCESS:
       return _.extend({}, state, {

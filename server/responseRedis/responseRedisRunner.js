@@ -28,6 +28,7 @@ var responds = function (io) {
     var soln_str = reply.soln_str;
     var message = reply.message;
     var type = reply.type;
+    var stdout = reply.stdout;
 
     if ( message === 'victory!') {
       solutionController.addSolution({
@@ -43,12 +44,12 @@ var responds = function (io) {
         });
       }
     }
-
     // Send evaluated response to socket
     io.to('/#'+toSocket).emit('eval', {
       message: message,
       challenge_id: challenge_id,
-      github_handle: github_handle
+      github_handle: github_handle,
+      stdout: stdout
     });
 
     // Keep listening

@@ -37,23 +37,44 @@ function runTest() {
     // Fetch the challenge test suite
     challenge.fetch()
     .then(function (challenge) {
-      // create a sanbox and load chai into that context
-      var sandbox = {
-        assert: require('chai').assert
-      };
-      var context = new vm.createContext(sandbox);
-
+      // create a sandbox and load chai into that context
+      var context = new vm.createContext();
       // Load test suite into the context
       var testText = challenge.get('test_suite');
       var testScript = new vm.Script(testText);
       var solutionText = solutionInfo.soln_str;
+      var stdout = '';
 
       // Try to run solution string against the test suite
       try {
+        // hooking into node's stdout
+        context.console = console;
+        function hook_stdout(callback) {
+          var old_write = process.stdout.write
+          process.stdout.write = (function(write) {
+            return function(string, encoding, fd) {
+              write.apply(process.stdout, arguments)
+              callback(string, encoding, fd)
+            }
+          })(process.stdout.write)
+          return function() {
+            process.stdout.write = old_write
+          }
+        }
+        var unhook = hook_stdout(function(string, encoding, fd) {
+          stdout += string;
+        })
+
         // Try to load the solution string into the context
         var solutionScript = new vm.Script(solutionText);
         solutionScript.runInContext(context, {timeout:2000});
+
+        // Try to run tests
+        context.assert = require('assert');
         testScript.runInContext(context,{timeout:2000});
+
+        // unhook console.log
+        unhook();
 
         // Successful evaluation, add response to rQueue
         console.log('Successfully evaluated the solution!');
@@ -63,10 +84,13 @@ function runTest() {
           github_handle: solutionInfo.user_handle,
           soln_str: solutionText,
           type: solutionInfo.type,
-          message: 'victory!'
+          message: 'victory!',
+          stdout: stdout
         }), runTest);
       } catch (e) {
         // Failed evaluation, add response to rQueue
+        unhook();
+        console.log('stdout: ', stdout)
         console.log('Failed while evaluating the solution', e.message);
         responseQueue.push(JSON.stringify({
           socket_id: solutionInfo.socket_id,
@@ -75,7 +99,7 @@ function runTest() {
           soln_str: solutionText,
           type: solutionInfo.type,
           message: e.message,
-
+          stdout: stdout
         }), runTest);
       }
     })

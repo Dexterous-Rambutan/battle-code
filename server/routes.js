@@ -41,7 +41,8 @@ module.exports = function (app, redisClient) {
     }
   });
 
-  app.get('/addProblemsSolutions.html', adminPrivilege);
+  // app.get('/addProblemsSolutions.html', adminPrivilege);
+  app.get('/addProblemsSolutions.html');
   app.get('/api/challenges', challengeController.getChallenge);
   app.get('/api/challenges/:challengeId', challengeController.getChallengeById);
   app.post('/api/challenges', challengeController.addChallenge);
