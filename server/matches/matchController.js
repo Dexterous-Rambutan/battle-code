@@ -4,7 +4,7 @@ var Match = require('../matches/matchModel.js');
 module.exports = {
 
   //Internally Invoked when a room is filled
-  addForBoth: function(user_github_handle, opponent_github_handle, challenge_id){
+  addForBoth: function(user_github_handle, opponent_github_handle, challenge_id, callback){
     User.forge({
       github_handle: user_github_handle
     })
@@ -31,6 +31,9 @@ module.exports = {
         challenge_id: challenge_id,
         win: false
       }).save()
+    })
+    .then(function(){
+      callback();
     })
     .catch(function(err){
       console.log(err, 'error initiating match entries');
