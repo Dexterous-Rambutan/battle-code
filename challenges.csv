@@ -1,0 +1,54 @@
+id,name,prompt,test_suite,type,created_at,updated_at
+1,One,"/*Write a function one() that returns the value 1.
+Example usage:
+one(1); => 1
+one(2); => 1*/
+
+var one = function (n) {
+};","assert.equal(one(1),1);
+assert.equal(one(2),1);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+2,Two,"/*Write a function one() that returns the value 1.
+Example usage:
+two(1); => 1
+two(2); => 1*/
+
+var two = function (n) {
+};","assert.equal(two(1),2);
+assert.equal(two(2),2);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+3,Three,"/*Write a function three() that returns the value 3.
+Example usage:
+three(1); => 1
+three(2); => 1*/
+
+var three = function (n) {
+};","assert.equal(three(1),3);
+assert.equal(three(2),3);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+4,Four,"/*Write a function four() that returns the value 4.
+Example usage:
+four(1); => 1
+four(2); => 1*/
+
+var four = function (n) {
+};","assert.equal(four(1),4);
+assert.equal(four(2),4);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+5,nthFibonacci,"A Fibonacci sequence is a list of numbers that begins with 0 and 1, and each subsequent number is the sum of the previous two.
+
+For example, the first five Fibonacci numbers are: 0 1 1 2 3
+If n were 4, your function should return 3; for 5, it should return 5.
+
+Write a function that accepts a number, n, and returns the nth Fibonacci number. Use a recursive solution to this problem; if you finish with time left over, implement an iterative solution.
+
+Example usage:
+nthFibonacci(2); => 1
+nthFibonacci(3); => 2
+nthFibonacci(4); => 3
+etc...*/
+
+var nthFibonacci = function (n) {
+};","assert.equal(nthFibonacci(1), 1);
+assert.equal(nthFibonacci(2), 1);
+assert.equal(nthFibonacci(3), 2);
+assert.equal(nthFibonacci(4), 3);
+assert.equal(nthFibonacci(5), 5);
+assert.equal(nthFibonacci(10), 55);
+assert.equal(nthFibonacci(20), 6765);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08

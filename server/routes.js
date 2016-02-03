@@ -41,6 +41,7 @@ module.exports = function (app, redisClient) {
     }
   });
 
+
   // app.get('/addProblemsSolutions.html', adminPrivilege);
   app.get('/addProblemsSolutions.html');
   app.get('/api/challenges', challengeController.getChallenge);
@@ -84,4 +85,5 @@ module.exports = function (app, redisClient) {
       return;
     })
   });
+  app.get('/api/resetChallenges', adminPrivilege, challengeController.repopulateTable);
 };
