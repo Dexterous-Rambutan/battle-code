@@ -32,8 +32,10 @@ module.exports = {
         win: false
       }).save()
     })
-    .then(function(){
-      callback();
+    .then(function(match){
+      if(callback) {
+        callback(match);
+      }
     })
     .catch(function(err){
       console.log(err, 'error initiating match entries');
@@ -49,7 +51,7 @@ module.exports = {
   var message = reply.message;
   */
   //Internally invoked when a valid solution arrives from redisQueue
-  editOneWhenValid: function(checkedSolutions){
+  editOneWhenValid: function(checkedSolutions, callback){
     var challenge_id = checkedSolutions.challenge_id;
     var github_handle = checkedSolutions.github_handle;
     return User.forge({
@@ -74,8 +76,13 @@ module.exports = {
             user_github_handle: opponentMatchEntry.get('opponent_github_handle'),
             challenge_id: opponentMatchEntry.get('challenge_id')
           }).fetch()
-          .then(function(userMatchEntry){
-            userMatchEntry.set('win', true).save();
+          .then(function (userMatchEntry) {
+            return userMatchEntry.set('win', true).save();
+          })
+          .then(function (userMatchEntry) {
+            if(callback) {
+              callback(userMatchEntry);
+            }
           })
         }
       }
@@ -87,13 +94,20 @@ module.exports = {
   },
 
   //Gets match history by user
-  getAllByUser: function(req, res){
+  getAllByUser: function(req, res, callback){
     User.forge({github_handle: req.params.githubHandle})
     .fetch({withRelated: ['matches']})
     .then(function (user) {
       var matches = user.related('matches');
       res.status(201).json(matches);
-    }).catch(function (err) {
+      return matches;
+    })
+    .then(function (matches) {
+      if(callback) {
+        callback(matches);
+      }
+    })
+    .catch(function (err) {
       res.status(404).end();
     });
   },
