@@ -2,6 +2,7 @@ var React = require('react');
 var io = require('socket.io-client');
 var socket = require('../sockets/socket-helper');
 var _ = require('lodash');
+var ErrorList = require('./ErrorList');
 
 var selfEditorOptions = {
   theme: "ace/theme/solarized_light",
@@ -30,6 +31,14 @@ var ChallengeArena = React.createClass({
     editor2.setOptions(challengerEditorOptions);
     this.props.arenaActions.storeEditorOpponent(editor2);
 
+    this.props.arena.socket.on('won', function(data){
+      this.props.arenaActions.lostChallenge();
+    }.bind(this))
+
+    this.props.arena.socket.on('playerLeave', function(data){
+      this.props.arenaActions.playerLeave();
+    }.bind(this))
+
     this.props.arena.socket.on('keypress', function(data){
       var array = data.split('');
       var obf = [];
@@ -45,19 +54,34 @@ var ChallengeArena = React.createClass({
 
 
   },
-  render: function() {
-    var emitSocket = function () {
+  emitSocket: function () {
 
-      if(this.props.arena.editorSolo.getSession().getValue()){
-        this.props.arena.socket.emit('update', this.props.arena.editorSolo.getSession().getValue())
-      }
-    }.bind(this)
+    if(this.props.arena.editorSolo.getSession().getValue()){
+      this.props.arena.socket.emit('update', this.props.arena.editorSolo.getSession().getValue())
+    }
+  },
+  submitProblem: function(){
+      var errors = this.props.arena.editorSolo.getSession().getAnnotations();
+      var content = this.props.arena.editorSolo.getSession().getValue();
+      this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle, 'battle');
+  },
+  render: function() {
+
     return (
       <div>
-        <div id="editor" onKeyPress={emitSocket} className='player'>
+        <div id="editor" onKeyPress={this.emitSocket} className='player'>
         </div>
         <div id="editor2" className='opponent'>
         </div>
+        {this.props.user.isLoggedIn && this.props.view !== 'CHALLENGE_ARENA' ? <li><a href='/logout'>Logout</a></li> : null}
+        {this.props.arena.content ? <button onClick={this.submitProblem}>Submit Solution</button>: null}
+        <ul>
+          <li>SYNTAX ERRORS: {this.props.arena.content ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : 'none'}</li>
+          <li>SUBMISSION RESPONSE: {this.props.arena.content ? <div>{this.props.arena.submissionMessage}</div> : 'N/A'}</li>
+          <li>{this.props.arena.opponentStatus}</li>
+          <li>{this.props.arena.status}</li>
+        </ul>
+
       </div>
     )
   },

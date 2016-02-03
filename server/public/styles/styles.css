@@ -1,13 +1,14 @@
 #editor {
   min-height: 80%;
   height:50%;
-  width:48%;
+  width:50%;
   float:left;
 }
 
 #editor2 {
   min-height: 80%;
   height:50%;
-  width:48%;
+  width:50%;
   float: right;
 }
+

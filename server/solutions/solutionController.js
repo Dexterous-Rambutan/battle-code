@@ -80,6 +80,7 @@ module.exports = {
     }).then(function (solution) {
       if(solutionAttr.type === 'battle' && solutionAttr['valid'] === false) {
         solutionAttr['valid'] = true;
+        delete solutionAttr.type;
         solution.set(solutionAttr).save();
       }
       return;
