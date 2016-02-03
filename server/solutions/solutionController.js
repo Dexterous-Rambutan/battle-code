@@ -58,8 +58,10 @@ module.exports = {
       challenge_id: req.params.challengeId,
       type: req.body.type
     };
-    var jobQueue = new Queue('testQueue', redisClient);
-    jobQueue.push(JSON.stringify(solutionAttr));
+    if(solutionAttr.challenge_id !== 'null') {
+      var jobQueue = new Queue('testQueue', redisClient);
+      jobQueue.push(JSON.stringify(solutionAttr));
+    }
     res.status(201).end();
   },
 

@@ -72,7 +72,8 @@ function arenaReducer (state, action){
         content: '',
         status: '',
         opponentStatus: "waiting for other player... when propmt appears, you may begin hacking. be ready.",
-        submissionMessage: 'Nothing passing so far...(From initial arena reducer)'
+        submissionMessage: 'Nothing passing so far...(From initial arena reducer)',
+        stdout: ''
       });
     case actions.COMPLETE_CHALLENGE:
       if(state.status === ''){
