@@ -179,13 +179,3 @@ module.exports = {
     })
   }
 };
-
-module.exports.getChallengeMultiplayer({
-  body: {
-    player1_github_handle: 'kweng2',
-    player2_github_handle: 'hahnbi',
-    type: 'battle'
-  }
-}, function(d) {
-  console.log(d)
-})
