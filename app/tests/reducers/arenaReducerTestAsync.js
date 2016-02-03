@@ -1,3 +1,4 @@
+//file does not work; boiler plate setup for testing async actions with mock store
 var configureMockStore = require('redux-mock-store');
 var thunk = require('redux-thunk');
 var expect = require('expect');
