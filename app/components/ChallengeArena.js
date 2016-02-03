@@ -78,18 +78,18 @@ var ChallengeArena = React.createClass({
   render: function() {
 
     return (
-      <div>
-        <div id="editor" onKeyPress={this.emitSocket} className='player'>
+      <div className="arena">
+        <div id="editor" onKeyPress={this.emitSocket} className='player-editor'></div>
+        <div id="editor2" className='opponent-editor'></div>
+        {this.props.arena.content ? <div><button className="submit" onClick={this.submitProblem}>Submit Solution</button></div>: null}
+        <div className="messages">
+          {!!this.props.arena.opponent_info.github_handle ? <div>OPPONENT: {this.props.arena.opponent_info.github_handle}</div> : null}
+          {this.props.arena.syntaxMessage !== '' ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : null}
+          {this.props.arena.submissionMessage !== "Nothing passing so far...(From initial arena reducer)" ? <div className="submission-message">SUBMISSION RESPONSE: {this.props.arena.submissionMessage}</div> : null}
+          {this.props.arena.stdout !== '' ? <div className="console">Console: <br />{this.props.arena.stdout}</div> : null }
+          {this.props.arena.opponentStatus !== '' ? <div>{this.props.arena.opponentStatus}</div> : null}
+          {this.props.arena.status !== '' ? <div>{this.props.arena.status}</div> : null}
         </div>
-        <div id="editor2" className='opponent'>
-        </div>
-        {this.props.arena.content ? <button onClick={this.submitProblem}>Submit Solution</button>: null}
-        <p>{!!this.props.arena.opponent_info.github_handle ? "OPPONENT: " + this.props.arena.opponent_info.github_handle : null}</p>
-        <p>SYNTAX ERRORS: {this.props.arena.content ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : 'none'}</p>
-        <p>SUBMISSION RESPONSE: {this.props.arena.content ? <div>{this.props.arena.submissionMessage}</div> : 'N/A'}</p>
-        <p>{this.props.arena.opponentStatus}</p>
-        <p>{this.props.arena.status}</p>
-        <div>Console: </div><div>{this.props.arena.stdout}</div>
       </div>
     )
   },
