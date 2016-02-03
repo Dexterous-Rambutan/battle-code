@@ -13,7 +13,7 @@ var initial = {
   submissionMessage: "Nothing passing so far...(From initial arena reducer)",
   socket: {},
   editorSolo: {},
-  opponentStatus: "waiting for other player... when propmt appears, you may begin hacking. be ready.",
+  opponentStatus: "waiting for other player... when prompt appears, you may begin hacking. be ready.",
   editorOpponent: {},
   syntaxMessage: '',
   errors: [],
