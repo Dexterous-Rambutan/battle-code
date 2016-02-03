@@ -13,6 +13,13 @@ socket.on('start', function(data){
   });
 });
 
+socket.on('otherPlayer', function(data){
+  store.dispatch({
+    type: actions.GOT_OPPONENT_HANDLE,
+    payload: data
+  });
+});
+
 socket.on('eval', function(submissionMessage, challenge_id){
   if(submissionMessage.message === 'victory!'){
     socket.emit('won', null);
