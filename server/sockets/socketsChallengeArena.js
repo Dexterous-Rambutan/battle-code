@@ -8,7 +8,15 @@ module.exports = function (io) {
   var openQ = [];
   var roomCounter = 0;
   io.on('connection', function (socket) {
-
+    socket.on('won', function(data){
+      var room;
+      for(var key in socket.rooms){
+        if(key[0] !== '/'){
+          room = key[0];
+        }
+      }
+      socket.to(room).broadcast.emit('won', data);
+    });
     socket.on('update', function (data) {
       console.log('room is:', socket.rooms);
       var room;
