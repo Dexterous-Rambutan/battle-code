@@ -10,7 +10,8 @@ describe('User Reducer', function(){
     github_display_name: '',
     github_profileUrl: '',
     github_avatar_url: '',
-    user_problems: []
+    user_problems: [],
+    user_match_history: []
   }
 
   Object.freeze(initialUserReducer);
