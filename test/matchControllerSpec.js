@@ -48,9 +48,8 @@ describe('matchController', function () {
         url: 'http://127.0.0.1:3000/api/users/alanzfu/matches',
         method: 'GET'
       }, function (err, response, body) {
-        console.log(body);
-        assert.equal(JSON.parse(body).length, 2);
-        assert.equal(JSON.parse(body)[0].opponent_github_handle[0], 'hahnbi');
+        assert.equal(JSON.parse(body).length, 3);
+        assert.equal(JSON.parse(body)[0].opponent_github_handle, 'hahnbi');
         done();
       });
     });
