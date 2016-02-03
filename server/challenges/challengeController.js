@@ -180,13 +180,15 @@ module.exports = {
   },
 
   repopulateTable: function (req, res) {
-    console.log('Repopulating challenges table');
     var fs = require('fs');
     var pg = require('pg');
     var copyFrom = require('pg-copy-streams').from;
-    console.log(process.env.DEPLOYED);
+
     var DB_CONN_STR = "postgres://localhost:5432/myDB";
-    var DB_CSV_PATH = "/Users/ziluweng/Documents/gitHub/HR-Thesis/battle-code/challenges.csv";
+    var DB_CSV_PATH = "./challenges.csv";
+    if (process.env.DEPLOYED) {
+      DB_CONN_STR = "postgres://postgres:mysecretpassword@postgres/postgres";
+    }
 
     pg.connect(DB_CONN_STR, function(err, client, done) {
       var stream = client.query(copyFrom("COPY challenges FROM STDIN WITH DELIMITER ',' CSV HEADER"));
