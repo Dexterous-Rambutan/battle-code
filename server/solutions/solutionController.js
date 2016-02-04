@@ -80,10 +80,13 @@ module.exports = {
         user_id: solutionAttr.user_id
       }).fetch();
     }).then(function (solution) {
-      if(solutionAttr.type === 'battle' && solutionAttr['valid'] === false) {
+
+      console.log('solutionattr',solutionAttr)
+      if(solutionAttr.type === 'battle' && solution.get('valid') === false) {
         solutionAttr['valid'] = true;
         delete solutionAttr.type;
         solution.set(solutionAttr).save();
+        console.log('we here')
       }
       return;
     })
@@ -196,6 +199,16 @@ module.exports = {
         content: 'solved!',
         user_id: 4,
         challenge_id: 1,
+        valid: true
+      }).save();
+    }).then(function() {
+      return Solution.forge({
+        start_time: new Date(Date.now() - 49*60*60*1000),
+        end_time: new Date(Date.now() - 38*60*60*1000),
+        total_time: null,
+        content: 'solved!',
+        user_id: 4,
+        challenge_id: 3,
         valid: true
       }).save();
     }).then(function() {

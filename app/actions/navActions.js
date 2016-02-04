@@ -125,6 +125,7 @@ var navChallengeArena = function (github_handle) {
 
 var navAwayFromArena = function () {
   socket.emit('leaveArena');
+  
   return {
     type: actions.NAV_STAGING
   };

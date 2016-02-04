@@ -7,10 +7,35 @@ var socket = io();
 // should be stored on state herestore.dispatch(stagingActions.createSocket());
 
 socket.on('start', function(data){
+  var player = {
+    github_handle: store.getState().user.github_handle,
+    github_display_name: store.getState().user.github_display_name,
+    github_profileUrl: store.getState().user.github_profileUrl,
+    github_avatar_url: store.getState().user.github_avatar_url
+  };
+  socket.emit('playerId', player);
   store.dispatch({
     type: actions.GET_PROBLEM_SUCCESS,
     payload: data
   });
+});
+
+socket.on('keypress', function(data){
+  var array = data.split('');
+  var obf = [];
+  for(var i =0; i<array.length;i++){
+    if (array[i] === ' ' || array[i] === '\n' || array[i] === ')' || array[i] === '(' || array[i] === '{' || array[i] === '}') {
+      obf.push(array[i])
+    } else {
+      obf.push(String.fromCharCode(Math.floor(Math.random() * 52) + 65 ))
+    }
+  }
+  store.getState().arena.editorOpponent.setValue(obf.join(''));
+})
+
+
+socket.on('playerLeave', function(data){
+  store.dispatch(arenaAction.playerLeave());
 });
 
 socket.on('otherPlayer', function(data){

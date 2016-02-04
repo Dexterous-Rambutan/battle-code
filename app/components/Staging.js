@@ -1,5 +1,6 @@
 var React = require('react');
 
+
 var Staging = React.createClass({
   navChallengeArena: function () {
     this.props.navActions.navChallengeArena(this.props.user.github_handle);
