@@ -4,7 +4,7 @@ var ErrorList = React.createClass({
   render: function() {
     var errors = this.props.errors.map(function(error){
       return (
-        <li>Row: {error.row} - {error.text}</li>
+        <li>Row: {error.row + 1} - {error.text}</li>
       )
 
     })
