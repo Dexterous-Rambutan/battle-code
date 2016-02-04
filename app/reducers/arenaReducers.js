@@ -77,16 +77,22 @@ function arenaReducer (state, action){
         opponent_info: {}
       });
     case actions.COMPLETE_CHALLENGE:
-      if(state.status === ''){
+      if(state.status !== 'YOU LOST :('){
         return _.extend({}, state, {
           status: 'YOU WON!'
         });
+      } else {
+        return state;
       }
     case actions.LOST_CHALLENGE:
+      if(state.status !== 'YOU WON!') {
         return _.extend({}, state, {
           status: 'YOU LOST :(',
           content: action.payload
         });
+      } else {
+        return state;
+      }
     case actions.PLAYER_LEAVE:
         return _.extend({}, state, {
           opponentStatus: 'The other player has left the room.',
