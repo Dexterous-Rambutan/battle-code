@@ -185,19 +185,24 @@ module.exports = {
     var copyFrom = require('pg-copy-streams').from;
 
     var DB_CONN_STR = "postgres://localhost:5432/myDB";
-    var DB_CSV_PATH = "./challenges.csv";
+    var DB_CSV_PATH = "./server/challenges/challenges.csv";
     if (process.env.DEPLOYED) {
+      DB_CSV_PATH = "./challenges/challenges.csv";
       DB_CONN_STR = "postgres://postgres:mysecretpassword@postgres/postgres";
     }
 
-    pg.connect(DB_CONN_STR, function(err, client, done) {
-      var stream = client.query(copyFrom("COPY challenges FROM STDIN WITH DELIMITER ',' CSV HEADER"));
-      var fileStream = fs.createReadStream(DB_CSV_PATH);
-      fileStream.on('error', done);
-      fileStream.pipe(stream).on('finish', function () {
-        res.end();
-        done();
-      }).on('error', done);
+    // Delete elements from the challenges table, then reinsert them
+    db.knex('challenges').truncate()
+    .then(function() {
+      pg.connect(DB_CONN_STR, function(err, client, done) {
+        var stream = client.query(copyFrom("COPY challenges FROM STDIN WITH DELIMITER ',' CSV HEADER"));
+        var fileStream = fs.createReadStream(DB_CSV_PATH);
+        fileStream.on('error', done);
+        fileStream.pipe(stream).on('finish', function () {
+          res.end();
+          done();
+        }).on('error', done);
+      });
     });
   }
 };
