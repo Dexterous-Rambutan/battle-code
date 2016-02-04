@@ -41,9 +41,9 @@ var ChallengeArena = React.createClass({
       this.props.arena.socket.emit('playerId', player)
     }.bind(this))
     // sockets on won event
-    this.props.arena.socket.on('won', function(data){
-      this.props.arenaActions.lostChallenge();
-    }.bind(this))
+    // this.props.arena.socket.on('won', function(data){
+    //   this.props.arenaActions.lostChallenge();
+    // }.bind(this))
 
     // sockets on playerLeave event
     this.props.arena.socket.on('playerLeave', function(data){

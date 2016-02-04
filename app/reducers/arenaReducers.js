@@ -84,7 +84,8 @@ function arenaReducer (state, action){
       }
     case actions.LOST_CHALLENGE:
         return _.extend({}, state, {
-          status: 'YOU LOST :('
+          status: 'YOU LOST :(',
+          content: action.payload
         });
     case actions.PLAYER_LEAVE:
         return _.extend({}, state, {

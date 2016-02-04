@@ -38,9 +38,10 @@ var getProblem = function (payload) {
 };
 
 
-var lostChallenge = function () {
+var lostChallenge = function (payload) {
   return {
-    type: actions.LOST_CHALLENGE
+    type: actions.LOST_CHALLENGE,
+    payload: payload
   }
 };
 

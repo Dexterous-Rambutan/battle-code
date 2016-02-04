@@ -27,4 +27,8 @@ socket.on('eval', function(submissionMessage, challenge_id){
   store.dispatch(arenaAction.handleSubmissionResponse(submissionMessage, challenge_id));
 });
 
+socket.on('won', function(data) {
+  store.dispatch(arenaAction.lostChallenge(store.getState().arena.editorSolo.getSession().getValue()));
+})
+
 module.exports = socket;
