@@ -7,7 +7,6 @@ var ErrorList = require('./ErrorList');
 var selfEditorOptions = {
   theme: "ace/theme/solarized_light",
   mode: "ace/mode/javascript",
-  blockScrolling: Infinity,
   useSoftTabs: true,
   tabSize: 2,
   wrap: true
@@ -24,11 +23,13 @@ var ChallengeArena = React.createClass({
     //setting up solo (player) editor
     var editor = ace.edit('editor');
     editor.setOptions(selfEditorOptions);
+    editor.$blockScrolling = Infinity;
     this.props.arenaActions.storeEditor(editor);
 
     //setting up opponnent editor
     var editor2 = ace.edit('editor2');
     editor2.setOptions(challengerEditorOptions);
+    editor2.$blockScrolling = Infinity;
     this.props.arenaActions.storeEditorOpponent(editor2);
     this.props.arena.socket.on('start', function(data){
       var player = {

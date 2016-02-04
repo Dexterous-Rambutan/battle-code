@@ -8,7 +8,6 @@ var selfEditorOptions = {
   // theme: "ace/theme/solarized_light",
   theme: "ace/theme/monokai",
   mode: "ace/mode/javascript",
-  blockScrolling: Infinity,
   useSoftTabs: true,
   tabSize: 2,
   wrap: true
@@ -18,6 +17,7 @@ var SoloArena = React.createClass({
   componentDidMount: function(){
     var editor = ace.edit("editor");
     editor.setOptions(selfEditorOptions);
+    editor.$blockScrolling = Infinity;
     this.props.arenaActions.storeEditor(editor);
   },
   componentDidUpdate: function(){
