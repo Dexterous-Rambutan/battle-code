@@ -31,37 +31,37 @@ var ChallengeArena = React.createClass({
     editor2.setOptions(challengerEditorOptions);
     editor2.$blockScrolling = Infinity;
     this.props.arenaActions.storeEditorOpponent(editor2);
-    this.props.arena.socket.on('start', function(data){
-      var player = {
-        github_handle: this.props.user.github_handle,
-        github_display_name: this.props.user.github_display_name,
-        github_profileUrl: this.props.user.github_profileUrl,
-        github_avatar_url: this.props.user.github_avatar_url
-      };
-      this.props.arena.socket.emit('playerId', player)
-    }.bind(this))
+    // this.props.arena.socket.on('start', function(data){
+    //   var player = {
+    //     github_handle: this.props.user.github_handle,
+    //     github_display_name: this.props.user.github_display_name,
+    //     github_profileUrl: this.props.user.github_profileUrl,
+    //     github_avatar_url: this.props.user.github_avatar_url
+    //   };
+    //   this.props.arena.socket.emit('playerId', player)
+    // }.bind(this))
     // sockets on won event
     // this.props.arena.socket.on('won', function(data){
     //   this.props.arenaActions.lostChallenge();
     // }.bind(this))
 
     // sockets on playerLeave event
-    this.props.arena.socket.on('playerLeave', function(data){
-      this.props.arenaActions.playerLeave();
-    }.bind(this))
+    // this.props.arena.socket.on('playerLeave', function(data){
+    //   this.props.arenaActions.playerLeave();
+    // }.bind(this))
 
-    this.props.arena.socket.on('keypress', function(data){
-      var array = data.split('');
-      var obf = [];
-      for(var i =0; i<array.length;i++){
-        if (array[i] === ' ' || array[i] === '\n' || array[i] === ')' || array[i] === '(' || array[i] === '{' || array[i] === '}') {
-          obf.push(array[i])
-        } else {
-          obf.push(String.fromCharCode(Math.floor(Math.random() * 52) + 65 ))
-        }
-      }
-      this.props.arena.editorOpponent.setValue(obf.join(''))
-    }.bind(this))
+    // this.props.arena.socket.on('keypress', function(data){
+    //   var array = data.split('');
+    //   var obf = [];
+    //   for(var i =0; i<array.length;i++){
+    //     if (array[i] === ' ' || array[i] === '\n' || array[i] === ')' || array[i] === '(' || array[i] === '{' || array[i] === '}') {
+    //       obf.push(array[i])
+    //     } else {
+    //       obf.push(String.fromCharCode(Math.floor(Math.random() * 52) + 65 ))
+    //     }
+    //   }
+    //   this.props.arena.editorOpponent.setValue(obf.join(''))
+    // }.bind(this))
 
 
   },
