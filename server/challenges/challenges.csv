@@ -97,7 +97,7 @@ assert.equal(fizzBuzz(12), ""FIZZ"");
 assert.equal(fizzBuzz(30), ""FIZZBUZZ"");
 assert.equal(fizzBuzz(100), ""BUZZ"");
 assert.equal(fizzBuzz(300000), ""FIZZBUZZ"");
-assert.equal(fizzBuzz(12356), 123456);
+assert.equal(fizzBuzz(123456), 123456);
 assert.equal(fizzBuzz(14), 14);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
 9,isPrime,"/*Write a function that check to see if an input integer, n, is a prime number. Assume positive non-zero inputs
 
