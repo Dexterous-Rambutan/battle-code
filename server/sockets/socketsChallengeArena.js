@@ -92,24 +92,24 @@ module.exports = function (io) {
     //----------Pair Socket Event Handlers ----------
     socket.on('pair', function (github_handle) {
       // if there aren't any open room, create a room and join it
-      if (openQ.length === 0) {
+      if (pairOpenQ.length === 0) {
         // create a room
         pairRoomCounter++;
         console.log('socketsChallenge line-98, Creating and joining new PAIR ROOM', roomCounter);
         socket.join(String(roomCounter));
-        // add this room to the openQ
-        openQ.push({
+        // add this room to the pairOpenQ
+        pairOpenQ.push({
           name: roomCounter,
           players: [github_handle],
           socket_id: [socket.id]
         });
       // Otherwise, there is an open room, join that one
       } else {
-        var existingRoom = openQ.shift();
+        var existingRoom = pairOpenQ.shift();
         // join the first existing room
         console.log('server.js line-93, Joining existing room:', existingRoom.name);
         socket.join(String(existingRoom.name));
-        // remove this room from the openQ and add to inProgressRooms
+        // remove this room from the pairOpenQ and add to inProgressRooms
         // find all players in the room and find a challenge neither player has seen
         var otherPlayer = existingRoom.players[0];
         challengeController.getChallengeMultiplayer({
