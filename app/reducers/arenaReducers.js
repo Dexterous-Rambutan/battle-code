@@ -71,7 +71,7 @@ function arenaReducer (state, action){
       return _.extend({}, state, {
         content: '',
         status: '',
-        opponentStatus: "waiting for other player... when propmt appears, you may begin hacking. be ready.",
+        opponentStatus: "waiting for other player... when prompt appears, you may begin hacking. be ready.",
         submissionMessage: 'Nothing passing so far...(From initial arena reducer)',
         stdout: '',
         opponent_info: {}
