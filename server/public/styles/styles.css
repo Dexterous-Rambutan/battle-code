@@ -12,3 +12,7 @@
   float: right;
 }
 
+.console {
+  white-space: pre;
+}
+
