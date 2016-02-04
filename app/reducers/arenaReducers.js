@@ -83,8 +83,10 @@ function arenaReducer (state, action){
         });
       }
     case actions.LOST_CHALLENGE:
+      console.log('got here????')
         return _.extend({}, state, {
-          status: 'YOU LOST :('
+          status: 'YOU LOST :(',
+          content: action.payload
         });
     case actions.PLAYER_LEAVE:
         return _.extend({}, state, {
