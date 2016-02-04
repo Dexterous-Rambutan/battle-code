@@ -9,29 +9,29 @@ var one = function (n) {
 assert.equal(one(2),1);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
 2,Two,"/*Write a function one() that returns the value 1.
 Example usage:
-two(1); => 1
-two(2); => 1*/
+two(1); => 2
+two(2); => 2*/
 
 var two = function (n) {
 };","assert.equal(two(1),2);
 assert.equal(two(2),2);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
 3,Three,"/*Write a function three() that returns the value 3.
 Example usage:
-three(1); => 1
-three(2); => 1*/
+three(1); => 3
+three(2); => 3*/
 
 var three = function (n) {
 };","assert.equal(three(1),3);
 assert.equal(three(2),3);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
 4,Four,"/*Write a function four() that returns the value 4.
 Example usage:
-four(1); => 1
-four(2); => 1*/
+four(1); => 4
+four(2); => 4*/
 
 var four = function (n) {
 };","assert.equal(four(1),4);
 assert.equal(four(2),4);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
-5,nthFibonacci,"A Fibonacci sequence is a list of numbers that begins with 0 and 1, and each subsequent number is the sum of the previous two.
+5,nthFibonacci,"/*A Fibonacci sequence is a list of numbers that begins with 0 and 1, and each subsequent number is the sum of the previous two.
 
 For example, the first five Fibonacci numbers are: 0 1 1 2 3
 If n were 4, your function should return 3; for 5, it should return 5.
@@ -52,3 +52,94 @@ assert.equal(nthFibonacci(4), 3);
 assert.equal(nthFibonacci(5), 5);
 assert.equal(nthFibonacci(10), 55);
 assert.equal(nthFibonacci(20), 6765);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+6,nthRowPascal,"/*A pascal triangle looks like this:
+                 1
+           1         1
+       1        2         1
+  1       3          3       1
+
+It has the property that the following row starts and ends with 1's, and every middle entry is the sum of the two nearst entries from the row above.
+
+Write a function that accepts an input number, n, and returns the nth row of a pascal triangle as an array. Assume non-negative integer inputs
+
+Example usage:
+nthRowPascal(0) => [1]
+nthRowPascal(3) => [1, 3, 3, 1]*/
+
+var nthRowPascal = function (n) {};","assert.equal(nthRowPascal(0), [1]);
+assert.equal(nthRowPascal(1), [1,1]);
+assert.equal(nthRowPascal(3), [1,3,3,1]);
+assert.equal(nthRowPascal(10), [1,10,45,120,210,252,210,120,45,10,1]);
+",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+7,stringSum,"/*Write a function that accepts an input string, str, and returns the numeric sum of each character. Assume only positive integers
+
+Example usage:
+stringSum(""12345"") => 15
+stringSum(""82"") => 10
+stringSum(""0101"") => 2*/
+
+var stringSum = function (str) {};","assert.equal(stringSum(""12345""), 15);
+assert.equal(stringSum(""82""), 10);
+assert.equal(stringSum(""010101""), 3);
+assert.equal(stringSum(""0""), 0);
+assert.equal(stringSum(""11111111111111111111""), 20);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+8,fizzBuzz,"/*Write a function that accepts an integer input, n, and returns ""FIZZ"" when n is divisible by 3, ""BUZZ"" when n is divisible by 5, and ""FIZZBUZZ"" when n is divisible by both 5 and 3
+
+Example usage:
+fizzBuzz(1) => 1
+fizzBuzz(15) => ""FIZZBUZZ""
+fizzBuzz(15) => ""FIZZBUZZ"" */
+
+var fizzBuzz = function (n) {};","assert.equal(fizzBuzz(1), 1);
+assert.equal(fizzBuzz(3), ""FIZZ"");
+assert.equal(fizzBuzz(5), ""BUZZ"");
+assert.equal(fizzBuzz(12), ""FIZZ"");
+assert.equal(fizzBuzz(30), ""FIZZBUZZ"");
+assert.equal(fizzBuzz(100), ""BUZZ"");
+assert.equal(fizzBuzz(300000), ""FIZZBUZZ"");
+assert.equal(fizzBuzz(123456), 123456);
+assert.equal(fizzBuzz(14), 14);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+9,isPrime,"/*Write a function that check to see if an input integer, n, is a prime number. Assume positive non-zero inputs
+
+Example usage:
+isPrime(2) => true
+isPrime(17) => true
+isPrime(100) => false*/
+
+var isPrime = function (n) {};","assert.equal(isPrime(2), true);
+assert.equal(isPrime(113), true);
+assert.equal(isPrime(163), true);
+assert.equal(isPrime(1000000), false);
+assert.equal(isPrime(23452), false);
+assert.equal(isPrime(1234567654321), false);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+10,nthPrime,"/*Write a function that takes an input integer, n, and returns the nth prime number. Assume positive inputs
+
+Example usage:
+nthPrime(0) => 2
+nthPrime(1) => 3
+nthPrime(2) => 5*/
+
+var nthPrime = function (n) {};","assert.equal(nthPrime(0),2);
+assert.equal(nthPrime(1),3);
+assert.equal(nthPrime(2),5);
+assert.equal(nthPrime(3),7);
+assert.equal(nthPrime(4),11);
+assert.equal(nthPrime(99),541);
+assert.equal(nthPrime(999),7919);
+assert.equal(nthPrime(344),2333);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+11,balancedParens,"/*Write a function that determines if an input string, str, has balanced parenthesis
+
+Example usage:
+balancedParens(""( ( ) )"") => true
+balancedParens(""() (())"") => true
+balancedParens(""((( ) ( )"") => false
+balancedParens("")("") = > false*/
+
+var balancedParens = function (str) {};","assert.equal(balancedParens(""()()()()()()()""), true);
+assert.equal(balancedParens(""( ().. (b)a )"" ), true);
+assert.equal(balancedParens(""(()())((())())""), true);
+assert.equal(balancedParens(""()aaa(""), false);
+assert.equal(balancedParens(""sdjsf))((""), false);
+assert.equal(balancedParens("")()()(""), false);
+assert.equal(balancedParens(""((((((((""), false);
+assert.equal(balancedParens(""(((((((((())))))))))""), true);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
