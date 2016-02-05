@@ -51,9 +51,9 @@ var responds = function (io) {
       stdout: stdout
     };
     // Send evaluated response to socket
-    if (type === 'battle') {
+    if (type === 'battle' || type === 'solo') {
       io.to('/#'+toSocket).emit('eval', socketMessage);
-    } else {
+    } else if (type === 'pair') {
       io.to('/#'+toSocket).emit('pair_eval', socketMessage);      
     }
 
