@@ -80,9 +80,6 @@ module.exports = function (io) {
       if(openQ.length !== 0 && findRoom(socket) == openQ[0].name) {
         openQ.shift();
       }
-      if(pairOpenQ.length !== 0 && findRoom(socket) == pairOpenQ[0].name) {
-        pairOpenQ.shift();
-      }
     });
     socket.on('disconnect', function () {
       if (openQ[0]) {
@@ -96,7 +93,7 @@ module.exports = function (io) {
     });
 
     //----------Pair Socket Event Handlers ----------
-    socket.on('pair_arena', function (github_handle) {
+    socket.on('pair', function (github_handle) {
       // if there aren't any open room, create a room and join it
       if (pairOpenQ.length === 0) {
         // create a room
@@ -126,34 +123,30 @@ module.exports = function (io) {
           }
         }, function (challenge) {
           if (challenge !== null) {
-            solutionController.initializeChallengeSolutions(otherPlayer, github_handle, challenge.id);
+            solutionController.initializeChallengeSolutions(otherPlayer, github_handle, challenge.id, 'pair');
           } else {
             challenge = {
               id: null,
               name: null,
               prompt: '/*Sorry we ran out of problems! \nPlease exit and re-enter the room to try again*/'
-            };
+            }
           }
           io.to(String(existingRoom.name)).emit('pair_up', challenge);
         });
       }
     });
 
-    socket.on('ready', function (data) {
+    socket.on('ready', function(data){
       socket.to(findRoom(socket)).broadcast.emit('ready', data);
     });
 
-    socket.on('start_pair', function (startData) {
+    socket.on('start_pair', function(startData) {
       solutionController.initializeChallengeSolutions(startData.opponent_github_handle, startData.user_github_handle, startData.challenge_id);
-      io.to(findRoom(socket)).emit('start_pair');
+      socket.to(findRoom(socket)).broadcast.emit('start_pair', data);
     });
 
-    socket.on('pair_evaled', function (data) {
-      io.to(findRoom(socket)).emit('pair_evaled', data);
-    });
-
-    socket.on('syntaxErrors', function (data) {
-      socket.to(findRoom(socket)).broadcast.emit('syntaxErrors', data);
+    socket.on('pair_evaled', function(data){
+      socket.to(findRoom(socket)).broadcast.emit('we_done', data);
     });
 
     //------------- WEBRTC -----------------------
@@ -163,4 +156,4 @@ module.exports = function (io) {
 
   });
 
-};
+}

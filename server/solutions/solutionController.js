@@ -292,4 +292,3 @@ var fun = function(solution){
   )
 }
 
-
