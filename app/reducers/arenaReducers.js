@@ -40,6 +40,10 @@ function arenaReducer (state, action){
       return _.extend({}, state, {
         iAmReady: true
       });
+    case actions.UN_READY:
+      return _.extend({}, state, {
+        iAmReady: false
+      });
     case actions.START_PAIR:
       return _.extend({}, state, {
         content: state.pairContent,

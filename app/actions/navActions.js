@@ -137,9 +137,13 @@ var navPairArena = function (github_handle) {
 
 var navAwayFromArena = function () {
   socket.emit('leaveArena');
-  
-  return {
-    type: actions.NAV_STAGING
+  return function (dispatch) {
+    dispatch({
+      type: actions.NAV_STAGING
+    });
+    dispatch({
+      type: actions.UN_READY
+    });
   };
 };
 
