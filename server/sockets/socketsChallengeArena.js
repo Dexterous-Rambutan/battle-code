@@ -80,6 +80,9 @@ module.exports = function (io) {
       if(openQ.length !== 0 && findRoom(socket) == openQ[0].name) {
         openQ.shift();
       }
+      if(pairOpenQ.length !== 0 && findRoom(socket) == pairOpenQ[0].name) {
+        pairOpenQ.shift();
+      }
     });
     socket.on('disconnect', function () {
       if (openQ[0]) {
