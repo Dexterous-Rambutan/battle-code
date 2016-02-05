@@ -53,7 +53,9 @@ socket.on('eval', function (submissionMessage, challenge_id) {
 });
 
 socket.on('won', function (data) {
+  var cursor = store.getState().arena.editorSolo.selection.getCursor();
   store.dispatch(arenaAction.lostChallenge(store.getState().arena.editorSolo.getSession().getValue()));
+  store.getState().arena.editorSolo.moveCursorTo(cursor.row, cursor.column);
 });
 
 socket.on('syntaxErrors', function (syntaxErrors) {
