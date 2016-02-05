@@ -98,11 +98,11 @@ module.exports = function (io) {
       if (pairOpenQ.length === 0) {
         // create a room
         pairRoomCounter++;
-        console.log('socketsChallenge line-98, Creating and joining new PAIR ROOM', roomCounter);
-        socket.join(String(roomCounter));
+        console.log('socketsChallenge line-98, Creating and joining new PAIR ROOM', pairRoomCounter);
+        socket.join(String(pairRoomCounter));
         // add this room to the pairOpenQ
         pairOpenQ.push({
-          name: roomCounter,
+          name: pairRoomCounter,
           players: [github_handle],
           socket_id: [socket.id]
         });
@@ -145,12 +145,8 @@ module.exports = function (io) {
       socket.to(findRoom(socket)).broadcast.emit('start_pair', data);
     });
 
-    socket.on('we_done', function(data){
+    socket.on('pair_evaled', function(data){
       socket.to(findRoom(socket)).broadcast.emit('we_done', data);
-    });
-
-    socket.on('we_wrong', function(data){
-      socket.to(findRoom(socket)).broadcast.emit('we_wrong', data);
     });
 
     //------------- WEBRTC -----------------------
