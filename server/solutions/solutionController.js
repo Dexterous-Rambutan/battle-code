@@ -44,7 +44,7 @@ module.exports = {
     })
     .catch(function (user) {
       res.status(500).json({error: true, data: {message: err.message}});
-    });
+    })
 
   },
 
@@ -72,18 +72,39 @@ module.exports = {
     .fetch().then(function(user) {
       return user.get('id');
     }).then(function(userId){
-      delete solutionAttr.github_handle;
       solutionAttr.user_id = userId;
-
       return Solution.forge({
         challenge_id: solutionAttr.challenge_id,
         user_id: solutionAttr.user_id
       }).fetch();
     }).then(function (solution) {
-
-      if(solutionAttr.type === 'battle' && solution.get('valid') === false) {
+      console.log(solution)
+      console.log('solutionattr',solutionAttr)
+      if((solutionAttr.type === 'battle' || solutionAttr.type === 'pair') && solution.get('valid') === false) {
         solutionAttr['valid'] = true;
+        solutionAttr['end_time'] = new Date(Date.now());
+        // TODO add end time
+        var type = solutionAttr.type;
+        var handle = solutionAttr.github_handle;
         delete solutionAttr.type;
+        delete solutionAttr.github_handle;
+        solution.set(solutionAttr).save();
+        solutionAttr['type'] = type;
+        solutionAttr['github_handle'] = handle;
+      }
+      return;
+    }).then(function(){
+      if(solutionAttr.type === 'pair') {
+        return Solution.forge({
+          pair_github_handle: solutionAttr.github_handle,
+          challenge_id: solutionAttr.challenge_id
+        }).fetch()
+      }
+      return;
+    }).then(function(solution) {
+      if(solutionAttr.type === 'pair' && solution.get('valid') === false) {
+        delete solutionAttr.type;
+        delete solutionAttr.github_handle
         solution.set(solutionAttr).save();
       }
       return;
@@ -94,50 +115,79 @@ module.exports = {
   },
 
   //Internally invoked when two players enter a room and a challenge ID is assigned
-  initializeChallengeSolutions: function(player1_github_handle, player2_github_handle, challenge_id, callback){
+  initializeChallengeSolutions: function(player1_github_handle, player2_github_handle, challenge_id, type, callback){
+    console.log(callback)
     var playerIds = {};
-
     User.forge({github_handle: player1_github_handle}).fetch()
     .then(function(player1) {
       playerIds.player1_id = player1.get('id');
       return player1.get('id');
     })
     .then(function(player1_id){
-      return User.forge({github_handle: player2_github_handle}).fetch();
+      return User.forge({github_handle: player2_github_handle}).fetch()
     })
     .then(function(player2) {
       playerIds.player2_id = player2.get('id');
       return player2.get('id');
     })
     .then(function () {
-      return Solution.forge({
-        start_time: new Date(Date.now()),
-        end_time: new Date(Date.now()),
-        total_time: null,
-        content: 'Initial Value',
-        user_id: playerIds.player1_id,
-        challenge_id: challenge_id,
-        valid: false
-      }).save();
+      if(type === 'pair'){
+        return Solution.forge({
+          start_time: new Date(Date.now()),
+          end_time: new Date(Date.now()),
+          total_time: null,
+          content: 'Initial Value',
+          user_id: playerIds.player1_id,
+          pair_github_handle: player2_github_handle,
+          challenge_id: challenge_id,
+          valid: false
+        }).save()
+      } else {
+        return Solution.forge({
+          start_time: new Date(Date.now()),
+          end_time: new Date(Date.now()),
+          total_time: null,
+          content: 'Initial Value',
+          user_id: playerIds.player1_id,
+          pair_github_handle: null,
+          challenge_id: challenge_id,
+          valid: false
+        }).save()
+      }
     })
     .then(function () {
-      return Solution.forge({
-        start_time: new Date(Date.now()),
-        end_time: new Date(Date.now()),
-        total_time: null,
-        content: 'Initial Value',
-        user_id: playerIds.player2_id,
-        challenge_id: challenge_id,
-        valid: false
-      }).save();
+      if(type === 'pair'){
+        return Solution.forge({
+          start_time: new Date(Date.now()),
+          end_time: new Date(Date.now()),
+          total_time: null,
+          content: 'Initial Value',
+          user_id: playerIds.player2_id,
+          pair_github_handle: player1_github_handle,
+          challenge_id: challenge_id,
+          valid: false
+        }).save()
+      } else {
+        return Solution.forge({
+          start_time: new Date(Date.now()),
+          end_time: new Date(Date.now()),
+          total_time: null,
+          content: 'Initial Value',
+          user_id: playerIds.player2_id,
+          pair_github_handle: null,
+          challenge_id: challenge_id,
+          valid: false
+        }).save()
+      }
     }).then(function (solution) {
       if (callback) {
-        callback(solution);
+        console.log('here')
+        callback();
       }
     })
     .catch(function(error) {
       console.log('error initializing solutions', error)
-    });
+    })
   },
 
   resetWithData: function () {
@@ -229,6 +279,17 @@ module.exports = {
         challenge_id: 1,
         valid: true
       }).save();
-    });
+    })
   }
 };
+var fun = function(solution){
+  module.exports.addSolution(
+   {
+      github_handle: 'puzzlehe4d',
+      challenge_id: 1,
+      type: 'pair'
+    }
+  )
+}
+
+
