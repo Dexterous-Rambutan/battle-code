@@ -37,18 +37,37 @@ var getProblem = function (payload) {
   };
 };
 
+var ready = function () {
+  return {
+    type: actions.READY
+  };
+};
+
+var pairSubmission = function (payload) {
+  return {
+    type: actions.PAIR_SUBMISSION,
+    payload: payload
+  };
+};
+
+var storeSyntaxError = function (payload) {
+  return {
+    type: actions.SYNTAX_ERROR,
+    payload: payload
+  };
+}
 
 var lostChallenge = function (payload) {
   return {
     type: actions.LOST_CHALLENGE,
     payload: payload
-  }
+  };
 };
 
 var playerLeave = function(){
   return {
     type: actions.PLAYER_LEAVE
-  }
+  };
 };
 
 var submitProblem = function (errors, solution_str, socket_id, problem_id, user_handle, type) {
@@ -142,5 +161,8 @@ module.exports = {
   storeEditor: storeEditor,
   storeEditorOpponent: storeEditorOpponent,
   lostChallenge: lostChallenge,
-  playerLeave: playerLeave
+  playerLeave: playerLeave,
+  ready: ready,
+  pairSubmission: pairSubmission,
+  storeSyntaxError: storeSyntaxError
 };
