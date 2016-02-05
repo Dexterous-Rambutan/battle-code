@@ -34,17 +34,17 @@ var PairArena = React.createClass({
     ///////////////////////////////////////////////////////////////
     //////// CHANGE THIS SECTION TO REFLECT PAIR MODE /////////////
     ///////////////////////////////////////////////////////////////
-    if(this.props.arena.editorSolo.getSession().getValue()){
-      this.props.arena.socket.emit('update', this.props.arena.editorSolo.getSession().getValue())
-    }
+    // if(this.props.arena.editorSolo.getSession().getValue()){
+    //   this.props.arena.socket.emit('update', this.props.arena.editorSolo.getSession().getValue())
+    // }
   },
   submitProblem: function(){
       var errors = this.props.arena.editorSolo.getSession().getAnnotations();
       var content = this.props.arena.editorSolo.getSession().getValue();
-      if (errors.length > 0) {
+      // if (errors.length > 0) {
         this.props.arena.socket.emit('syntaxErrors', errors);
-      }
-      this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle, 'battle');
+      // }
+      this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle, 'pair');
   },
   render: function() {
 

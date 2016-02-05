@@ -55,7 +55,14 @@ var storeSyntaxError = function (payload) {
     type: actions.SYNTAX_ERROR,
     payload: payload
   };
-}
+};
+
+var storeNoSyntaxError = function (payload) {
+  return {
+    type: actions.NO_SYNTAX_ERROR,
+    payload: payload
+  };
+};
 
 var lostChallenge = function (payload) {
   return {
@@ -80,11 +87,11 @@ var submitProblem = function (errors, solution_str, socket_id, problem_id, user_
         payload: solution_str
       });
 
-      console.log({
-        soln_str: solution_str,
-        user_handle: user_handle,
-        socket_id: socket_id
-      });
+      // console.log({
+      //   soln_str: solution_str,
+      //   user_handle: user_handle,
+      //   socket_id: socket_id
+      // });
       $.ajax({
         method:'POST',
         url: '/api/solutions/' + problem_id,
@@ -115,24 +122,6 @@ var submitProblem = function (errors, solution_str, socket_id, problem_id, user_
 
 var handleSubmissionResponse = function (payload) {
   return function (dispatch) {
-    // Update the profile with all challenges, attempted and successfully completed
-    // $.ajax({
-    //   method: 'GET',
-    //   url: '/api/solutions/user/' + payload.github_handle,
-    //   dataType: 'json',
-    //   cache: false,
-    //   success: function (data) {
-    //     dispatch({
-    //       type: actions.STORE_USER_PROBLEMS,
-    //       payload: data
-    //     });
-    //   },
-    //   error: function (error) {
-    //     dispatch({
-    //       type: actions.GET_PROBLEM_ERROR
-    //     });
-    //   }
-    // });
     if (payload.message === 'victory!') {
       // inform of submission success
       dispatch({
@@ -164,5 +153,6 @@ module.exports = {
   playerLeave: playerLeave,
   ready: ready,
   pairSubmission: pairSubmission,
-  storeSyntaxError: storeSyntaxError
+  storeSyntaxError: storeSyntaxError,
+  storeNoSyntaxError: storeNoSyntaxError
 };

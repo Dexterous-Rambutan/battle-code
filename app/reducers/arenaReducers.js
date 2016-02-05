@@ -43,7 +43,7 @@ function arenaReducer (state, action){
     case actions.START_PAIR:
       return _.extend({}, state, {
         content: state.pairContent,
-        problem_id: pairProblem_id,
+        problem_id: state.pairProblem_id,
         pairProblem_id: '',
         pairContent: ''
       });
@@ -64,7 +64,7 @@ function arenaReducer (state, action){
       });
     case actions.SUBMIT_PROBLEM_SUCCESS:
       return _.extend({}, state, {
-        submissionMessage: "solution submitted successfully with passing results..."
+        submissionMessage: "solution submitted successfully with passing results...",
       });
     case actions.STORE_EDITOR:
       return _.extend({}, state, {

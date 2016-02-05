@@ -59,10 +59,14 @@ socket.on('won', function (data) {
 });
 
 socket.on('syntaxErrors', function (syntaxErrors) {
-  store.dispatch(arenaAction.storeSyntaxError({
-    solution_str: store.getState().arena.editorSolo.getSession().getValue(),
-    errors: syntaxErrors
-  }));
+  if (syntaxErrors.length > 0) {
+    store.dispatch(arenaAction.storeSyntaxError({
+      solution_str: store.getState().arena.editorSolo.getSession().getValue(),
+      errors: syntaxErrors
+    }));
+  } else {
+    store.dispatch(arenaAction.storeNoSyntaxError(store.getState().arena.editorSolo.getSession().getValue()));
+  }
 });
 
 socket.on('pair_eval', function (submissionMessage, challenge_id) {
@@ -86,6 +90,7 @@ socket.on('ready', function () {
 });
 
 socket.on('start_pair', function () {
+  console.log('Should have heard "start_pair"');
   store.dispatch({
     type: actions.START_PAIR
   });

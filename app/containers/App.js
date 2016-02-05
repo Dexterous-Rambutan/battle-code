@@ -11,15 +11,15 @@ var io = require('socket.io-client');
 var actions = require('../actions');
 
 //component require
-var components = require('../components')
+var components = require('../components');
 
 //constant requires (views)
-var views = require('../constants').view
+var views = require('../constants').view;
 
 
 var contextType = {
   redux: React.PropTypes.object
-}
+};
 
 var App = React.createClass({
   componentWillMount: function(){
@@ -30,12 +30,19 @@ var App = React.createClass({
     if(this.props.user.isLoggedIn){
       switch(this.props.view) {
         case views.STAGING:
-        console.log(this.props)
           //history.pushState(store.getState(), 'Staging', "staging");
           return (
             <div>
               <components.NavBar {...this.props}/>
               <components.Staging {...this.props}/>
+            </div>
+          );
+        case views.PAIR_ARENA:
+          //history.pushState(store.getState(), 'Arena', "arena");
+          return (
+            <div>
+              <components.NavBar {...this.props}/>
+              <components.PairArena {...this.props}/>
             </div>
           );
         case views.SOLO_ARENA:

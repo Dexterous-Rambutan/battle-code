@@ -40,14 +40,14 @@ module.exports = {
     .then(function (solutions) {
       var challenges = solutions.filter(function (s) {
         return s.related('challenge').get('type') === type;
-      })
+      });
       completedChallenges.p1 = challenges.map(function (s) {
         return s.get('challenge_id');
       });
     // Get list of challenges completed by player2
       return User.forge({
         github_handle: p2
-      }).fetch({withRelated: ['solutions']})
+      }).fetch({withRelated: ['solutions']});
     })
     .then(function (user) {
       var solutions = user.related('solutions');
@@ -56,7 +56,7 @@ module.exports = {
     .then(function (solutions) {
       var challenges = solutions.filter(function (s) {
         return s.related('challenge').get('type') === type;
-      })
+      });
       completedChallenges.p2 = challenges.map(function (s) {
         return s.get('challenge_id');
       });
@@ -65,9 +65,12 @@ module.exports = {
     .then(function (challenges) {
       // return a challenge neither player has seen
       completed = _.union(completedChallenges.p1, completedChallenges.p2);
-      total = challenges.map(function (c) {
+      total = challenges.filter(function (c) {
+        return c.get('type') === type;
+      }).map(function (c) {
         return c.get('id');
-      })
+      });
+      console.log(completedChallenges, total);
       var available = _.difference(total, completed);
       // if no challenges are available
       if (available.length === 0) {
@@ -83,7 +86,7 @@ module.exports = {
       if (id === null) {
         return null;
       }
-      return Challenge.forge({id: id, type:'battle'}).fetch()
+      return Challenge.forge({id: id, type:type}).fetch();
     })
     .then(function (challenge) {
       if (challenge !== null) {

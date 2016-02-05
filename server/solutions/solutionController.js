@@ -44,7 +44,7 @@ module.exports = {
     })
     .catch(function (user) {
       res.status(500).json({error: true, data: {message: err.message}});
-    })
+    });
 
   },
 
@@ -81,12 +81,10 @@ module.exports = {
       }).fetch();
     }).then(function (solution) {
 
-      console.log('solutionattr',solutionAttr)
       if(solutionAttr.type === 'battle' && solution.get('valid') === false) {
         solutionAttr['valid'] = true;
         delete solutionAttr.type;
         solution.set(solutionAttr).save();
-        console.log('we here')
       }
       return;
     })
@@ -105,7 +103,7 @@ module.exports = {
       return player1.get('id');
     })
     .then(function(player1_id){
-      return User.forge({github_handle: player2_github_handle}).fetch()
+      return User.forge({github_handle: player2_github_handle}).fetch();
     })
     .then(function(player2) {
       playerIds.player2_id = player2.get('id');
@@ -120,7 +118,7 @@ module.exports = {
         user_id: playerIds.player1_id,
         challenge_id: challenge_id,
         valid: false
-      }).save()
+      }).save();
     })
     .then(function () {
       return Solution.forge({
@@ -131,7 +129,7 @@ module.exports = {
         user_id: playerIds.player2_id,
         challenge_id: challenge_id,
         valid: false
-      }).save()
+      }).save();
     }).then(function (solution) {
       if (callback) {
         callback(solution);
@@ -139,7 +137,7 @@ module.exports = {
     })
     .catch(function(error) {
       console.log('error initializing solutions', error)
-    })
+    });
   },
 
   resetWithData: function () {
@@ -231,6 +229,6 @@ module.exports = {
         challenge_id: 1,
         valid: true
       }).save();
-    })
+    });
   }
 };

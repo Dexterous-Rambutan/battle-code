@@ -44,13 +44,18 @@ var responds = function (io) {
         });
       }
     }
-    // Send evaluated response to socket
-    io.to('/#'+toSocket).emit('eval', {
+    var socketMessage = {
       message: message,
       challenge_id: challenge_id,
       github_handle: github_handle,
       stdout: stdout
-    });
+    };
+    // Send evaluated response to socket
+    if (type === 'battle') {
+      io.to('/#'+toSocket).emit('eval', socketMessage);
+    } else {
+      io.to('/#'+toSocket).emit('pair_eval', socketMessage);      
+    }
 
     // Keep listening
     responds(io);
