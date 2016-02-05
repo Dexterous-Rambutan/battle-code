@@ -31,6 +31,9 @@ module.exports = function (io) {
         console.log('server.js line-82, Creating and joining new room', roomCounter);
         socket.join(String(roomCounter));
         // add this room to the openQ
+        //require redis here
+          //
+
         openQ.push({
           name: roomCounter,
           players: [github_handle],
@@ -54,7 +57,7 @@ module.exports = function (io) {
         }, function (challenge) {
           if (challenge !== null) {
             //initialize the solutions so that there is record of attempt
-            solutionController.initializeChallengeSolutions(otherPlayer, github_handle, challenge.id);
+            solutionController.initializeChallengeSolutions(otherPlayer, github_handle, challenge.id, 'battle');
             matchController.addForBoth(otherPlayer, github_handle, challenge.id);
             // emit start event to this entire room
             io.to(String(existingRoom.name)).emit('start', challenge);
@@ -116,24 +119,19 @@ module.exports = function (io) {
           body: {
             player1_github_handle: otherPlayer,
             player2_github_handle: github_handle,
-            type: 'battle'
+            type: 'pair'
           }
         }, function (challenge) {
           if (challenge !== null) {
-            //initialize the solutions so that there is record of attempt
-            solutionController.initializeChallengeSolutions(otherPlayer, github_handle, challenge.id);
-            matchController.addForBoth(otherPlayer, github_handle, challenge.id);
-            // emit start event to this entire room
-            io.to(String(existingRoom.name)).emit('start', challenge);
+            solutionController.initializeChallengeSolutions(otherPlayer, github_handle, challenge.id, 'pair');
           } else {
-            //initialize the solutions so that there is record of attempt
             challenge = {
               id: null,
               name: null,
               prompt: '/*Sorry we ran out of problems! \nPlease exit and re-enter the room to try again*/'
             }
-            io.to(String(existingRoom.name)).emit('pair_up', challenge);
           }
+          io.to(String(existingRoom.name)).emit('pair_up', challenge);
         });
       }
     });
