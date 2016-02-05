@@ -37,18 +37,44 @@ var getProblem = function (payload) {
   };
 };
 
+var ready = function () {
+  return {
+    type: actions.READY
+  };
+};
+
+var pairSubmission = function (payload) {
+  return {
+    type: actions.PAIR_SUBMISSION,
+    payload: payload
+  };
+};
+
+var storeSyntaxError = function (payload) {
+  return {
+    type: actions.SYNTAX_ERROR,
+    payload: payload
+  };
+};
+
+var storeNoSyntaxError = function (payload) {
+  return {
+    type: actions.NO_SYNTAX_ERROR,
+    payload: payload
+  };
+};
 
 var lostChallenge = function (payload) {
   return {
     type: actions.LOST_CHALLENGE,
     payload: payload
-  }
+  };
 };
 
 var playerLeave = function(){
   return {
     type: actions.PLAYER_LEAVE
-  }
+  };
 };
 
 var submitProblem = function (errors, solution_str, socket_id, problem_id, user_handle, type) {
@@ -61,11 +87,11 @@ var submitProblem = function (errors, solution_str, socket_id, problem_id, user_
         payload: solution_str
       });
 
-      console.log({
-        soln_str: solution_str,
-        user_handle: user_handle,
-        socket_id: socket_id
-      });
+      // console.log({
+      //   soln_str: solution_str,
+      //   user_handle: user_handle,
+      //   socket_id: socket_id
+      // });
       $.ajax({
         method:'POST',
         url: '/api/solutions/' + problem_id,
@@ -96,24 +122,6 @@ var submitProblem = function (errors, solution_str, socket_id, problem_id, user_
 
 var handleSubmissionResponse = function (payload) {
   return function (dispatch) {
-    // Update the profile with all challenges, attempted and successfully completed
-    // $.ajax({
-    //   method: 'GET',
-    //   url: '/api/solutions/user/' + payload.github_handle,
-    //   dataType: 'json',
-    //   cache: false,
-    //   success: function (data) {
-    //     dispatch({
-    //       type: actions.STORE_USER_PROBLEMS,
-    //       payload: data
-    //     });
-    //   },
-    //   error: function (error) {
-    //     dispatch({
-    //       type: actions.GET_PROBLEM_ERROR
-    //     });
-    //   }
-    // });
     if (payload.message === 'victory!') {
       // inform of submission success
       dispatch({
@@ -142,5 +150,9 @@ module.exports = {
   storeEditor: storeEditor,
   storeEditorOpponent: storeEditorOpponent,
   lostChallenge: lostChallenge,
-  playerLeave: playerLeave
+  playerLeave: playerLeave,
+  ready: ready,
+  pairSubmission: pairSubmission,
+  storeSyntaxError: storeSyntaxError,
+  storeNoSyntaxError: storeNoSyntaxError
 };

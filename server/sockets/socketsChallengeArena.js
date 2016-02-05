@@ -93,7 +93,7 @@ module.exports = function (io) {
     });
 
     //----------Pair Socket Event Handlers ----------
-    socket.on('pair', function (github_handle) {
+    socket.on('pair_arena', function (github_handle) {
       // if there aren't any open room, create a room and join it
       if (pairOpenQ.length === 0) {
         // create a room
@@ -123,30 +123,34 @@ module.exports = function (io) {
           }
         }, function (challenge) {
           if (challenge !== null) {
-            solutionController.initializeChallengeSolutions(otherPlayer, github_handle, challenge.id, 'pair');
+            solutionController.initializeChallengeSolutions(otherPlayer, github_handle, challenge.id);
           } else {
             challenge = {
               id: null,
               name: null,
               prompt: '/*Sorry we ran out of problems! \nPlease exit and re-enter the room to try again*/'
-            }
+            };
           }
           io.to(String(existingRoom.name)).emit('pair_up', challenge);
         });
       }
     });
 
-    socket.on('ready', function(data){
+    socket.on('ready', function (data) {
       socket.to(findRoom(socket)).broadcast.emit('ready', data);
     });
 
-    socket.on('start_pair', function(startData) {
+    socket.on('start_pair', function (startData) {
       solutionController.initializeChallengeSolutions(startData.opponent_github_handle, startData.user_github_handle, startData.challenge_id);
-      socket.to(findRoom(socket)).broadcast.emit('start_pair', data);
+      io.to(findRoom(socket)).emit('start_pair');
     });
 
-    socket.on('pair_evaled', function(data){
-      socket.to(findRoom(socket)).broadcast.emit('we_done', data);
+    socket.on('pair_evaled', function (data) {
+      io.to(findRoom(socket)).emit('pair_evaled', data);
+    });
+
+    socket.on('syntaxErrors', function (data) {
+      socket.to(findRoom(socket)).broadcast.emit('syntaxErrors', data);
     });
 
     //------------- WEBRTC -----------------------
@@ -156,4 +160,4 @@ module.exports = function (io) {
 
   });
 
-}
+};

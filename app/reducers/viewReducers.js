@@ -19,6 +19,8 @@ function viewReducer (state, action){
       return views.SOLO_ARENA;
     case actions.NAV_CHALLENGE_ARENA:
       return views.CHALLENGE_ARENA;
+    case actions.NAV_PAIR_ARENA:
+      return views.PAIR_ARENA;
     case actions.LOGOUT:
       return views.LOGIN;
     case actions.NAV_PROFILE:

@@ -10,4 +10,5 @@ module.exports = {
   SoloArena: require('./SoloArena.js'),
   SoloStaging: require('./SoloStaging.js'),
   Staging: require('./Staging.js'),
+  PairArena: require('./PairArena.js')
 }
