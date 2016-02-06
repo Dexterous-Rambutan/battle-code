@@ -65,6 +65,7 @@ module.exports = {
   editOneWhenValid: function(checkedSolutions, callback){
     var challenge_id = checkedSolutions.challenge_id;
     var github_handle = checkedSolutions.github_handle;
+    //define vairable for winner & loser
     var winner = '';
     var loser = '';
     return User.forge({
@@ -85,17 +86,20 @@ module.exports = {
     .then(function(opponentMatchEntry) {
       if (opponentMatchEntry) {
         if (opponentMatchEntry.get('win') === false) {
+          //set winner
           winner = opponentMatchEntry.get('opponent_github_handle');
           Match.forge({
             user_github_handle: opponentMatchEntry.get('opponent_github_handle'),
             challenge_id: opponentMatchEntry.get('challenge_id')
           }).fetch()
           .then(function (userMatchEntry) {
+            //set loser
             loser = userMatchEntry.get('opponent_github_handle');
             return userMatchEntry.set('win', true).save();
           })
           .then(function () {
             if(callback) {
+              //callback assignEloRating(winner, loser)
               callback(winner, loser);
             }
           });
@@ -108,21 +112,24 @@ module.exports = {
     });
   },
   assignEloRating: function(winner, loser){
+    //make promise for winnerUser
     var winnerUser = function(winner) {
       return User.forge({
       github_handle: winner
       }).fetch();
     }
+
+    //make Promise for loserUser
     var loserUser = function(loser) {
       return User.forge({
         github_handle: loser
       }).fetch();
     }
+    //join promisese with .all
       Promise.all([winnerUser(winner), loserUser(loser)]).then(function(players){
         var winner = players[0];
         var loser = players[1];
-        console.log('players', winner, loser);
-        console.log(winner.get('elo_rating'));
+        // elo rating calculations
         var expectedWinnerScore = elo.getExpected(winner.get('elo_rating'), loser.get('elo_rating'));
         var expectedLoserScore = elo.getExpected(loser.get('elo_rating'), winner.get('elo_rating'));
         winner.set('elo_rating', elo.updateRating(expectedWinnerScore, 1 , winner.get('elo_rating'))).save();
