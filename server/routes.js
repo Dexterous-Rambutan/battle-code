@@ -22,7 +22,12 @@ module.exports = function (app, redisClient) {
       req.body.github_handle = req.session.passport.user.username;
       req.body.github_display_name = req.session.passport.user.displayName;
       req.body.github_avatar_url = req.session.passport.user._json.avatar_url;
+<<<<<<< HEAD
       req.body.github_profile_url = req.session.passport.user.profileUrl;
+=======
+      req.body.github_profileUrl = req.session.passport.user.profileUrl;
+      req.body.elo_rating = 1000;
+>>>>>>> added elo rating for players
       req.body.email = req.session.passport.user.emails[0].value;
       userController.addUser(req);
 

@@ -1,6 +1,7 @@
 var User = require('../users/userModel.js');
 var Match = require('../matches/matchModel.js');
-
+var elo = require('elo-rank')(32);
+var Promise = require('bluebird');
 module.exports = {
 
   //Internally Invoked when a room is filled
@@ -64,6 +65,8 @@ module.exports = {
   editOneWhenValid: function(checkedSolutions, callback){
     var challenge_id = checkedSolutions.challenge_id;
     var github_handle = checkedSolutions.github_handle;
+    var winner = '';
+    var loser = '';
     return User.forge({
       github_handle: github_handle
     }).fetch()
@@ -82,16 +85,18 @@ module.exports = {
     .then(function(opponentMatchEntry) {
       if (opponentMatchEntry) {
         if (opponentMatchEntry.get('win') === false) {
+          winner = opponentMatchEntry.get('opponent_github_handle');
           Match.forge({
             user_github_handle: opponentMatchEntry.get('opponent_github_handle'),
             challenge_id: opponentMatchEntry.get('challenge_id')
           }).fetch()
           .then(function (userMatchEntry) {
+            loser = userMatchEntry.get('opponent_github_handle');
             return userMatchEntry.set('win', true).save();
           })
-          .then(function (userMatchEntry) {
+          .then(function () {
             if(callback) {
-              callback(userMatchEntry);
+              callback(winner, loser);
             }
           });
         }
@@ -102,7 +107,30 @@ module.exports = {
       return err;
     });
   },
-
+  assignEloRating: function(winner, loser){
+    var winnerUser = function(winner) {
+      return User.forge({
+      github_handle: winner
+      }).fetch();
+    }
+    var loserUser = function(loser) {
+      return User.forge({
+        github_handle: loser
+      }).fetch();
+    }
+      Promise.all([winnerUser(winner), loserUser(loser)]).then(function(players){
+        var winner = players[0];
+        var loser = players[1];
+        console.log('players', winner, loser);
+        console.log(winner.get('elo_rating'));
+        var expectedWinnerScore = elo.getExpected(winner.get('elo_rating'), loser.get('elo_rating'));
+        var expectedLoserScore = elo.getExpected(loser.get('elo_rating'), winner.get('elo_rating'));
+        winner.set('elo_rating', elo.updateRating(expectedWinnerScore, 1 , winner.get('elo_rating'))).save();
+        loser.set('elo_rating', elo.updateRating(expectedLoserScore, 0, loser.get('elo_rating'))).save();
+      }).catch(function(err){
+        console.log(err, 'error getting players');
+      })
+  },
   //Gets match history by user
   getAllByUser: function(req, res, callback){
     User.forge({github_handle: req.params.githubHandle})
