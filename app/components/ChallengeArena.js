@@ -9,7 +9,9 @@ var selfEditorOptions = {
   mode: "ace/mode/javascript",
   useSoftTabs: true,
   tabSize: 2,
-  wrap: true
+  wrap: true,
+  showPrintMargin: false,
+  fontSize: 16
 };
 var challengerEditorOptions = _.create(selfEditorOptions, {
   theme: "ace/theme/solarized_dark",
@@ -77,7 +79,6 @@ var ChallengeArena = React.createClass({
       this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle, 'battle');
   },
   render: function() {
-
     return (
       <div className="arena">
         <div id="editor" onKeyPress={this.emitSocket} className='player-editor'></div>

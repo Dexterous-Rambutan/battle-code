@@ -14,9 +14,25 @@ var Staging = React.createClass({
     }.bind(this);
 
     return (
-      <div className="modes">
-        <button onClick={getListofProblemsAndNav}>PRACTICE</button>
-        <button onClick={this.navChallengeArena}>CHALLENGE</button>
+      <div className="content">
+        <div className="staging">
+          <div onClick={getListofProblemsAndNav} className="mode card card-clickable">
+            <div className="mode-handle">
+              <img src="/img/training.png" />
+            </div>
+            <div className="card-content">
+              <h3>TRAINING</h3>
+            </div>
+          </div>
+          <div onClick={this.navChallengeArena} className="mode card card-clickable">
+            <div className="mode-handle">
+              <img src="/img/battle.png" />
+            </div>
+            <div className="card-content">
+              <h3>ARENA</h3>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }

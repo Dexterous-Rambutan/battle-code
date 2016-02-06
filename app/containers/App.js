@@ -67,6 +67,7 @@ var App = React.createClass({
               <div>
                 <components.NavBar {...this.props}/>
                 <components.Profile {...this.props}/>
+                <components.Staging {...this.props}/>
               </div>
             );
           case views.SOLO_STAGING:
@@ -82,7 +83,6 @@ var App = React.createClass({
       //history.pushState(store.getState(), 'Login', "login");
       return (
         <div>
-          <components.NavBar {...this.props}/>
           <components.Login {...this.props}/>
         </div>
       );

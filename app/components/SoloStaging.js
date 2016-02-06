@@ -6,14 +6,39 @@ var SoloStaging = React.createClass({
       var linkToProblem = function(){
         this.props.navActions.navSoloArena(problem);
       }.bind(this);
-      return <a href="#" onClick={linkToProblem}><li>Challenge ID:{problem.challenge_id} - {problem.valid ? 'Completed:' : 'Attempted:'} - {problem.end_time}</li></a>
+      return (
+        <div className="card card-clickable challenge-card" onClick={linkToProblem}>
+          <div className="challenge-card-handle">
+            {problem.challenge_id}
+          </div>
+          <div className="card-content">
+            {problem.valid ? 'Completed:' : 'Attempted:'} - {problem.end_time}
+          </div>
+        </div>
+      )
     }.bind(this));
 
     return (
-      <div className="practice-problems">
-        <h2>Practice Problem Archive</h2>
-        {listOfProblems.length>0 ? <ul>{listOfProblems}</ul> : <div>Sorry, you do not have any problems to practice on. Please play challenge or pair mode to unlock more problems.</div>}
-        <button className="submit" onClick={this.props.navActions.spoofSolo}>Spoof Solo</button>
+      <div className="content">
+        <div className="content-header card">
+          <div className="content-header-handle">
+            <img src="/img/training.png" />
+          </div>
+          <div className="card-content">
+            <h2>Practice Problem Archive</h2>
+          </div>
+        </div>
+          {
+            listOfProblems.length > 0 ? 
+            <div className="challenge-list">
+              <div className="challenge-list-container">
+                {listOfProblems}
+              </div>
+            </div> : 
+            <div>
+              Sorry, you do not have any problems to practice on. Please play challenge or pair mode to unlock more problems.
+              </div>
+            }
       </div>
     )
   }
