@@ -58,11 +58,18 @@ module.exports = {
       challenge_id: req.params.challengeId,
       type: req.body.type
     };
+    //prevents submission in event of
     if(solutionAttr.challenge_id !== 'null') {
       var jobQueue = new Queue('testQueue', redisClient);
       jobQueue.push(JSON.stringify(solutionAttr));
     }
     res.status(201).end();
+  },
+
+  findTimeElapsed: function(dateStart, dateEnd){
+    var time1 = Date.parse(dateStart);
+    var time2 = Date.parse(dateEnd);
+    return time2 - time1;
   },
 
   // POST /api/solutions/:solutionId
@@ -83,6 +90,8 @@ module.exports = {
 
       if(solutionAttr.type === 'battle' && solution.get('valid') === false) {
         solutionAttr['valid'] = true;
+        solutionAttr['end_time'] = new Date(Date.now());
+        solutionAttr['total_time'] = module.exports.findTimeElapsed(solution.attributes.start_time,solutionAttr.end_time);
         delete solutionAttr.type;
         solution.set(solutionAttr).save();
       }
@@ -92,6 +101,8 @@ module.exports = {
       console.log('addSolution error: ', err);
     });
   },
+
+
 
   //Internally invoked when two players enter a room and a challenge ID is assigned
   initializeChallengeSolutions: function(player1_github_handle, player2_github_handle, challenge_id, callback){
