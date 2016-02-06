@@ -290,8 +290,3 @@ module.exports = {
     })
   }
 };
-module.exports.addSolution({
-github_handle: 'puzzlehe4d',
-challenge_id: 1,
-type: 'pair'
-})
