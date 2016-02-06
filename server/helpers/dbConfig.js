@@ -47,6 +47,7 @@ var createSolutionsTable = function () {
     solution.integer('total_time');
     solution.string('content', 80000);  // user input solution string, might be large!
     solution.integer('user_id');
+    solution.string('pair_github_handle');
     solution.integer('challenge_id');
     solution.boolean('valid');
   }).then(function (table) {
