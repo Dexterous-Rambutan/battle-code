@@ -13,7 +13,7 @@ module.exports = function (io) {
   io.on('connection', function (socket) {
     socket.on('playerId', function(data){
       socket.to(findRoom(socket)).broadcast.emit('otherPlayer', data)
-    })
+    });
     socket.on('won', function(data){
       socket.to(findRoom(socket)).broadcast.emit('won', data);
     });
@@ -22,13 +22,13 @@ module.exports = function (io) {
       socket.to(findRoom(socket)).broadcast.emit('keypress', data);
     });
 
-    console.log('server.js line-76, Socket connected:', socket.id, socket.rooms);
+    console.log('socketsChallengeArena.js, line-25, Socket connected:', socket.id, socket.rooms);
     socket.on('arena', function (github_handle) {
       // if there aren't any open room, create a room and join it
       if (openQ.length === 0) {
         // create a room
         roomCounter++;
-        console.log('server.js line-82, Creating and joining new room', roomCounter);
+        console.log('socketsChallengeArena.js, line-31, Creating and joining new room', roomCounter);
         socket.join(String(roomCounter));
         // add this room to the openQ
         //require redis here
@@ -43,7 +43,7 @@ module.exports = function (io) {
       } else {
         var existingRoom = openQ.shift();
         // join the first existing room
-        console.log('server.js line-93, Joining existing room:', existingRoom.name);
+        console.log('socketsChallengeArena.js, line-46, Joining existing room:', existingRoom.name);
         socket.join(String(existingRoom.name));
         // remove this room from the openQ and add to inProgressRooms
         // find all players in the room and find a challenge neither player has seen
@@ -67,20 +67,21 @@ module.exports = function (io) {
               id: null,
               name: null,
               prompt: '/*Sorry we ran out of problems! \nPlease exit and re-enter the room to try again*/'
-            }
+            };
             io.to(String(existingRoom.name)).emit('start', challenge);
           }
         });
       }
     });
     socket.on('leaveArena', function (data) {
-      socket.leave(findRoom(socket));
-      socket.to(findRoom(socket)).broadcast.emit('playerLeave', data)
-      console.log('server.js line 117, Leaving room: ', findRoom(socket));
-      if(openQ.length !== 0 && findRoom(socket) == openQ[0].name) {
+      var foundRoom = findRoom(socket);
+      console.log('server.js line 117, Leaving room: ', foundRoom);
+      socket.leave(foundRoom);
+      socket.to(foundRoom).broadcast.emit('playerLeave', data);
+      if(openQ.length !== 0 && foundRoom == openQ[0].name) {
         openQ.shift();
       }
-      if(pairOpenQ.length !== 0 && findRoom(socket) == pairOpenQ[0].name) {
+      if(pairOpenQ.length !== 0 && foundRoom == pairOpenQ[0].name) {
         pairOpenQ.shift();
       }
     });
@@ -113,7 +114,7 @@ module.exports = function (io) {
       } else {
         var existingRoom = pairOpenQ.shift();
         // join the first existing room
-        console.log('server.js line-93, Joining existing room:', existingRoom.name);
+        console.log('socketsChallengeArena.js, line-93, Joining existing room:', existingRoom.name);
         socket.join(String(existingRoom.name));
         // remove this room from the pairOpenQ and add to inProgressRooms
         // find all players in the room and find a challenge neither player has seen
