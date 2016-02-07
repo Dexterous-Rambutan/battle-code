@@ -51,6 +51,7 @@ module.exports = function (app, redisClient) {
   app.post('/api/users', userController.addUser);
   app.get('/api/solutions/:solutionId', solutionController.getSolutionById);
   app.get('/api/solutions/user/:githubHandle', solutionController.getAllSolutionsForUser);
+  app.get('/api/solutions/:challenge_id/top', solutionController.getTopSolutions);
   app.post('/api/solutions/:challengeId', function (req, res) {
     solutionController.testSolution(req, res, redisClient);
   });
