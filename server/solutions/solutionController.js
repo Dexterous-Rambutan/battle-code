@@ -58,11 +58,18 @@ module.exports = {
       challenge_id: req.params.challengeId,
       type: req.body.type
     };
+    //prevents submission in event of
     if(solutionAttr.challenge_id !== 'null') {
       var jobQueue = new Queue('testQueue', redisClient);
       jobQueue.push(JSON.stringify(solutionAttr));
     }
     res.status(201).end();
+  },
+
+  findTimeElapsed: function(dateStart, dateEnd){
+    var time1 = Date.parse(dateStart);
+    var time2 = Date.parse(dateEnd);
+    return time2 - time1;
   },
 
   // POST /api/solutions/:solutionId
@@ -83,6 +90,8 @@ module.exports = {
 
       if(solutionAttr.type === 'battle' && solution.get('valid') === false) {
         solutionAttr['valid'] = true;
+        solutionAttr['end_time'] = new Date(Date.now());
+        solutionAttr['total_time'] = module.exports.findTimeElapsed(solution.attributes.start_time,solutionAttr.end_time);
         delete solutionAttr.type;
         solution.set(solutionAttr).save();
       }
@@ -92,6 +101,8 @@ module.exports = {
       console.log('addSolution error: ', err);
     });
   },
+
+
 
   //Internally invoked when two players enter a room and a challenge ID is assigned
   initializeChallengeSolutions: function(player1_github_handle, player2_github_handle, challenge_id, callback){
@@ -146,8 +157,8 @@ module.exports = {
       end_time: new Date(Date.now() - 149*60*60*1000),
       total_time: null,
       content: 'solved!',
-      user_id: 3,
-      challenge_id: 1,
+      user_id: 1,
+      challenge_id: 2,
       valid: true
     }).save().then(function () {
       return Solution.forge({
@@ -155,7 +166,7 @@ module.exports = {
         end_time: new Date(Date.now() - 142*60*60*1000),
         total_time: null,
         content: 'solved!',
-        user_id: 3,
+        user_id: 4,
         challenge_id: 2,
         valid: true
       }).save();
@@ -165,7 +176,7 @@ module.exports = {
         end_time: new Date(Date.now() - 73*60*60*1000),
         total_time: null,
         content: 'solved!',
-        user_id: 3,
+        user_id: 4,
         challenge_id: 3,
         valid: true
       }).save();
@@ -175,18 +186,8 @@ module.exports = {
         end_time: new Date(Date.now() - 80*60*60*1000),
         total_time: null,
         content: 'solved!',
-        user_id: 2,
+        user_id: 3,
         challenge_id: 3,
-        valid: true
-      }).save();
-    }).then(function() {
-      return Solution.forge({
-        start_time: new Date(Date.now() - 15*60*60*1000),
-        end_time: new Date(Date.now() - 12*60*60*1000),
-        total_time: null,
-        content: 'solved!',
-        user_id: 2,
-        challenge_id: 4,
         valid: true
       }).save();
     }).then(function() {
@@ -195,7 +196,7 @@ module.exports = {
         end_time: new Date(Date.now() - 38*60*60*1000),
         total_time: null,
         content: 'solved!',
-        user_id: 4,
+        user_id: 2,
         challenge_id: 1,
         valid: true
       }).save();
@@ -205,30 +206,10 @@ module.exports = {
         end_time: new Date(Date.now() - 38*60*60*1000),
         total_time: null,
         content: 'solved!',
-        user_id: 4,
-        challenge_id: 3,
-        valid: true
-      }).save();
-    }).then(function() {
-      return Solution.forge({
-        start_time: new Date(Date.now() - 44*60*60*1000),
-        end_time: new Date(Date.now() - 42*60*60*1000),
-        total_time: null,
-        content: 'solved!',
-        user_id: 1,
-        challenge_id: 3,
-        valid: true
-      }).save();
-    }).then(function() {
-      return Solution.forge({
-        start_time: new Date(Date.now() - 58*60*60*1000),
-        end_time: new Date(Date.now() - 53*60*60*1000),
-        total_time: null,
-        content: 'solved!',
         user_id: 1,
         challenge_id: 1,
         valid: true
       }).save();
-    });
+    })
   }
 };
