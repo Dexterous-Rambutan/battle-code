@@ -1,6 +1,31 @@
 var React = require('react');
 
 var Profile = React.createClass({
+  componentDidUpdate: function () {
+    var wins = 0;
+    var loss = 0;
+    var matchHistory = this.props.user.user_match_history;
+    // var matchHistory = store.getState().user.user_match_history;
+    for ( var i = 0; i < matchHistory.length; i ++ ) {
+      wins += matchHistory[i].win ? 1 : 0;
+      loss += matchHistory[i].win ? 0 : 1;
+    }
+    console.log('Wins:', wins, 'Losses:', loss);
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var data = [{
+      value: wins,
+      color:"#F7464A",
+      highlight: "#FF5A5E",
+      label: "Wins"
+    },{
+      value: loss,
+      color: "#46BFBD",
+      highlight: "#5AD3D1",
+      label: "Losses"
+    }];
+    var myPieChart = new Chart(ctx).Pie(data);
+  },
+  
   render: function() {
     var listOfProblems = this.props.user.user_problems.map(function (problem) {
       var linkToProblem = function(){
@@ -13,6 +38,15 @@ var Profile = React.createClass({
     this.props.user.user_match_history.forEach(function (match) {
       wins += match.win ? 1 : 0;
       loss += match.win ? 0 : 1;
+    });
+
+    var matchHistory = this.props.user.user_match_history.map(function (match) {
+      var opponent = match.opponent_github_handle;
+      var opponentURL = "http://github.com/" + opponent;
+      return <li>Challenge ID: {match.challenge_id} --
+        Opponent: <a href={opponentURL} target="_blank">{opponent}</a> --
+        <img src={match.opponent_avatar} />
+        Status: {match.win ? 'Won' : 'Lost'}</li>
     });
 
     return (
@@ -30,8 +64,13 @@ var Profile = React.createClass({
           Wins: {wins} &nbsp;
           Losses: {loss}
         </div>
+        <div className="win-loss-record">
+          <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
         <div className="profile-challenges">
-          {listOfProblems}
+          <h2>Match History</h2>
+          {/*listOfProblems*/}
+          {matchHistory}
         </div>
       </div>
     )
