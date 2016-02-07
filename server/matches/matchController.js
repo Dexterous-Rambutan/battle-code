@@ -9,28 +9,38 @@ module.exports = {
       github_handle: user_github_handle
     })
     .fetch()
-    .then(function(player1){
-      return Match.forge({
-        user_id: player1.get('id'),
-        user_github_handle: user_github_handle,
-        opponent_github_handle: opponent_github_handle,
-        challenge_id: challenge_id,
-        win: false
-      }).save()
+    .then(function (player1) {
+      return User.forge({
+        github_handle: opponent_github_handle
+      }).fetch().then(function (opponent) {
+        return Match.forge({
+          user_id: player1.get('id'),
+          user_github_handle: user_github_handle,
+          opponent_github_handle: opponent_github_handle,
+          opponent_avatar: opponent.get('github_avatar_url'),
+          challenge_id: challenge_id,
+          win: false
+        }).save();
+      });
     })
     .then(function(){
       return User.forge({
         github_handle: opponent_github_handle
-      }).fetch()
+      }).fetch();
     })
     .then(function(player2){
-      return Match.forge({
-        user_id: player2.get('id'),
-        user_github_handle: opponent_github_handle,
-        opponent_github_handle: user_github_handle,
-        challenge_id: challenge_id,
-        win: false
-      }).save()
+      return User.forge({
+        github_handle: user_github_handle
+      }).fetch().then(function (opponent) {
+        return Match.forge({
+          user_id: player2.get('id'),
+          user_github_handle: opponent_github_handle,
+          opponent_github_handle: user_github_handle,
+          opponent_avatar: opponent.get('github_avatar_url'),
+          challenge_id: challenge_id,
+          win: false
+        }).save();
+      });
     })
     .then(function(match){
       if(callback) {
@@ -61,7 +71,7 @@ module.exports = {
       return Match.forge({
         user_github_handle: user.get('github_handle'),
         challenge_id: challenge_id
-      }).fetch()
+      }).fetch();
     })
     .then(function(userMatchEntry){
       return Match.forge({
@@ -83,14 +93,14 @@ module.exports = {
             if(callback) {
               callback(userMatchEntry);
             }
-          })
+          });
         }
       }
     })
     .catch(function(err) {
-      console.log('what',err)
+      console.log('what',err);
       return err;
-    })
+    });
   },
 
   //Gets match history by user
@@ -117,6 +127,7 @@ module.exports = {
       user_id: 1,
       user_github_handle: 'alanzfu',
       opponent_github_handle: 'hahnbi',
+      opponent_avatar: "https://avatars1.githubusercontent.com/u/12260923?v=3&s=400",
       win: true,
       challenge_id: 2
     }).save().then(function() {
@@ -124,6 +135,7 @@ module.exports = {
         user_id: 4,
         user_github_handle: 'hahnbi',
         opponent_github_handle: 'alanzfu',
+        opponent_avatar: "https://avatars2.githubusercontent.com/u/7851211?v=3&s=400",
         win: false,
         challenge_id: 2
       }).save();
@@ -132,6 +144,7 @@ module.exports = {
         user_id: 4,
         user_github_handle: 'hahnbi',
         opponent_github_handle: 'kweng2',
+        opponent_avatar: "https://avatars2.githubusercontent.com/u/13741053?v=3&s=460",
         win: true,
         challenge_id: 3
       }).save();
@@ -140,15 +153,17 @@ module.exports = {
         user_id: 3,
         user_github_handle: 'kweng2',
         opponent_github_handle: 'hahnbi',
+        opponent_avatar: "https://avatars1.githubusercontent.com/u/12260923?v=3&s=400",
         win: false,
         challenge_id: 3
-      }).save()
+      }).save();
     })
     .then(function(){
       return Match.forge({
         user_id: 2,
         user_github_handle: 'puzzlehe4d',
         opponent_github_handle: 'alanzfu',
+        opponent_avatar: "https://avatars2.githubusercontent.com/u/7851211?v=3&s=400",
         win: true,
         challenge_id: 1
       }).save();
@@ -158,12 +173,13 @@ module.exports = {
         user_id: 1,
         user_github_handle: 'alanzfu',
         opponent_github_handle: 'puzzlehe4d',
+        opponent_avatar: "https://avatars0.githubusercontent.com/u/12518929?v=3&s=400",
         win: false,
         challenge_id: 1
       }).save();
     })
     .catch(function(err){
       console.log(err);
-    })
+    });
   }
-}
+};
