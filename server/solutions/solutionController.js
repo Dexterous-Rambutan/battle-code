@@ -157,8 +157,8 @@ module.exports = {
       end_time: new Date(Date.now() - 149*60*60*1000),
       total_time: null,
       content: 'solved!',
-      user_id: 3,
-      challenge_id: 1,
+      user_id: 1,
+      challenge_id: 2,
       valid: true
     }).save().then(function () {
       return Solution.forge({
@@ -166,7 +166,7 @@ module.exports = {
         end_time: new Date(Date.now() - 142*60*60*1000),
         total_time: null,
         content: 'solved!',
-        user_id: 3,
+        user_id: 4,
         challenge_id: 2,
         valid: true
       }).save();
@@ -176,7 +176,7 @@ module.exports = {
         end_time: new Date(Date.now() - 73*60*60*1000),
         total_time: null,
         content: 'solved!',
-        user_id: 3,
+        user_id: 4,
         challenge_id: 3,
         valid: true
       }).save();
@@ -186,18 +186,8 @@ module.exports = {
         end_time: new Date(Date.now() - 80*60*60*1000),
         total_time: null,
         content: 'solved!',
-        user_id: 2,
+        user_id: 3,
         challenge_id: 3,
-        valid: true
-      }).save();
-    }).then(function() {
-      return Solution.forge({
-        start_time: new Date(Date.now() - 15*60*60*1000),
-        end_time: new Date(Date.now() - 12*60*60*1000),
-        total_time: null,
-        content: 'solved!',
-        user_id: 2,
-        challenge_id: 4,
         valid: true
       }).save();
     }).then(function() {
@@ -206,7 +196,7 @@ module.exports = {
         end_time: new Date(Date.now() - 38*60*60*1000),
         total_time: null,
         content: 'solved!',
-        user_id: 4,
+        user_id: 2,
         challenge_id: 1,
         valid: true
       }).save();
@@ -216,30 +206,10 @@ module.exports = {
         end_time: new Date(Date.now() - 38*60*60*1000),
         total_time: null,
         content: 'solved!',
-        user_id: 4,
-        challenge_id: 3,
-        valid: true
-      }).save();
-    }).then(function() {
-      return Solution.forge({
-        start_time: new Date(Date.now() - 44*60*60*1000),
-        end_time: new Date(Date.now() - 42*60*60*1000),
-        total_time: null,
-        content: 'solved!',
-        user_id: 1,
-        challenge_id: 3,
-        valid: true
-      }).save();
-    }).then(function() {
-      return Solution.forge({
-        start_time: new Date(Date.now() - 58*60*60*1000),
-        end_time: new Date(Date.now() - 53*60*60*1000),
-        total_time: null,
-        content: 'solved!',
         user_id: 1,
         challenge_id: 1,
         valid: true
       }).save();
-    });
+    })
   }
 };

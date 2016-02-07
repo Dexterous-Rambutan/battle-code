@@ -8,8 +8,6 @@ module.exports = function (io) {
 
   var openQ = [];
   var roomCounter = 0;
-  var pairOpenQ = [];
-  var pairRoomCounter = 0;
   io.on('connection', function (socket) {
     socket.on('playerId', function(data){
       socket.to(findRoom(socket)).broadcast.emit('otherPlayer', data)
@@ -94,72 +92,6 @@ module.exports = function (io) {
       } else {
         console.log('Client disconnected after having started a challenge', socket.id);
       }
-    });
-
-    //----------Pair Socket Event Handlers ----------
-    socket.on('pair_arena', function (github_handle) {
-      // if there aren't any open room, create a room and join it
-      if (pairOpenQ.length === 0) {
-        // create a room
-        pairRoomCounter++;
-        console.log('socketsChallenge line-98, Creating and joining new PAIR ROOM', pairRoomCounter);
-        socket.join(String(pairRoomCounter));
-        // add this room to the pairOpenQ
-        pairOpenQ.push({
-          name: pairRoomCounter,
-          players: [github_handle],
-          socket_id: [socket.id]
-        });
-      // Otherwise, there is an open room, join that one
-      } else {
-        var existingRoom = pairOpenQ.shift();
-        // join the first existing room
-        console.log('socketsChallengeArena.js, line-93, Joining existing room:', existingRoom.name);
-        socket.join(String(existingRoom.name));
-        // remove this room from the pairOpenQ and add to inProgressRooms
-        // find all players in the room and find a challenge neither player has seen
-        var otherPlayer = existingRoom.players[0];
-        challengeController.getChallengeMultiplayer({
-          body: {
-            player1_github_handle: otherPlayer,
-            player2_github_handle: github_handle,
-            type: 'pair'
-          }
-        }, function (challenge) {
-          if (challenge !== null) {
-            solutionController.initializeChallengeSolutions(otherPlayer, github_handle, challenge.id);
-          } else {
-            challenge = {
-              id: null,
-              name: null,
-              prompt: '/*Sorry we ran out of problems! \nPlease exit and re-enter the room to try again*/'
-            };
-          }
-          io.to(String(existingRoom.name)).emit('pair_up', challenge);
-        });
-      }
-    });
-
-    socket.on('ready', function (data) {
-      socket.to(findRoom(socket)).broadcast.emit('ready', data);
-    });
-
-    socket.on('start_pair', function (startData) {
-      solutionController.initializeChallengeSolutions(startData.opponent_github_handle, startData.user_github_handle, startData.challenge_id);
-      io.to(findRoom(socket)).emit('start_pair');
-    });
-
-    socket.on('pair_evaled', function (data) {
-      io.to(findRoom(socket)).emit('pair_evaled', data);
-    });
-
-    socket.on('syntaxErrors', function (data) {
-      socket.to(findRoom(socket)).broadcast.emit('syntaxErrors', data);
-    });
-
-    //------------- WEBRTC -----------------------
-    socket.on('webRTC', function(data) {
-      socket.to(findRoom(socket)).broadcast.emit('webRTC', data);
     });
 
   });
