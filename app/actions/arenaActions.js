@@ -37,33 +37,6 @@ var getProblem = function (payload) {
   };
 };
 
-var ready = function () {
-  return {
-    type: actions.READY
-  };
-};
-
-var pairSubmission = function (payload) {
-  return {
-    type: actions.PAIR_SUBMISSION,
-    payload: payload
-  };
-};
-
-var storeSyntaxError = function (payload) {
-  return {
-    type: actions.SYNTAX_ERROR,
-    payload: payload
-  };
-};
-
-var storeNoSyntaxError = function (payload) {
-  return {
-    type: actions.NO_SYNTAX_ERROR,
-    payload: payload
-  };
-};
-
 var lostChallenge = function (payload) {
   return {
     type: actions.LOST_CHALLENGE,
@@ -150,9 +123,5 @@ module.exports = {
   storeEditor: storeEditor,
   storeEditorOpponent: storeEditorOpponent,
   lostChallenge: lostChallenge,
-  playerLeave: playerLeave,
-  ready: ready,
-  pairSubmission: pairSubmission,
-  storeSyntaxError: storeSyntaxError,
-  storeNoSyntaxError: storeNoSyntaxError
+  playerLeave: playerLeave
 };
