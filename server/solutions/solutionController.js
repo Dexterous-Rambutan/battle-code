@@ -203,16 +203,6 @@ module.exports = {
       }).save();
     }).then(function() {
       return Solution.forge({
-        start_time: new Date(Date.now() - 82*60*60*1000),
-        end_time: new Date(Date.now() - 80*60*60*1000),
-        total_time: null,
-        content: 'solved!',
-        user_id: 3,
-        challenge_id: 3,
-        valid: true
-      }).save();
-    }).then(function() {
-      return Solution.forge({
         start_time: new Date(Date.now() - 49*60*60*1000),
         end_time: new Date(Date.now() - 38*60*60*1000),
         total_time: 5500,
