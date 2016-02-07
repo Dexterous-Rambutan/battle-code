@@ -102,6 +102,16 @@ module.exports = {
     });
   },
 
+  //GET api/challenges/:challenge_id/top
+  getTopSolutions: function(req, res) {
+    db.knex('solutions').where('challenge_id', req.params.challenge_id).whereNot('total_time',null).orderBy('total_time')
+    .then(function (orderedSolutions) {
+      console.log(orderedSolutions);
+    });
+    res.end();
+    //res.json(db.knex('solutions').where({challenge_id: req.params.challenge_id}))
+    //res.json(db.knex('solutions').where({challenge_id:req.params.challenge_id}).orderBy('total_time', 'desc'));
+  },
 
 
   //Internally invoked when two players enter a room and a challenge ID is assigned
@@ -155,16 +165,17 @@ module.exports = {
     return Solution.forge({
       start_time: new Date(Date.now() - 152*60*60*1000),
       end_time: new Date(Date.now() - 149*60*60*1000),
-      total_time: null,
+      total_time: 3000,
       content: 'solved!',
       user_id: 1,
       challenge_id: 2,
       valid: true
-    }).save().then(function () {
+    }).save()
+    .then(function () {
       return Solution.forge({
         start_time: new Date(Date.now() - 150*60*60*1000),
         end_time: new Date(Date.now() - 142*60*60*1000),
-        total_time: null,
+        total_time: 4000,
         content: 'solved!',
         user_id: 4,
         challenge_id: 2,
@@ -174,9 +185,19 @@ module.exports = {
       return Solution.forge({
         start_time: new Date(Date.now() - 88*60*60*1000),
         end_time: new Date(Date.now() - 73*60*60*1000),
-        total_time: null,
+        total_time: 4500,
         content: 'solved!',
         user_id: 4,
+        challenge_id: 3,
+        valid: true
+      }).save();
+    }).then(function() {
+      return Solution.forge({
+        start_time: new Date(Date.now() - 82*60*60*1000),
+        end_time: new Date(Date.now() - 80*60*60*1000),
+        total_time: 5000,
+        content: 'solved!',
+        user_id: 3,
         challenge_id: 3,
         valid: true
       }).save();
@@ -194,7 +215,7 @@ module.exports = {
       return Solution.forge({
         start_time: new Date(Date.now() - 49*60*60*1000),
         end_time: new Date(Date.now() - 38*60*60*1000),
-        total_time: null,
+        total_time: 5500,
         content: 'solved!',
         user_id: 2,
         challenge_id: 1,
@@ -204,7 +225,7 @@ module.exports = {
       return Solution.forge({
         start_time: new Date(Date.now() - 49*60*60*1000),
         end_time: new Date(Date.now() - 38*60*60*1000),
-        total_time: null,
+        total_time: 6000,
         content: 'solved!',
         user_id: 1,
         challenge_id: 1,
