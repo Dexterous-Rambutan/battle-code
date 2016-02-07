@@ -123,18 +123,6 @@ var navChallengeArena = function (github_handle) {
   };
 };
 
-var navPairArena = function (github_handle) {
-  return function (dispatch) {
-    socket.emit('pair_arena', github_handle);
-    dispatch({
-      type: actions.CLEAR_INFO
-    });
-    dispatch({
-      type: actions.NAV_PAIR_ARENA
-    });
-  };
-};
-
 var navAwayFromArena = function () {
   socket.emit('leaveArena');
   return function (dispatch) {
@@ -170,7 +158,6 @@ module.exports = {
   navSoloArena: navSoloArena,
   navSoloStaging: navSoloStaging,
   navChallengeArena: navChallengeArena,
-  navPairArena: navPairArena,
   navAwayFromArena: navAwayFromArena,
   navProfile: navProfile,
   spoofSolo: spoofSolo

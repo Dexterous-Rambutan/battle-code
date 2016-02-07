@@ -70,7 +70,6 @@ module.exports = {
       }).map(function (c) {
         return c.get('id');
       });
-      console.log(completedChallenges, total);
       var available = _.difference(total, completed);
       // if no challenges are available
       if (available.length === 0) {

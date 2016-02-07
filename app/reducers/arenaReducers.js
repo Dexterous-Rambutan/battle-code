@@ -17,10 +17,7 @@ var initial = {
   editorOpponent: {},
   syntaxMessage: '',
   errors: [],
-  stdout: '',
-  pairContent: '',
-  pairProblem_id: '',
-  iAmReady: false
+  stdout: ''
 };
 
 function arenaReducer (state, action){
@@ -29,31 +26,6 @@ function arenaReducer (state, action){
     case actions.CREATE_SOCKET:
       return _.extend({},state,{
         socket: action.payload
-      });
-    case actions.GET_PAIR_SUCCESS:
-      return _.extend({}, state, {
-        pairContent: action.payload.prompt,
-        opponentStatus: '',                 // NOT SURE IF THIS IS NEEDED
-        pairProblem_id: action.payload.id
-      });
-    case actions.READY:
-      return _.extend({}, state, {
-        iAmReady: true
-      });
-    case actions.UN_READY:
-      return _.extend({}, state, {
-        iAmReady: false
-      });
-    case actions.START_PAIR:
-      return _.extend({}, state, {
-        content: state.pairContent,
-        problem_id: state.pairProblem_id,
-        pairProblem_id: '',
-        pairContent: ''
-      });
-    case actions.PAIR_SUBMISSION:
-      return _.extend({}, state, {
-        content: action.payload
       });
     case actions.GET_PROBLEM_SUCCESS:
       return _.extend({}, state, {
@@ -68,7 +40,7 @@ function arenaReducer (state, action){
       });
     case actions.SUBMIT_PROBLEM_SUCCESS:
       return _.extend({}, state, {
-        submissionMessage: "solution submitted successfully with passing results...",
+        submissionMessage: "solution submitted successfully with passing results..."
       });
     case actions.STORE_EDITOR:
       return _.extend({}, state, {

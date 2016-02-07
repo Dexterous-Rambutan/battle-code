@@ -37,14 +37,6 @@ var App = React.createClass({
               <components.Staging {...this.props}/>
             </div>
           );
-        case views.PAIR_ARENA:
-          //history.pushState(store.getState(), 'Arena', "arena");
-          return (
-            <div>
-              <components.NavBar {...this.props}/>
-              <components.PairArena {...this.props}/>
-            </div>
-          );
         case views.SOLO_ARENA:
           //history.pushState(store.getState(), 'Arena', "arena");
           return (
