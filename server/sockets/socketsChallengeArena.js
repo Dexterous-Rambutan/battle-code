@@ -79,9 +79,6 @@ module.exports = function (io) {
       if(openQ.length !== 0 && foundRoom == openQ[0].name) {
         openQ.shift();
       }
-      if(pairOpenQ.length !== 0 && foundRoom == pairOpenQ[0].name) {
-        pairOpenQ.shift();
-      }
     });
     socket.on('disconnect', function () {
       if (openQ[0]) {
