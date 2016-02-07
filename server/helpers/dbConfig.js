@@ -74,6 +74,7 @@ var createMatchesTable = function () {
     match.integer('user_id');
     match.string('user_github_handle', 50);
     match.string('opponent_github_handle', 50);
+    match.string('opponent_avatar', 150);
     match.boolean('win');
     match.integer('challenge_id');
   }).then(function (table) {
