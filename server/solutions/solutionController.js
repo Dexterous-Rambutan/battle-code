@@ -102,15 +102,12 @@ module.exports = {
     });
   },
 
-  //GET api/challenges/:challenge_id/top
+  //GET api/solutions/:challenge_id/top
   getTopSolutions: function(req, res) {
     db.knex('solutions').where('challenge_id', req.params.challenge_id).whereNot('total_time',null).orderBy('total_time')
     .then(function (orderedSolutions) {
-      console.log(orderedSolutions);
+      res.json(orderedSolutions);
     });
-    res.end();
-    //res.json(db.knex('solutions').where({challenge_id: req.params.challenge_id}))
-    //res.json(db.knex('solutions').where({challenge_id:req.params.challenge_id}).orderBy('total_time', 'desc'));
   },
 
 
