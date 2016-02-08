@@ -1,6 +1,7 @@
 var vm = require('vm');
 var util = require('util');
 var redis = require('redis');
+var fs = require('fs');
 var Queue = require('./queue.js');
 var Solution;
 var Challenge;
@@ -25,8 +26,14 @@ function runTest() {
 
   // Pop from testQueue any solutions waiting to be tested
   testQueue.pop(function (err, results) {
+    if (err) {
+      fs.appendFile('ERROR_LOG.txt', JSON.stringify(err), function(er) {
+        if (er) throw er;
+        console.log('Redis list blocking pop threw an error, check ERROR_LOG!');
+      });
+      throw new Error(err);
+    }
     console.log('successfully popped from testQueue');
-    if (err) throw new Error(err);
 
     // Parse the solution string from testQueue
     var solutionInfo = JSON.parse(results[1]);
