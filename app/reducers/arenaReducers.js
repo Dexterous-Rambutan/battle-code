@@ -96,7 +96,8 @@ function arenaReducer (state, action){
     case actions.PLAYER_LEAVE:
       return _.extend({}, state, {
         opponentStatus: 'The other player has left the room.',
-        opponent_info: {}
+        opponent_info: {},
+        content: action.payload
       });
     case actions.GOT_OPPONENT_HANDLE:
       return _.extend({}, state, {
