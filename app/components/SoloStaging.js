@@ -37,7 +37,7 @@ var SoloStaging = React.createClass({
             </div> : 
             <div>
               Sorry, you do not have any problems to practice on. Please play challenge or pair mode to unlock more problems.
-              </div>
+            </div>
             }
       </div>
     )

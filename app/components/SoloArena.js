@@ -12,7 +12,7 @@ var selfEditorOptions = {
   tabSize: 2,
   wrap: true,
   showPrintMargin: false,
-  fontSize: 16
+  fontSize: 14,
 };
 
 var SoloArena = React.createClass({
@@ -32,20 +32,25 @@ var SoloArena = React.createClass({
       var content = this.props.arena.editorSolo.getSession().getValue();
       this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle, 'solo');
     }.bind(this);
+
+    var submissionMessage;
+    if (this.props.arena.submissionMessage === "Nothing passing so far...(From initial arena reducer)") {
+      submissionMessage = null;
+    } else if (this.props.arena.submissionMessage === "Solution passed all tests!") {
+      submissionMessage = <div className="success-messages">{this.props.arena.submissionMessage}</div>
+    } else {
+      submissionMessage = <div className="error-messages">{this.props.arena.submissionMessage}</div>
+    }
     return (
       <div className="content">
         <div className="arena">
-          
-          <div id="editor" className="solo-editor">
+          <div id="editor" className="solo-editor"></div>
+          <div className="arena-buttons">
+            <button className="submit submit-challenge" onClick={submitProblem}>SUBMIT</button>
           </div>
-          
-          <div className="messages">
-            {this.props.arena.syntaxMessage !== '' ? <div className="syntax-messages"><ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/></div> : null}
-            {this.props.arena.submissionMessage !== "Nothing passing so far...(From initial arena reducer)" ? <div className="submission-message">SUBMISSION RESPONSE: {this.props.arena.submissionMessage}</div> : null}
-          </div>
-          
           <div className="console">{this.props.arena.stdout}
-          <button className="submit submit-challenge" onClick={submitProblem}>SUBMIT</button>
+            {this.props.arena.syntaxMessage !== '' ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : null}
+            {submissionMessage}
           </div>
 
         </div>
