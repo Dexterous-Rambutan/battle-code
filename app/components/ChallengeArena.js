@@ -80,6 +80,13 @@ var ChallengeArena = React.createClass({
       this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle, 'battle');
   },
   render: function() {
+    var top = [];
+    if(this.props.arena.leaderBoard.length){
+      for(var i = 0; i<this.props.arena.leaderBoard.length; i++){
+        top.push(this.props.arena.leaderBoard[i])
+      }
+    }
+
     return (
       <div className="content">
         <div className="arena">
@@ -96,6 +103,7 @@ var ChallengeArena = React.createClass({
             {this.props.arena.stdout !== '' ? <div className="console">Console: <br />{this.props.arena.stdout}</div> : null }
             {this.props.arena.opponentStatus !== '' ? <div>{this.props.arena.opponentStatus}</div> : null}
             {this.props.arena.status !== '' ? <div>{this.props.arena.status}</div> : null}
+            {this.props.arena.leaderBoard.length ? <div>{this.props.arena.leaderBoard}</div> : null}
           </div>
         </div>
       </div>

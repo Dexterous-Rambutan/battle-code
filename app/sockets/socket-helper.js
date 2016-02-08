@@ -51,11 +51,13 @@ socket.on('otherPlayer', function (data) {
   });
 });
 
-socket.on('eval', function (submissionMessage, challenge_id) {
+socket.on('eval', function (submissionMessage) {
   if(submissionMessage.message === 'victory!') {
     socket.emit('won', null);
   }
-  store.dispatch(arenaAction.handleSubmissionResponse(submissionMessage, challenge_id));
+  console.log(submissionMessage.challenge_id  )
+  store.dispatch(arenaAction.handleSubmissionResponse(submissionMessage, submissionMessage.challenge_id));
+  store.dispatch(arenaAction.getLeaderBoard(submissionMessage.challenge_id));
 });
 
 socket.on('won', function (data) {

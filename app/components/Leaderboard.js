@@ -4,7 +4,6 @@ var Leaderboard = React.createClass({
   render: function() {
     return (
       <div>
-        Leaderboard
       </div>
     )
   }

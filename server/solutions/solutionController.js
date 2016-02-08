@@ -106,13 +106,20 @@ module.exports = {
   getTopSolutions: function(req, res) {
     db.knex('solutions').where('challenge_id', req.params.challenge_id).whereNot('total_time',null).orderBy('total_time')
     .then(function (orderedSolutions) {
+      orderedSolutions.forEach(function(element){
+
+        db.knex('users').where('id', element.user_id).then(function(user){
+          element.user_id = user.github_handle;
+          console.log(element)
+        })
+      })
       res.json(orderedSolutions);
     });
   },
 
 
   //Internally invoked when two players enter a room and a challenge ID is assigned
-  initializeChallengeSolutions: function(player1_github_handle, player2_github_handle, challenge_id, callback){
+  initializeChallengeSolutions: function(player1_github_handle, player2_github_handle, challenge_id, type, callback){
     var playerIds = {};
 
     User.forge({github_handle: player1_github_handle}).fetch()
