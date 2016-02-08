@@ -37,7 +37,7 @@ var ChallengeArena = React.createClass({
     //   var player = {
     //     github_handle: this.props.user.github_handle,
     //     github_display_name: this.props.user.github_display_name,
-    //     github_profileUrl: this.props.user.github_profileUrl,
+    //     github_profile_url: this.props.user.github_profile_url,
     //     github_avatar_url: this.props.user.github_avatar_url
     //   };
     //   this.props.arena.socket.emit('playerId', player)

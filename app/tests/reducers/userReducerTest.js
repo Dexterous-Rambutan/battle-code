@@ -8,7 +8,7 @@ describe('User Reducer', function(){
     isLoggedIn: false,
     github_handle: "",
     github_display_name: '',
-    github_profileUrl: '',
+    github_profile_url: '',
     github_avatar_url: '',
     user_problems: [],
     user_match_history: []
@@ -32,13 +32,13 @@ describe('User Reducer', function(){
         payload: {
           github_handle: 'puzzlehead',
           github_display_name:'seymour butts',
-          github_profileUrl:'http://example.com',
+          github_profile_url:'http://example.com',
           github_avatar_url:'http://example.com'
         }
       })
       expect(state.github_handle).toEqual('puzzlehead');
       expect(state.github_display_name).toEqual('seymour butts');
-      expect(state.github_profileUrl).toEqual('http://example.com');
+      expect(state.github_profile_url).toEqual('http://example.com');
       expect(state.github_avatar_url).toEqual('http://example.com');
       expect(state.isLoggedIn).toEqual(true);
 
@@ -50,7 +50,7 @@ describe('User Reducer', function(){
         payload: {
           github_handle: 'puzzlehead',
           github_display_name:'seymour butts',
-          github_profileUrl:'http://example.com',
+          github_profile_url:'http://example.com',
           github_avatar_url:'http://example.com'
         }
       })
@@ -60,7 +60,7 @@ describe('User Reducer', function(){
 
       expect(state.github_handle).toEqual('');
       expect(state.github_display_name).toEqual('');
-      expect(state.github_profileUrl).toEqual('');
+      expect(state.github_profile_url).toEqual('');
       expect(state.github_avatar_url).toEqual('');
 
     })

@@ -10,7 +10,7 @@ socket.on('start', function (data) {
   var player = {
     github_handle: store.getState().user.github_handle,
     github_display_name: store.getState().user.github_display_name,
-    github_profileUrl: store.getState().user.github_profileUrl,
+    github_profile_url: store.getState().user.github_profile_url,
     github_avatar_url: store.getState().user.github_avatar_url
   };
   socket.emit('playerId', player);

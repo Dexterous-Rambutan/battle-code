@@ -7,7 +7,7 @@ Battle your peers head-to-head with intense coding challenges.
 
   - __Product Owner__: Hahnbi Sun
   - __Scrum Master__: Harun Davood
-  - __Development Team Members__: Harun Davood, Alan Fu, Hahnbi Sun, Kevin Weng
+  - __Development Team Members__: [Harun Davood](https://github.com/puzzlehe4d), [Alan Fu](https://github.com/alanzfu), [Hahnbi Sun](https://github.com/hahnbi), [Kevin Weng](https://github.com/kweng2)
 
 <hr>
 ## Table of Contents
@@ -20,6 +20,7 @@ Battle your peers head-to-head with intense coding challenges.
 1. [Team](#team)
 1. [Contributing](#contributing)
 1. [Architecture](#architecture)
+1. [Deployment](#deployment)
 
 <hr>
 ## Usage
@@ -59,9 +60,24 @@ See [github.md](github.md) for contribution and github workflow guidelines.
 
 <hr>
 ## Architecture
+### High Level Architecture
+![](http://i.imgur.com/mqdnWVh.png)
+
+### Database Schema
+Database in Postgres, using Bookshelf and Knex
+![](http://i.imgur.com/d3GmVrG.png)
+
+### Socket Interactions
+
+![](http://i.imgur.com/7s7RKSD.png)
+
+![](http://i.imgur.com/w3Qfhy7.png)
+
+![](http://i.imgur.com/6437Led.png)
+
+![](http://i.imgur.com/1N1vi5h.png)
 
 ### Folder Structure
 
-### Database Schema
-Database in Postgres, Using ORM
-![](http://i.imgur.com/37yeUzR.png)
+## Deployment
+This has been deployed onto Digital Ocean using Docker containers. The backend architecture allows horizontal scaling of the solution worker to handle higher loads

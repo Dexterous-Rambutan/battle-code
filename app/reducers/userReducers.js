@@ -8,7 +8,7 @@ var initial = {
   isLoggedIn: false,
   github_handle: "",
   github_display_name: '',
-  github_profileUrl: '',
+  github_profile_url: '',
   github_avatar_url: '',
   user_problems: [],
   user_match_history: []
@@ -22,7 +22,7 @@ function userReducer (state, action){
         isLoggedIn: true,
         github_handle: action.payload.github_handle,
         github_display_name: action.payload.github_display_name,
-        github_profileUrl: action.payload.github_profileUrl,
+        github_profile_url: action.payload.github_profile_url,
         github_avatar_url: action.payload.github_avatar_url
       });
     case actions.IS_LOGGED_OUT:
@@ -30,7 +30,7 @@ function userReducer (state, action){
         isLoggedIn: false,
         github_handle: "",
         github_display_name: '',
-        github_profileUrl: '',
+        github_profile_url: '',
         github_avatar_url: ''
       });
     case actions.STORE_USER_PROBLEMS:

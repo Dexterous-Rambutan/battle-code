@@ -55,7 +55,7 @@ var Profile = React.createClass({
           <img src={this.props.user.github_avatar_url}></img>
         </div>
         <div className="profile-github">
-          <a href={this.props.user.github_profileUrl}>{this.props.user.github_handle}</a>
+          <a href={this.props.user.github_profile_url}>{this.props.user.github_handle}</a>
         </div>
         <div className="profile-name">
           {this.props.user.github_display_name}
