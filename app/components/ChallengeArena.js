@@ -3,6 +3,7 @@ var io = require('socket.io-client');
 var socket = require('../sockets/socket-helper');
 var _ = require('lodash');
 var ErrorList = require('./ErrorList');
+var DelaySplash = require('./DelaySplash');
 
 var selfEditorOptions = {
   theme: "ace/theme/solarized_light",
@@ -85,6 +86,7 @@ var ChallengeArena = React.createClass({
         <div id="editor2" className='opponent-editor'></div>
         {this.props.arena.content ? <div><button className="submit" onClick={this.submitProblem}>Submit Solution</button></div>: null}
         <div className="messages">
+          {this.props.arena.opponentStatus === 'Player has joined. Challenge starting soon...' ? <DelaySplash {...this.props}/>: null}
           {!!this.props.arena.opponent_info.github_handle ? <div>OPPONENT: {this.props.arena.opponent_info.github_handle}</div> : null}
           {this.props.arena.syntaxMessage !== '' ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : null}
           {this.props.arena.submissionMessage !== "Nothing passing so far...(From initial arena reducer)" ? <div className="submission-message">SUBMISSION RESPONSE: {this.props.arena.submissionMessage}</div> : null}

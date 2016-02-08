@@ -15,9 +15,15 @@ socket.on('start', function (data) {
   };
   socket.emit('playerId', player);
   store.dispatch({
-    type: actions.GET_PROBLEM_SUCCESS,
-    payload: data
-  });
+    type: actions.DELAY_START
+  })
+  setTimeout(function(){
+      return store.dispatch({
+        type: actions.GET_PROBLEM_SUCCESS,
+        payload: data
+      });
+     }, 5000);
+
 });
 
 socket.on('keypress', function (data) {

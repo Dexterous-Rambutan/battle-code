@@ -47,7 +47,7 @@ body {
 
 .content-header-handle {
   width: 40px;
-  overflow: hidden;  
+  overflow: hidden;
 }
 
 .content-header-handle img {
@@ -154,7 +154,7 @@ body {
 
 .mode-handle {
   width: 125px;
-  overflow: hidden;  
+  overflow: hidden;
 }
 
 .mode-handle img {
@@ -278,4 +278,62 @@ body {
   float: right;
 }
 
+#delaysplash {
+  width:90%;
+  white-space: pre;
+  left: 2%;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  border-radius: 25px;
+  padding: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  position: absolute;
+  height: 80%;
+  border: 2px solid black;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: grey;
+  color: white;
+  font-size: 24px;
+  z-index: 100;
+  opacity: .9;
+   -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 2s; /* Firefox < 16 */
+        -ms-animation: fadein 2s; /* Internet Explorer */
+         -o-animation: fadein 2s; /* Opera < 12.1 */
+            animation: fadein 2s;
+}
 
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: .9; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: .9; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: .9; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: .9; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: .9; }
+}
+
+.console {
+  white-space: pre;
+}
