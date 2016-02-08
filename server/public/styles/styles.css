@@ -28,7 +28,7 @@ body {
   align-content: flex-start;
   position: relative;
   z-index: 0;
-  padding: 75px 0px;
+  padding-top: 75px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.36);
 }
 
@@ -47,7 +47,7 @@ body {
 
 .content-header-handle {
   width: 40px;
-  overflow: hidden;  
+  overflow: hidden;
 }
 
 .content-header-handle img {
@@ -76,14 +76,12 @@ body {
 
 .submit {
   font-family: Roboto, sans-serif;
+  font-size: 16px;
   background-color: #8b1919;
   color: #e5e5e5;
   border: 0px;
-  width: auto;
   padding: 10px;
-  position: relative;
-  right: 10px;
-  top: -10px;
+  cursor: pointer;
 }
 
 /* Navigation bar */
@@ -146,25 +144,25 @@ body {
 .mode {
   background-color: #ffffff;
   width: 470px;
-  height: 125px;
+  height: 100px;
   margin: 10px 0px;
   display: flex;
   align-items: center;
 }
 
 .mode-handle {
-  width: 125px;
+  width: 100px;
   overflow: hidden;  
 }
 
 .mode-handle img {
-  height: 125px;
+  height: 100px;
   width: auto;
 }
 
 .mode:hover img {
   position: relative;
-  left: -125px;
+  left: -100px;
 }
 
 .mode h3 {
@@ -179,15 +177,7 @@ body {
   color: #8b1919;
 }
 
-.submit-challenge {
-  position: absolute;
-  padding: 15px;
-  right: 50px;
-  top: -100px;
-  font-size: 20px;
-  border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
+
 
 /* Solo staging */
 .challenge-list {
@@ -249,6 +239,10 @@ body {
   position: relative;
 }
 
+.arena-buttons {
+  position: relative;
+}
+
 .console {
   height: 30%;
   width: 100%;
@@ -259,9 +253,24 @@ body {
   padding: 10px;
   white-space: pre;
   position: relative;
+  overflow: auto;
 }
 
+.success-messages {
+  color: #55ff55;
+}
 
+.error-messages {
+  color: #ff3333;
+}
+
+.submit-challenge {
+  position: absolute;
+  right: 40px;
+  top: -80px;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
 
 /* Challenge arena */
 .player-editor {
@@ -278,4 +287,62 @@ body {
   float: right;
 }
 
+#delaysplash {
+  width:90%;
+  white-space: pre;
+  left: 2%;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  border-radius: 25px;
+  padding: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  position: absolute;
+  height: 80%;
+  border: 2px solid black;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: grey;
+  color: white;
+  font-size: 24px;
+  z-index: 100;
+  opacity: .9;
+   -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 2s; /* Firefox < 16 */
+        -ms-animation: fadein 2s; /* Internet Explorer */
+         -o-animation: fadein 2s; /* Opera < 12.1 */
+            animation: fadein 2s;
+}
 
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: .9; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: .9; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: .9; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: .9; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: .9; }
+}
+
+.console {
+  white-space: pre;
+}

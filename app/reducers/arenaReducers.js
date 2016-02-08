@@ -9,6 +9,7 @@ var initial = {
   problem_id: 0,
   content: "",
   status: '',
+  delay: 5,
   opponent_info: {},
   submissionMessage: "Nothing passing so far...(From initial arena reducer)",
   socket: {},
@@ -33,6 +34,16 @@ function arenaReducer (state, action){
         opponentStatus: '',
         problem_id: action.payload.id
       });
+    case actions.DELAY_START:
+      return _.extend({}, state, {
+        opponentStatus: 'Player has joined. Challenge starting soon...',
+        delay: 5
+      });
+    case actions.COUNTDOWN:
+      var newDelay = state.delay-1;
+      return _.extend({}, state, {
+        delay: newDelay
+      });
     case actions.SUBMIT_PROBLEM_WRONG:
       return _.extend({}, state, {
         submissionMessage: action.payload.message,
@@ -40,7 +51,7 @@ function arenaReducer (state, action){
       });
     case actions.SUBMIT_PROBLEM_SUCCESS:
       return _.extend({}, state, {
-        submissionMessage: "solution submitted successfully with passing results...",
+        submissionMessage: "Solution passed all tests!",
         stdout: action.payload.stdout
       });
     case actions.STORE_EDITOR:
@@ -74,6 +85,7 @@ function arenaReducer (state, action){
       return _.extend({}, state, {
         content: '',
         status: '',
+        delay: 5,
         opponentStatus: "waiting for other player... when prompt appears, you may begin hacking. be ready.",
         submissionMessage: 'Nothing passing so far...(From initial arena reducer)',
         stdout: '',

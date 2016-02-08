@@ -15,6 +15,12 @@ var storeEditorOpponent = function (payload) {
   };
 };
 
+var countdown = function(){
+ return ({
+            type: actions.COUNTDOWN
+          });
+};
+
 var getProblem = function (payload) {
   return function(dispatch){
     $.ajax({
@@ -122,5 +128,6 @@ module.exports = {
   storeEditor: storeEditor,
   storeEditorOpponent: storeEditorOpponent,
   lostChallenge: lostChallenge,
-  playerLeave: playerLeave
+  playerLeave: playerLeave,
+  countdown: countdown
 };
