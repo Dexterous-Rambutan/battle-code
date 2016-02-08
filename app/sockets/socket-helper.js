@@ -14,6 +14,9 @@ socket.on('start', function (data) {
     github_avatar_url: store.getState().user.github_avatar_url
   };
   socket.emit('playerId', player);
+  store.dispatch({
+    type: actions.DELAY_START
+  })
   setTimeout(function(){
       return store.dispatch({
         type: actions.GET_PROBLEM_SUCCESS,
