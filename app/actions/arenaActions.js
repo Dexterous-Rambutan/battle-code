@@ -128,10 +128,6 @@ module.exports = {
   storeEditor: storeEditor,
   storeEditorOpponent: storeEditorOpponent,
   lostChallenge: lostChallenge,
-  playerLeave: playerLeave
-  ready: ready,
-  pairSubmission: pairSubmission,
-  storeSyntaxError: storeSyntaxError,
-  storeNoSyntaxError: storeNoSyntaxError,
+  playerLeave: playerLeave,
   countdown: countdown
 };
