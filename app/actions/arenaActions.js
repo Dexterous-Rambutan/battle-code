@@ -44,9 +44,10 @@ var lostChallenge = function (payload) {
   };
 };
 
-var playerLeave = function(){
+var playerLeave = function (payload) {
   return {
-    type: actions.PLAYER_LEAVE
+    type: actions.PLAYER_LEAVE,
+    payload: payload
   };
 };
 

@@ -129,9 +129,6 @@ var navAwayFromArena = function () {
     dispatch({
       type: actions.NAV_STAGING
     });
-    dispatch({
-      type: actions.UN_READY
-    });
   };
 };
 

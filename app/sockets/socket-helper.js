@@ -35,7 +35,7 @@ socket.on('keypress', function (data) {
 
 
 socket.on('playerLeave', function (data) {
-  store.dispatch(arenaAction.playerLeave());
+  store.dispatch(arenaAction.playerLeave(store.getState().arena.editorSolo.getSession().getValue()));
 });
 
 socket.on('otherPlayer', function (data) {
