@@ -40,7 +40,8 @@ function arenaReducer (state, action){
       });
     case actions.SUBMIT_PROBLEM_SUCCESS:
       return _.extend({}, state, {
-        submissionMessage: "solution submitted successfully with passing results..."
+        submissionMessage: "solution submitted successfully with passing results...",
+        stdout: action.payload.stdout
       });
     case actions.STORE_EDITOR:
       return _.extend({}, state, {

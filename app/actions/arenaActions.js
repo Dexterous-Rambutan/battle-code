@@ -99,7 +99,10 @@ var handleSubmissionResponse = function (payload) {
     if (payload.message === 'victory!') {
       // inform of submission success
       dispatch({
-        type: actions.SUBMIT_PROBLEM_SUCCESS
+        type: actions.SUBMIT_PROBLEM_SUCCESS,
+        payload: {
+          stdout: payload.stdout
+        }
       });
       dispatch({
         type: actions.COMPLETE_CHALLENGE
