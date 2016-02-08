@@ -75,12 +75,7 @@ var submitProblem = function (errors, solution_str, socket_id, problem_id, user_
           user_handle: user_handle,
           socket_id: socket_id,
           type: type
-        }),
-        success: function(){
-          dispatch({
-            type: actions.SUBMIT_PROBLEM
-          });
-        }
+        })
       });
     };
   } else {

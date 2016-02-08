@@ -55,13 +55,15 @@ function arenaReducer (state, action){
       return _.extend({}, state, {
         syntaxMessage: 'There are syntax errors in your code. Please fix them and re-submit.',
         content: action.payload.solution_str,
-        errors: action.payload.errors
+        errors: action.payload.errors,
+        submissionMessage: "Nothing passing so far...(From initial arena reducer)"
       });
     case actions.NO_SYNTAX_ERROR:
       return _.extend({}, state, {
         content: action.payload,
         syntaxMessage: '',
-        errors: []
+        errors: [],
+        submissionMessage: "Nothing passing so far...(From initial arena reducer)"
       });
     case actions.STORE_SOLO_PROBLEM:
       return _.extend({}, state, {
