@@ -6,11 +6,13 @@ var socket = require('../sockets/socket-helper');
 
 var selfEditorOptions = {
   // theme: "ace/theme/solarized_light",
-  theme: "ace/theme/monokai",
+  theme: "ace/theme/dawn",
   mode: "ace/mode/javascript",
   useSoftTabs: true,
   tabSize: 2,
-  wrap: true
+  wrap: true,
+  showPrintMargin: false,
+  fontSize: 16
 };
 
 var SoloArena = React.createClass({
@@ -31,13 +33,21 @@ var SoloArena = React.createClass({
       this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle, 'solo');
     }.bind(this);
     return (
-      <div className="arena">
-        <div id="editor" className="solo-editor"></div>
-        <button className="submit" onClick={submitProblem}>Submit Solution</button>
-        <div className="messages">
-          {this.props.arena.syntaxMessage !== '' ? <div className="syntax-messages"><ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/></div> : null}
-          {this.props.arena.submissionMessage !== "Nothing passing so far...(From initial arena reducer)" ? <div className="submission-message">SUBMISSION RESPONSE: {this.props.arena.submissionMessage}</div> : null}
-          {this.props.arena.stdout !== '' ? <div className="console">Console: <br />{this.props.arena.stdout}</div> : null }
+      <div className="content">
+        <div className="arena">
+          
+          <div id="editor" className="solo-editor">
+          </div>
+          
+          <div className="messages">
+            {this.props.arena.syntaxMessage !== '' ? <div className="syntax-messages"><ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/></div> : null}
+            {this.props.arena.submissionMessage !== "Nothing passing so far...(From initial arena reducer)" ? <div className="submission-message">SUBMISSION RESPONSE: {this.props.arena.submissionMessage}</div> : null}
+          </div>
+          
+          <div className="console">{this.props.arena.stdout}
+          <button className="submit submit-challenge" onClick={submitProblem}>SUBMIT</button>
+          </div>
+
         </div>
       </div>
     );
