@@ -1,0 +1,38 @@
+.profile {
+  position: fixed;
+  z-index:3;
+  background-color: white;
+  top: 70px;
+  left: 50%;
+  width: 70%;
+  margin-left: -35%;
+}
+.overlay {
+  position:fixed;
+  top:0;
+  left:0;
+  height:100%;
+  width:100%;
+  z-index:1;
+  background-color:#444444;
+  opacity:0.5;
+  filter:alpha(opacity=50);
+}
+
+.exit {
+  position: absolute;
+  right: -10px;
+  top: -10px;
+  z-index:4;
+  height: 30px;
+}
+
+.profile-img img{
+  width: 200px;
+  border-radius: 5px;
+}
+
+.opponent-profile-image {
+  width: 40px;
+  border-radius: 20px;
+}
