@@ -6,7 +6,6 @@ var Profile = React.createClass({
     var wins = 0;
     var loss = 0;
     var matchHistory = this.props.user.user_match_history;
-    // var matchHistory = store.getState().user.user_match_history;
     for ( var i = 0; i < matchHistory.length; i ++ ) {
       wins += matchHistory[i].win ? 1 : 0;
       loss += matchHistory[i].win ? 0 : 1;
@@ -28,13 +27,6 @@ var Profile = React.createClass({
   },
 
   render: function() {
-    // var listOfProblems = this.props.user.user_problems.map(function (problem) {
-    //   var linkToProblem = function(){
-    //     this.props.navActions.navSoloArena(problem);
-    //   }.bind(this);
-    //   return <a href="#" onClick={linkToProblem}><li>Challenge ID:{problem.challenge_id} - {problem.valid ? 'Completed:' : 'Attempted:'} - {problem.end_time}</li></a>
-    // }.bind(this));
-
     var wins = 0;
     var loss = 0;
     this.props.user.user_match_history.forEach(function (match) {
@@ -77,7 +69,7 @@ var Profile = React.createClass({
                 {this.props.user.github_display_name}
               </div>
               <div className="profile-github">
-                <a href={this.props.user.github_profileUrl}>{this.props.user.github_handle}</a>
+                <a href={this.props.user.github_profile_url} target="_blank">{this.props.user.github_handle}</a>
               </div>
             </div>
 
