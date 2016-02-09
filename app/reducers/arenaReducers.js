@@ -67,7 +67,8 @@ function arenaReducer (state, action){
         syntaxMessage: 'There are syntax errors in your code. Please fix them and re-submit.',
         content: action.payload.solution_str,
         errors: action.payload.errors,
-        submissionMessage: "Nothing passing so far...(From initial arena reducer)"
+        submissionMessage: "Nothing passing so far...(From initial arena reducer)",
+        stdout: ''
       });
     case actions.NO_SYNTAX_ERROR:
       return _.extend({}, state, {
