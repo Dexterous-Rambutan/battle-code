@@ -7,20 +7,26 @@ var DelaySplash = require('./DelaySplash');
 var Leaderboard = require('./Leaderboard');
 
 var selfEditorOptions = {
-  theme: "ace/theme/solarized_light",
+  theme: "ace/theme/dawn",
   mode: "ace/mode/javascript",
   useSoftTabs: true,
   tabSize: 2,
   wrap: true,
   showPrintMargin: false,
-  fontSize: 16
+  fontSize: 14,
 };
-var challengerEditorOptions = _.create(selfEditorOptions, {
-  theme: "ace/theme/solarized_dark",
+
+var challengerEditorOptions = {
+  theme: "ace/theme/pastel_on_dark",
+  useSoftTabs: true,
+  tabSize: 2,
+  wrap: true,
+  showPrintMargin: false,
+  fontSize: 14,
   readOnly: true,
   highlightActiveLine: false,
-  highlightGutterLine: false
-});
+  highlightGutterLine: false,
+};
 
 var ChallengeArena = React.createClass({
   componentDidMount: function() {
@@ -37,7 +43,6 @@ var ChallengeArena = React.createClass({
     this.props.arenaActions.storeEditorOpponent(editor2);
   },
   emitSocket: function () {
-
     if(this.props.arena.editorSolo.getSession().getValue()){
       this.props.arena.socket.emit('update', this.props.arena.editorSolo.getSession().getValue())
     }
@@ -48,6 +53,15 @@ var ChallengeArena = React.createClass({
       this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle, 'battle');
   },
   render: function() {
+    var submissionMessage;
+    if (this.props.arena.submissionMessage === "Nothing passing so far...(From initial arena reducer)") {
+      submissionMessage = null;
+    } else if (this.props.arena.submissionMessage === "Solution passed all tests!") {
+      submissionMessage = <div className="success-messages">{this.props.arena.submissionMessage}</div>
+    } else {
+      submissionMessage = <div className="error-messages">{this.props.arena.submissionMessage}</div>
+    }
+
     return (
       <div className="content">
         <div className="arena">
