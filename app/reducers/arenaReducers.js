@@ -14,7 +14,7 @@ var initial = {
   submissionMessage: "Nothing passing so far...(From initial arena reducer)",
   socket: {},
   editorSolo: {},
-  opponentStatus: "waiting for other player... when prompt appears, you may begin hacking. be ready.",
+  opponentStatus: "Waiting for another player...",
   editorOpponent: {},
   syntaxMessage: '',
   leaderBoard: [],
@@ -95,7 +95,7 @@ function arenaReducer (state, action){
         leaderBoard: [],
         status: '',
         delay: 5,
-        opponentStatus: "waiting for other player... when prompt appears, you may begin hacking. be ready.",
+        opponentStatus: "Waiting for another player...",
         submissionMessage: 'Nothing passing so far...(From initial arena reducer)',
         stdout: '',
         opponent_info: {}

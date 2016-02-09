@@ -11,7 +11,11 @@ var Nav = React.createClass({
     return (
       <div className="nav-bar">
         <div className="nav-content">
-          <div className="nav-logo"><a href='#' onClick={this.props.navActions.navAwayFromArena}><img src="/img/logo_50.png" /></a></div>
+          <div className="nav-logo">
+            <a href='#' onClick={this.props.navActions.navAwayFromArena}>
+              <img src="/img/logo_50.png" />
+            </a>
+          </div>
           <div className="nav-links">
             <ul>
               {showNav ? <li><a href='#' onClick={this.navProfile}>Profile</a></li> : null}

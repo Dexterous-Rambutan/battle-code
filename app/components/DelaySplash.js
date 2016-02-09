@@ -9,19 +9,27 @@ var DelaySplash = React.createClass({
   },
   render: function() {
     return (
-
-    <div id='delaysplash'>
-     <div class="loader">Loading...</div>
-    {this.props.arena.delay >0 ?
-      <div>
-        <p>Configuring battle against {this.props.arena.opponent_info.github_handle}.</p>
-        <span>Battle starts in: {this.props.arena.delay}</span>
+    <div className='delaysplash'>
+      <div className="card player-card user-card">
+        <div className="player-card-handle">
+          <img src={this.props.user.github_avatar_url} />
+        </div>
+        <div className="card-content">
+          <h2>{this.props.user.github_handle}</h2>
+        </div>
       </div>
-
-    : null}
-
+      <div className="card player-card opponent-card">
+        <div className="card-content">
+          <h2>{this.props.arena.opponent_info.github_handle}</h2>
+        </div>
+        <div className="player-card-handle">
+          <img src={this.props.arena.opponent_info.github_avatar_url} />
+        </div>
+      </div>
+      <div className="card countdown-card">
+        {"Starting in " + this.props.arena.delay + "..."}
+      </div>
     </div>
-
     )
   }
 });
