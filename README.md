@@ -65,7 +65,7 @@ See [github.md](github.md) for contribution and github workflow guidelines.
 
 ### Database Schema
 Database in Postgres, using Bookshelf and Knex
-![](http://i.imgur.com/d3GmVrG.png)
+![](http://i.imgur.com/xyi07Rv.png)
 
 ### Socket Interactions
 
