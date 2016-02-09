@@ -151,8 +151,13 @@ body {
 }
 
 .mode-handle {
+<<<<<<< 384dca248953d469f8faf084d471e97d95b22e31
   width: 100px;
   overflow: hidden;
+=======
+  width: 300px;
+  overflow: hidden;  
+>>>>>>> Bug fixes for challengeArena
 }
 
 .mode-handle img {
@@ -290,28 +295,12 @@ body {
 #delaysplash {
   width:90%;
   white-space: pre;
-  left: 2%;
-  text-align: center;
-  display: table-cell;
-  vertical-align: middle;
-  border-radius: 25px;
-  padding: 20px;
-  font-family: Arial, Helvetica, sans-serif;
-  position: absolute;
-  height: 80%;
-  border: 2px solid black;
-  margin-right: auto;
-  margin-left: auto;
-  background-color: grey;
-  color: white;
-  font-size: 24px;
-  z-index: 1000;
-  opacity: .9;
    -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: fadein 2s; /* Firefox < 16 */
         -ms-animation: fadein 2s; /* Internet Explorer */
          -o-animation: fadein 2s; /* Opera < 12.1 */
             animation: fadein 2s;
+  opacity: 1;
 }
 
 @keyframes fadein {

@@ -97,7 +97,13 @@ var ChallengeArena = React.createClass({
             {this.props.arena.stdout !== '' ? <div className="console">Console: <br />{this.props.arena.stdout}</div> : null }
             {this.props.arena.opponentStatus !== '' ? <div>{this.props.arena.opponentStatus}</div> : null}
             {this.props.arena.status !== '' ? <div>{this.props.arena.status}</div> : null}
+<<<<<<< 384dca248953d469f8faf084d471e97d95b22e31
             {this.props.arena.leaderBoard.length ? <Leaderboard {...this.props}/> : null}
+=======
+            {this.props.arena.stdout}
+            {this.props.arena.syntaxMessage !== '' ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : null}
+            {submissionMessage}
+>>>>>>> Bug fixes for challengeArena
           </div>
         </div>
       </div>
