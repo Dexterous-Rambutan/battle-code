@@ -17,6 +17,7 @@ var initial = {
   opponentStatus: "waiting for other player... when prompt appears, you may begin hacking. be ready.",
   editorOpponent: {},
   syntaxMessage: '',
+  leaderBoard: [],
   errors: [],
   stdout: ''
 };
@@ -48,6 +49,11 @@ function arenaReducer (state, action){
       return _.extend({}, state, {
         submissionMessage: action.payload.message,
         stdout: action.payload.stdout
+      });
+    case actions.GET_LEADERBOARD_SUCCESS:
+    console.log(action.payload)
+      return _.extend({}, state, {
+        leaderBoard: action.payload
       });
     case actions.SUBMIT_PROBLEM_SUCCESS:
       return _.extend({}, state, {

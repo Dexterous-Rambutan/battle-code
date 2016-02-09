@@ -4,6 +4,7 @@ var socket = require('../sockets/socket-helper');
 var _ = require('lodash');
 var ErrorList = require('./ErrorList');
 var DelaySplash = require('./DelaySplash');
+var Leaderboard = require('./Leaderboard');
 
 var selfEditorOptions = {
   theme: "ace/theme/solarized_light",
@@ -96,6 +97,7 @@ var ChallengeArena = React.createClass({
             {this.props.arena.stdout !== '' ? <div className="console">Console: <br />{this.props.arena.stdout}</div> : null }
             {this.props.arena.opponentStatus !== '' ? <div>{this.props.arena.opponentStatus}</div> : null}
             {this.props.arena.status !== '' ? <div>{this.props.arena.status}</div> : null}
+            {this.props.arena.leaderBoard.length ? <Leaderboard {...this.props}/> : null}
           </div>
         </div>
       </div>
