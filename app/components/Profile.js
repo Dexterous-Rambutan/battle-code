@@ -43,14 +43,16 @@ var Profile = React.createClass({
         this.props.navActions.navSoloArena(match);
       }.bind(this);
       return (
-        <div  onClick={linkToProblem} className="challenge-card card card-clickable profile-offset-card">
+        <a href={opponentURL} className="match-profile-card">
+        <div className="challenge-card card card-clickable profile-offset-card">
           <div className="challenge-card-handle"><img className="opponent-profile-image" src={match.opponent_avatar} /></div>
           {match.win ? <div className="match-result match-won">W</div>: <div className="match-result match-lost">L</div>}
           <div className="match-detail-info">
-            <div>{date} vs. <a className="match-opponent-url" href={opponentURL} target="_blank">{opponent}</a></div>
+            <div>{date} vs. {opponent}</div>
             <div className="challenge-title">{match.challenge_name}</div>
           </div>
         </div>
+        </a>
       )
     }.bind(this));
 
