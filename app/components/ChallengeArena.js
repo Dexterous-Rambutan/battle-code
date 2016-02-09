@@ -7,26 +7,20 @@ var DelaySplash = require('./DelaySplash');
 var Leaderboard = require('./Leaderboard');
 
 var selfEditorOptions = {
-  theme: "ace/theme/dawn",
+  theme: "ace/theme/solarized_light",
   mode: "ace/mode/javascript",
   useSoftTabs: true,
   tabSize: 2,
   wrap: true,
   showPrintMargin: false,
-  fontSize: 14,
+  fontSize: 16
 };
-
-var challengerEditorOptions = {
-  theme: "ace/theme/pastel_on_dark",
-  useSoftTabs: true,
-  tabSize: 2,
-  wrap: true,
-  showPrintMargin: false,
-  fontSize: 14,
+var challengerEditorOptions = _.create(selfEditorOptions, {
+  theme: "ace/theme/solarized_dark",
   readOnly: true,
   highlightActiveLine: false,
-  highlightGutterLine: false,
-};
+  highlightGutterLine: false
+});
 
 var ChallengeArena = React.createClass({
   componentDidMount: function() {
@@ -41,8 +35,42 @@ var ChallengeArena = React.createClass({
     editor2.setOptions(challengerEditorOptions);
     editor2.$blockScrolling = Infinity;
     this.props.arenaActions.storeEditorOpponent(editor2);
+    // this.props.arena.socket.on('start', function(data){
+    //   var player = {
+    //     github_handle: this.props.user.github_handle,
+    //     github_display_name: this.props.user.github_display_name,
+    //     github_profile_url: this.props.user.github_profile_url,
+    //     github_avatar_url: this.props.user.github_avatar_url
+    //   };
+    //   this.props.arena.socket.emit('playerId', player)
+    // }.bind(this))
+    // sockets on won event
+    // this.props.arena.socket.on('won', function(data){
+    //   this.props.arenaActions.lostChallenge();
+    // }.bind(this))
+
+    // sockets on playerLeave event
+    // this.props.arena.socket.on('playerLeave', function(data){
+    //   this.props.arenaActions.playerLeave();
+    // }.bind(this))
+
+    // this.props.arena.socket.on('keypress', function(data){
+    //   var array = data.split('');
+    //   var obf = [];
+    //   for(var i =0; i<array.length;i++){
+    //     if (array[i] === ' ' || array[i] === '\n' || array[i] === ')' || array[i] === '(' || array[i] === '{' || array[i] === '}') {
+    //       obf.push(array[i])
+    //     } else {
+    //       obf.push(String.fromCharCode(Math.floor(Math.random() * 52) + 65 ))
+    //     }
+    //   }
+    //   this.props.arena.editorOpponent.setValue(obf.join(''))
+    // }.bind(this))
+
+
   },
   emitSocket: function () {
+
     if(this.props.arena.editorSolo.getSession().getValue()){
       this.props.arena.socket.emit('update', this.props.arena.editorSolo.getSession().getValue())
     }
@@ -53,15 +81,6 @@ var ChallengeArena = React.createClass({
       this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle, 'battle');
   },
   render: function() {
-    var submissionMessage;
-    if (this.props.arena.submissionMessage === "Nothing passing so far...(From initial arena reducer)") {
-      submissionMessage = null;
-    } else if (this.props.arena.submissionMessage === "Solution passed all tests!") {
-      submissionMessage = <div className="success-messages">{this.props.arena.submissionMessage}</div>
-    } else {
-      submissionMessage = <div className="error-messages">{this.props.arena.submissionMessage}</div>
-    }
-
     return (
       <div className="content">
         <div className="arena">
@@ -69,24 +88,17 @@ var ChallengeArena = React.createClass({
             <div id="editor" onKeyPress={this.emitSocket} className='player-editor'></div>
             <div id="editor2" className='opponent-editor'></div>
           </div>
-          <div>
-            <div className="challenge-arena-buttons">
-              <button className="submit submit-challenge" onClick={this.submitProblem}>SUBMIT</button>
-            </div>
-            <div></div>
-          </div>
-          <div className="console">
+          {this.props.arena.content ? <div><button className="submit" onClick={this.submitProblem}>Submit Solution</button></div>: null}
+          <div className="messages">
+            {this.props.arena.opponentStatus === 'Player has joined. Challenge starting soon...' ? <DelaySplash {...this.props}/>: null}
+            {!!this.props.arena.opponent_info.github_handle ? <div>OPPONENT: {this.props.arena.opponent_info.github_handle}</div> : null}
+            {this.props.arena.syntaxMessage !== '' ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : null}
+            {this.props.arena.submissionMessage !== "Nothing passing so far...(From initial arena reducer)" ? <div className="submission-message">SUBMISSION RESPONSE: {this.props.arena.submissionMessage}</div> : null}
+            {this.props.arena.stdout !== '' ? <div className="console">Console: <br />{this.props.arena.stdout}</div> : null }
             {this.props.arena.opponentStatus !== '' ? <div>{this.props.arena.opponentStatus}</div> : null}
             {this.props.arena.status !== '' ? <div>{this.props.arena.status}</div> : null}
-<<<<<<< ecc18f2720fe3495b39f42d6c0e9292a6f4fa5bc
             {this.props.arena.leaderBoard.length ? <Leaderboard {...this.props}/> : null}
-=======
-            {this.props.arena.stdout}
-            {this.props.arena.syntaxMessage !== '' ? <ErrorList syntaxMessage={this.props.arena.syntaxMessage} errors={this.props.arena.errors}/> : null}
-            {submissionMessage}
->>>>>>> ChallengeArena styling
           </div>
-          {this.props.arena.opponentStatus === 'Player has joined. Challenge starting soon...' ? <div className="backdrop"><DelaySplash {...this.props}/></div>: null}
         </div>
       </div>
     )

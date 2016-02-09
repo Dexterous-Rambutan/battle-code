@@ -16,23 +16,21 @@ var Staging = React.createClass({
     return (
       <div className="content">
         <div className="staging">
-          <div onClick={getListofProblemsAndNav} className="mode card card-vertical card-vertical-clickable">
+          <div onClick={getListofProblemsAndNav} className="mode card card-clickable">
             <div className="mode-handle">
               <img src="/img/training.png" />
             </div>
             <div className="card-content">
               <h3>TRAINING</h3>
             </div>
-            <div className="mode-description">sdfsdfafsaf</div>
           </div>
-          <div onClick={this.navChallengeArena} className="mode card card-vertical card-vertical-clickable">
+          <div onClick={this.navChallengeArena} className="mode card card-clickable">
             <div className="mode-handle">
               <img src="/img/battle.png" />
             </div>
             <div className="card-content">
               <h3>ARENA</h3>
             </div>
-            <div className="mode-description">sdfsdfafsaf</div>
           </div>
         </div>
       </div>
