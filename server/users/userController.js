@@ -57,7 +57,7 @@ userController.resetWithData = function() {
     github_display_name: 'Alan Fu',
     github_avatar_url: 'https://avatars0.githubusercontent.com/u/7851211?v=3&s=460',
     github_profile_url: 'https://github.com/alanzfu',
-    elo_rating:2000,
+    elo_rating:1000,
     email: null
   }).save().then(function() {
     return User.forge({
@@ -65,7 +65,7 @@ userController.resetWithData = function() {
       github_display_name: 'Harun Davood',
       github_avatar_url: 'https://avatars2.githubusercontent.com/u/12518929?v=3&s=460',
       github_profile_url: 'https://github.com/puzzlehe4d',
-      elo_rating:2000,
+      elo_rating:1000,
       email: null
     }).save();
   }).then(function() {
