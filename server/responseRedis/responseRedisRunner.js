@@ -54,7 +54,7 @@ var responds = function (io) {
     if (type === 'battle' || type === 'solo') {
       io.to('/#'+toSocket).emit('eval', socketMessage);
     } else if (type === 'pair') {
-      io.to('/#'+toSocket).emit('pair_eval', socketMessage);      
+      io.to('/#'+toSocket).emit('pair_eval', socketMessage);
     }
 
     // Keep listening

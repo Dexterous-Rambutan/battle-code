@@ -152,7 +152,7 @@ body {
 
 .mode-handle {
   width: 100px;
-  overflow: hidden;  
+  overflow: hidden;
 }
 
 .mode-handle img {
@@ -305,7 +305,7 @@ body {
   background-color: grey;
   color: white;
   font-size: 24px;
-  z-index: 100;
+  z-index: 1000;
   opacity: .9;
    -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: fadein 2s; /* Firefox < 16 */

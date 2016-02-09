@@ -43,6 +43,27 @@ var getProblem = function (payload) {
   };
 };
 
+var getLeaderBoard = function(id) {
+  return function(dispatch) {
+    $.ajax({
+      method: 'GET',
+      url: '/api/solutions/' + id + '/top',
+      dataType: 'json',
+      cache: false,
+      success: function (data) {
+        dispatch({
+          type: actions.GET_LEADERBOARD_SUCCESS,
+          payload:data
+        })
+      },
+
+      error: function(error) {
+        console.log('error getting leaderboard', error);
+      }
+    });
+  }
+}
+
 var lostChallenge = function (payload) {
   return {
     type: actions.LOST_CHALLENGE,
@@ -129,5 +150,6 @@ module.exports = {
   storeEditorOpponent: storeEditorOpponent,
   lostChallenge: lostChallenge,
   playerLeave: playerLeave,
-  countdown: countdown
+  countdown: countdown,
+  getLeaderBoard: getLeaderBoard
 };
