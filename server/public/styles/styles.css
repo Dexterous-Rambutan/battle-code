@@ -97,10 +97,26 @@ body {
   cursor: pointer;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.24);
   transition: all 0.2s ease-in-out;
-
 }
 
 .submit:hover {
+  box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 5px 10px rgba(0,0,0,0.23);
+  transition: all 0.2s ease-in-out;
+}
+
+.reset {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  background-color: #8b1919;
+  color: #ffffff;
+  border: 0px;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.24);
+  transition: all 0.2s ease-in-out;
+}
+
+.reset:hover {
   box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 5px 10px rgba(0,0,0,0.23);
   transition: all 0.2s ease-in-out;
 }
@@ -168,8 +184,6 @@ body {
   font-size: 24px;
   text-transform: uppercase;
 }
-
-
 
 /* Navigation bar */
 .nav-bar {
@@ -351,7 +365,14 @@ body {
 
 .submit-challenge {
   position: absolute;
-  right: 40px;
+  right: 30px;
+  top: -60px;
+  border-radius: 2px;
+}
+
+.reset-challenge {
+  position: absolute;
+  right: 120px;
   top: -60px;
   border-radius: 2px;
 }

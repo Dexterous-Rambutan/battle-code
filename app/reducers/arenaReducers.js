@@ -7,6 +7,7 @@ var actions = require('../constants').action;
 
 var initial = {
   problem_id: 0,
+  prompt: '',
   content: "",
   status: '',
   delay: 5,
@@ -32,6 +33,7 @@ function arenaReducer (state, action){
     case actions.GET_PROBLEM_SUCCESS:
       return _.extend({}, state, {
         content: action.payload.prompt,
+        prompt: action.payload.prompt,
         opponentStatus: '',
         problem_id: action.payload.id
       });
@@ -86,11 +88,13 @@ function arenaReducer (state, action){
     case actions.STORE_SOLO_PROBLEM:
       return _.extend({}, state, {
         content: action.payload.prompt,
+        prompt: action.payload.prompt,
         problem_id: action.payload.id
       });
     case actions.CLEAR_INFO:
       return _.extend({}, state, {
         content: '',
+        prompt: '',
         syntaxMessage: '',
         leaderBoard: [],
         status: '',
@@ -126,6 +130,15 @@ function arenaReducer (state, action){
     case actions.GOT_OPPONENT_HANDLE:
       return _.extend({}, state, {
         opponent_info: action.payload
+      });
+    case actions.RESET_PROMPT:
+      console.log(state.prompt);
+      return _.extend({}, state, {
+        content: state.prompt,
+        syntaxMessage: '',
+        leaderBoard: [],
+        submissionMessage: 'Nothing passing so far...(From initial arena reducer)',
+        stdout: '',
       });
     default:
       return state;
