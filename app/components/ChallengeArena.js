@@ -71,6 +71,7 @@ var ChallengeArena = React.createClass({
           </div>
           <div>
             <div className="challenge-arena-buttons">
+              <button className="reset reset-challenge" onClick={this.props.arenaActions.resetPrompt}>RESET</button>
               <button className="submit submit-challenge" onClick={this.submitProblem}>SUBMIT</button>
             </div>
             <div></div>

@@ -15,10 +15,16 @@ var storeEditorOpponent = function (payload) {
   };
 };
 
-var countdown = function(){
+var countdown = function () {
  return ({
-            type: actions.COUNTDOWN
-          });
+    type: actions.COUNTDOWN
+  });
+};
+
+var resetPrompt = function () {
+  return ({
+    type: actions.RESET_PROMPT
+  });
 };
 
 var getProblem = function (payload) {
@@ -151,5 +157,6 @@ module.exports = {
   lostChallenge: lostChallenge,
   playerLeave: playerLeave,
   countdown: countdown,
+  resetPrompt: resetPrompt,
   getLeaderBoard: getLeaderBoard
 };

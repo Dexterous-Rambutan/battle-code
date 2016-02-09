@@ -43,6 +43,7 @@ module.exports = {
     GOT_OPPONENT_HANDLE: 'GOT_OPPONENT_HANDLE',
     DELAY_START: 'DELAY_START',
     COUNTDOWN: 'COUNTDOWN',
+    RESET_PROMPT: 'RESET_PROMPT',
 
 
     //Arena - Sockets

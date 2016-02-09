@@ -45,6 +45,7 @@ var SoloArena = React.createClass({
         <div className="arena">
           <div id="editor" className="solo-editor"></div>
           <div className="arena-buttons">
+            <button className="reset reset-challenge" onClick={this.props.arenaActions.resetPrompt}>RESET</button>
             <button className="submit submit-challenge" onClick={submitProblem}>SUBMIT</button>
           </div>
           <div className="console">{this.props.arena.stdout}
