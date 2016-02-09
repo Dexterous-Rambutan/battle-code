@@ -104,15 +104,9 @@ module.exports = {
 
   //GET api/solutions/:challenge_id/top
   getTopSolutions: function(req, res) {
+
     db.knex('solutions').where('challenge_id', req.params.challenge_id).whereNot('total_time',null).orderBy('total_time')
     .then(function (orderedSolutions) {
-      orderedSolutions.forEach(function(element){
-
-        db.knex('users').where('id', element.user_id).then(function(user){
-          element.user_id = user.github_handle;
-          console.log(element)
-        })
-      })
       res.json(orderedSolutions);
     });
   },
@@ -141,6 +135,7 @@ module.exports = {
         total_time: null,
         content: 'Initial Value',
         user_id: playerIds.player1_id,
+        github_handle: player1_github_handle,
         challenge_id: challenge_id,
         valid: false
       }).save();
@@ -152,6 +147,7 @@ module.exports = {
         total_time: null,
         content: 'Initial Value',
         user_id: playerIds.player2_id,
+        github_handle: player2_github_handle,
         challenge_id: challenge_id,
         valid: false
       }).save();
@@ -172,7 +168,8 @@ module.exports = {
       total_time: 3000,
       content: 'solved!',
       user_id: 1,
-      challenge_id: 2,
+      github_handle: 'alanzfu',
+      challenge_id: 7,
       valid: true
     }).save()
     .then(function () {
@@ -182,7 +179,8 @@ module.exports = {
         total_time: 4000,
         content: 'solved!',
         user_id: 4,
-        challenge_id: 2,
+        github_handle: 'hahnbi',
+        challenge_id: 6,
         valid: true
       }).save();
     }).then(function() {
@@ -192,7 +190,8 @@ module.exports = {
         total_time: 4500,
         content: 'solved!',
         user_id: 4,
-        challenge_id: 3,
+        github_handle: 'hahnbi',
+        challenge_id: 4,
         valid: true
       }).save();
     }).then(function() {
@@ -202,6 +201,7 @@ module.exports = {
         total_time: 5000,
         content: 'solved!',
         user_id: 3,
+        github_handle: 'kweng2',
         challenge_id: 3,
         valid: true
       }).save();
@@ -212,6 +212,7 @@ module.exports = {
         total_time: 5500,
         content: 'solved!',
         user_id: 2,
+        github_handle: 'puzzlehe4d',
         challenge_id: 1,
         valid: true
       }).save();
@@ -222,7 +223,8 @@ module.exports = {
         total_time: 6000,
         content: 'solved!',
         user_id: 1,
-        challenge_id: 1,
+        github_handle: 'alanzfu',
+        challenge_id: 6,
         valid: true
       }).save();
     })
