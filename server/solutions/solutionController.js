@@ -42,32 +42,28 @@ module.exports = {
       }
     })
     .then(function (solutions) {
-      // res.json(solutions);
-      // _.each(solutions, function(solution) {
-      //   Challenge.forge({
-      //     id: solution.get('challenge_id')
-      //   }).fetch().then(function (challenge) {
-
-      //   });
-      // });
-      // Select name from table challenges join solutions where challenges.id = solutions.challenge_id
+      // Decorate the solution objects with "challenge_name" field
       var decorateSolution = function (solutions, count) {
         if (count <= 0) {
-          return res.status(201).json(solutions);
+          res.status(201).json(solutions);
+          return solutions;
         } else {
           Challenge.forge({
-            id: solutions[count-1].get('challenge_id')
+            id: solutions.models[count-1].get('challenge_id')
           }).fetch().then(function (challenge) {
-            solution[counter-1].challenge_name = challenge.get('name');
+            solutions.models[count-1].set('challenge_name', challenge.get('name'));
           }).then(function () {
-            return decorateSolution(solutions, count--);
+            return decorateSolution(solutions, count-1);
+          }).catch(function (err) {
+            console.log("Errored while recursively decorating solution models with challenge_name,", err);
           });
         }
       };
-      var count = solutions.length;
-      decorateSolution(solutions, counter);
+      var count = solutions.models.length;
+      return decorateSolution(solutions, count);
     })
-    .catch(function (user) {
+    .catch(function (err) {
+      console.log("Got an error while retrieving all solutions for a user", err);
       res.status(500).json({error: true, data: {message: err.message}});
     });
 

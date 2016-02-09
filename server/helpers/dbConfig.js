@@ -79,6 +79,7 @@ var createMatchesTable = function () {
     match.string('opponent_avatar', 150);
     match.boolean('win');
     match.integer('challenge_id');
+    match.timestamps();
   }).then(function (table) {
     console.log('Created matches Table', table);
   });

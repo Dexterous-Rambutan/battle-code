@@ -4,6 +4,7 @@ var User = require('../users/userModel');
 
 var Match = db.Model.extend({
   tableName: 'matches',
+  hasTimestamps: true,
   user: function(){
     return this.belongsTo(User, 'user_id');
   },
