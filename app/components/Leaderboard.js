@@ -5,7 +5,6 @@ var Leaderboard = React.createClass({
     var solutions = this.props.arena.leaderBoard.map(function(element){
       return (
         <div>
-        {element.content}
         {element.github_handle}
         {element.total_time}
         </div>
