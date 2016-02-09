@@ -81,8 +81,6 @@ var ChallengeArena = React.createClass({
       this.props.arenaActions.submitProblem(errors, content, this.props.arena.socket.id, this.props.arena.problem_id, this.props.user.github_handle, 'battle');
   },
   render: function() {
-    var top = [];
-
     return (
       <div className="content">
         <div className="arena">

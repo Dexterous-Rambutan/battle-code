@@ -14,7 +14,6 @@ var DelaySplash = React.createClass({
      <div class="loader">Loading...</div>
     {this.props.arena.delay >0 ?
       <div>
-        <img src="/img/loader.gif" />
         <p>Configuring battle against {this.props.arena.opponent_info.github_handle}.</p>
         <span>Battle starts in: {this.props.arena.delay}</span>
       </div>

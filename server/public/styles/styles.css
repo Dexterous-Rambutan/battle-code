@@ -152,7 +152,7 @@ body {
 
 .mode-handle {
   width: 100px;
-  overflow: hidden;  
+  overflow: hidden;
 }
 
 .mode-handle img {
@@ -346,7 +346,3 @@ body {
 .console {
   white-space: pre;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> leaderBoard data fetch
