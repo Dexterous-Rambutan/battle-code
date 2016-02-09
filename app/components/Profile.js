@@ -44,7 +44,6 @@ var Profile = React.createClass({
     var matchHistory = this.props.user.user_match_history.map(function (match) {
       var opponentURL = "http://github.com/" + opponent;
       var opponent = match.opponent_github_handle;
-      console.log(date);
       var linkToProblem = function(){
         this.props.navActions.navSoloArena(match);
         console.log('called');
@@ -54,7 +53,7 @@ var Profile = React.createClass({
           <div className="challenge-card-handle"><img className="opponent-profile-image" src={match.opponent_avatar} /></div>
           {match.win ? <div className="match-result match-won">W</div>: <div className="match-result match-lost">L</div>}
           <div className="match-detail-info">
-            <div>vs. <a className="match-opponent-url" href={opponentURL} target="_blank">{opponent}</a> on {date}</div>
+            <div>vs. <a className="match-opponent-url" href={opponentURL} target="_blank">{opponent}</a></div>
             <div>Challenge ID: {match.challenge_id}</div>
           </div>
         </div>
