@@ -43,8 +43,8 @@ var Profile = React.createClass({
     });
 
     var matchHistory = this.props.user.user_match_history.map(function (match) {
-      var opponentURL = "http://github.com/" + opponent;
       var opponent = match.opponent_github_handle;
+      var opponentURL = "http://github.com/" + opponent;
       var date = match.created_at;
       date = moment(date).format("MMM Do");
       var linkToProblem = function(){
