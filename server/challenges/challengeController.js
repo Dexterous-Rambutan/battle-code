@@ -142,14 +142,14 @@ module.exports = {
 
   resetWithData: function () {
     return Challenge.forge({
-      name: "Test function one",
+      name: "One",
       prompt: "/*Write a function one() that returns the value 1.\n\nExample usage: \none(1); \/\/ => 1\none(2); \/\/ => 1*/\n\nvar one = function (n) {\n  \n};",
       test_suite: "assert.equal(one(1),1);\nassert.equal(one(2),1);",
       type:'battle'
     }).save()
     .then(function () {
       return Challenge.forge({
-        name: "Test function two",
+        name: "Two",
         prompt: "/*Write a function two() that returns the value 2.\n\nExample usage: \ntwo(1); \/\/ => 2\ntwo(2); \/\/ => 2*/\n\nvar two = function (n) {\n  \n};",
         test_suite: "assert.equal(two(1),2);\nassert.equal(two(2),2);",
         type:'battle'
@@ -157,7 +157,7 @@ module.exports = {
     })
     .then(function () {
       return Challenge.forge({
-        name: "Test function three",
+        name: "Three",
         prompt: "/*Write a function three() that returns the value 3.\n\nExample usage: \nthree(1); \/\/ => 3\nthree(2); \/\/ => 3*/\n\nvar three = function (n) {\n  \n};",
         test_suite: "assert.equal(three(1),3);\nassert.equal(three(2),3);",
         type:'battle'
@@ -165,7 +165,7 @@ module.exports = {
     })
     .then(function () {
       return Challenge.forge({
-        name: "Test function four",
+        name: "Four",
         prompt: "/*Write a function four() that returns the value 4.\n\nExample usage: \nfour(1); \/\/ => 4\nfour(2); \/\/ => 4*/\n\nvar four = function (n) {\n  \n};",
         test_suite: "assert.equal(four(1),4);\nassert.equal(four(2),4);",
         type:'battle'
