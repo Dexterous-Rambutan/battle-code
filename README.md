@@ -16,10 +16,10 @@ Battle your peers head-to-head with intense coding challenges.
 1. [Requirements](#requirements)
 1. [Development](#development)
     1. [Installing Dependencies](#installing-dependencies)
-    1. [Tasks](#tasks)
-1. [Team](#team)
+    1. [Roadmap](#roadmap)
 1. [Contributing](#contributing)
 1. [Architecture](#architecture)
+1. [API](#api)
 1. [Deployment](#deployment)
 
 <hr>
@@ -77,7 +77,34 @@ Database in Postgres, using Bookshelf and Knex
 
 ![](http://i.imgur.com/1N1vi5h.png)
 
-### Folder Structure
+## API
+##### Public End Points
+|Request|URL|Response|
+|---|---|---|
+|Log-in|/auth/github|   |
+|Log-out|/logout|   |
+|Verify User|/auth-verify|userObj|
+|Get User|/api/users/:githubHandle|userObj|
+|Get Match History|/api/users/:githubHandle/matches/|[matchObj...]|
+|Get User's Solutions|/api/solutions/user/:gitubHandle|[solutionObj...]|
+|Get Solution|/api/solutions/:solutionId|solutionObj|
+|Get Leaderboard|/api/solutions/:challenge_id/top|[solutionObj...]|
+|Get Challenge|/api/challenges/:challengeId|[challengeObj...]|
+
+##### Admin Only
+|Request|URL|Response|
+|---|---|---|
+|GUI Access to Database|/addProblemsSolutions.html|   |
+|Add Challenge|/api/challenges|challengeObj|
+|Get Random Challenge|/api/challenges|challengeObj|
+|Add User|/api/users|userObj|
+|Empty Database|/api/resetDB|   |
+|Reseed Database|/api/resetDBWithData|   |
+|Reseed Challenges Table|/api/resetChallenges|   |
+
+
+[comment]: <> (|Get Leaderboard|/api/solutions/:challengeId|[solutionObj...]|)
+
 
 ## Deployment
 This has been deployed onto Digital Ocean using Docker containers. The backend architecture allows horizontal scaling of the solution worker to handle higher loads
