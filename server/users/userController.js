@@ -26,7 +26,7 @@ userController.addUser = function ( req, res ) {
     github_handle: req.body.github_handle,
     github_display_name: req.body.github_display_name,
     github_avatar_url: req.body.github_avatar_url,
-    github_profileUrl: req.body.github_profileUrl,
+    github_profile_url: req.body.github_profileUrl,
     elo_rating: 1000,
     email: req.body.email
   };
