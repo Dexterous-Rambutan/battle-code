@@ -31,6 +31,7 @@ var createUsersTable = function () {
     user.string('github_display_name', 255);
     user.string('github_avatar_url', 255);
     user.string('github_profile_url', 255);
+    user.integer('elo_rating');
     user.string('email', 255);
     user.timestamps();
   }).then(function (table) {

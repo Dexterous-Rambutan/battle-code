@@ -41,7 +41,7 @@ var responds = function (io) {
         matchController.editOneWhenValid({
           challenge_id: challenge_id,
           github_handle: github_handle
-        });
+        }, matchController.assignEloRating);
       }
     }
     var socketMessage = {

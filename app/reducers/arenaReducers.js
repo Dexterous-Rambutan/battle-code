@@ -91,6 +91,8 @@ function arenaReducer (state, action){
     case actions.CLEAR_INFO:
       return _.extend({}, state, {
         content: '',
+        syntaxMessage: '',
+        leaderBoard: [],
         status: '',
         delay: 5,
         opponentStatus: "waiting for other player... when prompt appears, you may begin hacking. be ready.",
