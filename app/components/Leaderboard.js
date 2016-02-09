@@ -7,6 +7,7 @@ var Leaderboard = React.createClass({
         <div>
         {element.content}
         {element.github_handle}
+        {element.total_time}
         </div>
       )
     })
