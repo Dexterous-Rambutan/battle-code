@@ -190,7 +190,7 @@ module.exports = {
       content: 'solved!',
       user_id: 1,
       github_handle: 'alanzfu',
-      challenge_id: 7,
+      challenge_id: 2,
       valid: true
     }).save()
     .then(function () {
@@ -201,7 +201,7 @@ module.exports = {
         content: 'solved!',
         user_id: 4,
         github_handle: 'hahnbi',
-        challenge_id: 6,
+        challenge_id: 2,
         valid: true
       }).save();
     }).then(function() {
@@ -212,7 +212,7 @@ module.exports = {
         content: 'solved!',
         user_id: 4,
         github_handle: 'hahnbi',
-        challenge_id: 4,
+        challenge_id: 3,
         valid: true
       }).save();
     }).then(function() {
@@ -245,7 +245,7 @@ module.exports = {
         content: 'solved!',
         user_id: 1,
         github_handle: 'alanzfu',
-        challenge_id: 6,
+        challenge_id: 1,
         valid: true
       }).save();
     })
