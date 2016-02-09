@@ -44,6 +44,7 @@ var Profile = React.createClass({
     var matchHistory = this.props.user.user_match_history.map(function (match) {
       var opponentURL = "http://github.com/" + opponent;
       var opponent = match.opponent_github_handle;
+      //var date = match.date;
       var linkToProblem = function(){
         this.props.navActions.navSoloArena(match);
         console.log('called');

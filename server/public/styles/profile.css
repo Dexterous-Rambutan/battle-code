@@ -107,6 +107,7 @@
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-around;
+  align-content: flex-start;
   height: 80%;
   overflow-y: scroll;
 }
