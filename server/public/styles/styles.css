@@ -151,13 +151,8 @@ body {
 }
 
 .mode-handle {
-<<<<<<< 384dca248953d469f8faf084d471e97d95b22e31
-  width: 100px;
-  overflow: hidden;
-=======
   width: 300px;
   overflow: hidden;  
->>>>>>> Bug fixes for challengeArena
 }
 
 .mode-handle img {
