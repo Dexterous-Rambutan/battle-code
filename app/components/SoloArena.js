@@ -5,7 +5,6 @@ var ErrorList = require('./ErrorList');
 var socket = require('../sockets/socket-helper');
 
 var selfEditorOptions = {
-  // theme: "ace/theme/solarized_light",
   theme: "ace/theme/dawn",
   mode: "ace/mode/javascript",
   useSoftTabs: true,
