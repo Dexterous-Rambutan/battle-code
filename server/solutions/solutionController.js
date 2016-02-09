@@ -1,6 +1,8 @@
+var _ = require('lodash');
 var db = require('../helpers/dbConfig');
 var Solution = require('./solutionModel.js');
 var User = require('../users/userModel.js');
+var Challenge = require('../challenges/challengeModel.js');
 var Queue = require('../responseRedis/redisQueue.js');
 
 module.exports = {
@@ -39,10 +41,29 @@ module.exports = {
         res.status(404).json(null);
       }
     })
-    .then(function (challenges) {
-      res.json(challenges);
+    .then(function (solutions) {
+      // Decorate the solution objects with "challenge_name" field
+      var decorateSolution = function (solutions, count) {
+        if (count <= 0) {
+          res.status(201).json(solutions);
+          return solutions;
+        } else {
+          Challenge.forge({
+            id: solutions.models[count-1].get('challenge_id')
+          }).fetch().then(function (challenge) {
+            solutions.models[count-1].set('challenge_name', challenge.get('name'));
+          }).then(function () {
+            return decorateSolution(solutions, count-1);
+          }).catch(function (err) {
+            console.log("Errored while recursively decorating solution models with challenge_name,", err);
+          });
+        }
+      };
+      var count = solutions.models.length;
+      return decorateSolution(solutions, count);
     })
-    .catch(function (user) {
+    .catch(function (err) {
+      console.log("Got an error while retrieving all solutions for a user", err);
       res.status(500).json({error: true, data: {message: err.message}});
     });
 
@@ -169,7 +190,7 @@ module.exports = {
       content: 'solved!',
       user_id: 1,
       github_handle: 'alanzfu',
-      challenge_id: 7,
+      challenge_id: 2,
       valid: true
     }).save()
     .then(function () {
@@ -180,7 +201,7 @@ module.exports = {
         content: 'solved!',
         user_id: 4,
         github_handle: 'hahnbi',
-        challenge_id: 6,
+        challenge_id: 2,
         valid: true
       }).save();
     }).then(function() {
@@ -191,7 +212,7 @@ module.exports = {
         content: 'solved!',
         user_id: 4,
         github_handle: 'hahnbi',
-        challenge_id: 4,
+        challenge_id: 3,
         valid: true
       }).save();
     }).then(function() {
@@ -224,7 +245,7 @@ module.exports = {
         content: 'solved!',
         user_id: 1,
         github_handle: 'alanzfu',
-        challenge_id: 6,
+        challenge_id: 1,
         valid: true
       }).save();
     })

@@ -1,5 +1,6 @@
 var User = require('../users/userModel.js');
 var Match = require('../matches/matchModel.js');
+var Challenge = require('../challenges/challengeModel.js');
 var elo = require('elo-rank')(32);
 var Promise = require('bluebird');
 module.exports = {
@@ -144,15 +145,36 @@ module.exports = {
     .fetch({withRelated: ['matches']})
     .then(function (user) {
       var matches = user.related('matches');
-      res.status(201).json(matches);
-      return matches;
+      
+      // Decorate matches with challenge name
+      var decorateMatches = function (matches, count) {
+        if (count <= 0) {
+          res.status(201).json(matches);
+          return matches;
+        } else {
+          Challenge.forge({
+            id: matches.models[count-1].get('challenge_id')
+          }).fetch().then(function (challenge) {
+            matches.models[count-1].set('challenge_name', challenge.get('name'));
+          }).then(function () {
+            return decorateMatches(matches, count-1);
+          }).catch(function (err) {
+            console.log("Errored while recursively decorating matches models with challenge_name,", err);
+          });
+        }
+      };
+      var count = matches.models.length;
+      return decorateMatches(matches, count);
     })
-    .then(function (matches) {
-      if(callback) {
-        callback(matches);
-      }
-    })
+    // .then(function (matches) {
+    //   console.log('got here', matches);
+    //   if(callback) {
+    //     console.log('not getting here');
+    //     callback(matches);
+    //   }
+    // })
     .catch(function (err) {
+      console.log("Errored retrieving matches for user", err);
       res.status(404).end();
     });
   },
