@@ -254,7 +254,7 @@ body {
 
 .mode-handle {
   width: 300px;
-  overflow: hidden;  
+  overflow: hidden;
 }
 
 .mode-handle img {
@@ -410,7 +410,7 @@ body {
 }
 
 .challenge-arena-buttons {
-  width: 50%; 
+  width: 50%;
 }
 
 .backdrop {
@@ -467,6 +467,14 @@ body {
 
 .opponent-card .card-content {
   justify-content: flex-end;
+}
+
+.match-opponent-url {
+  margin-bottom: 6px;
+}
+
+.challenge-title {
+  margin-top: 3px;
 }
 
 .countdown-card {
