@@ -6,7 +6,6 @@ var Profile = React.createClass({
     var wins = 0;
     var loss = 0;
     var matchHistory = this.props.user.user_match_history;
-    // var matchHistory = store.getState().user.user_match_history;
     for ( var i = 0; i < matchHistory.length; i ++ ) {
       wins += matchHistory[i].win ? 1 : 0;
       loss += matchHistory[i].win ? 0 : 1;
@@ -28,13 +27,6 @@ var Profile = React.createClass({
   },
 
   render: function() {
-    // var listOfProblems = this.props.user.user_problems.map(function (problem) {
-    //   var linkToProblem = function(){
-    //     this.props.navActions.navSoloArena(problem);
-    //   }.bind(this);
-    //   return <a href="#" onClick={linkToProblem}><li>Challenge ID:{problem.challenge_id} - {problem.valid ? 'Completed:' : 'Attempted:'} - {problem.end_time}</li></a>
-    // }.bind(this));
-
     var wins = 0;
     var loss = 0;
     this.props.user.user_match_history.forEach(function (match) {
@@ -43,22 +35,24 @@ var Profile = React.createClass({
     });
 
     var matchHistory = this.props.user.user_match_history.map(function (match) {
-      var opponentURL = "http://github.com/" + opponent;
       var opponent = match.opponent_github_handle;
+      var opponentURL = "http://github.com/" + opponent;
       var date = match.created_at;
       date = moment(date).format("MMM Do");
       var linkToProblem = function(){
         this.props.navActions.navSoloArena(match);
       }.bind(this);
       return (
-        <div  onClick={linkToProblem} className="challenge-card card card-clickable profile-offset-card">
+        <a href={opponentURL} className="match-profile-card">
+        <div className="challenge-card card card-clickable profile-offset-card">
           <div className="challenge-card-handle"><img className="opponent-profile-image" src={match.opponent_avatar} /></div>
           {match.win ? <div className="match-result match-won">W</div>: <div className="match-result match-lost">L</div>}
           <div className="match-detail-info">
-            <div>{date} vs. <a className="match-opponent-url" href={opponentURL} target="_blank">{opponent}</a></div>
+            <div>{date} vs. {opponent}</div>
             <div className="challenge-title">{match.challenge_name}</div>
           </div>
         </div>
+        </a>
       )
     }.bind(this));
 
@@ -77,7 +71,7 @@ var Profile = React.createClass({
                 {this.props.user.github_display_name}
               </div>
               <div className="profile-github">
-                <a href={this.props.user.github_profileUrl}>{this.props.user.github_handle}</a>
+                <a href={this.props.user.github_profile_url} target="_blank">{this.props.user.github_handle}</a>
               </div>
             </div>
 
