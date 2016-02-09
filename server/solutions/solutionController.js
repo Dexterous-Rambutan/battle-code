@@ -1,6 +1,8 @@
+var _ = require('lodash');
 var db = require('../helpers/dbConfig');
 var Solution = require('./solutionModel.js');
 var User = require('../users/userModel.js');
+var Challenge = require('../challenges/challengeModel.js');
 var Queue = require('../responseRedis/redisQueue.js');
 
 module.exports = {
@@ -39,8 +41,31 @@ module.exports = {
         res.status(404).json(null);
       }
     })
-    .then(function (challenges) {
-      res.json(challenges);
+    .then(function (solutions) {
+      // res.json(solutions);
+      // _.each(solutions, function(solution) {
+      //   Challenge.forge({
+      //     id: solution.get('challenge_id')
+      //   }).fetch().then(function (challenge) {
+
+      //   });
+      // });
+      // Select name from table challenges join solutions where challenges.id = solutions.challenge_id
+      var decorateSolution = function (solutions, count) {
+        if (count <= 0) {
+          return res.status(201).json(solutions);
+        } else {
+          Challenge.forge({
+            id: solutions[count-1].get('challenge_id')
+          }).fetch().then(function (challenge) {
+            solution[counter-1].challenge_name = challenge.get('name');
+          }).then(function () {
+            return decorateSolution(solutions, count--);
+          });
+        }
+      };
+      var count = solutions.length;
+      decorateSolution(solutions, counter);
     })
     .catch(function (user) {
       res.status(500).json({error: true, data: {message: err.message}});
