@@ -78,15 +78,16 @@ Database in Postgres, using Bookshelf and Knex
 ![](http://i.imgur.com/1N1vi5h.png)
 
 ## API
-##### Public Facing
+##### Public End Points
 |Request|URL|Response|
 |---|---|---|
 |Log-in|/auth/github|   |
 |Log-out|/logout|   |
 |Verify User|/auth-verify|userObj|
-|Get User|/api/users/:userId|userObj|
+|Get User|/api/users/:githubHandle|userObj|
 |Get Match History|/api/users/:githubHandle/matches/|[matchObj...]|
 |Get User's Solutions|/api/solutions/user/:gitubHandle|[solutionObj...]|
+|Get Solution|/api/solutions/:solutionId|solutionObj|
 |Get Leaderboard|/api/solutions/:challenge_id/top|[solutionObj...]|
 |Get Challenge|/api/challenges/:challengeId|[challengeObj...]|
 
@@ -94,9 +95,9 @@ Database in Postgres, using Bookshelf and Knex
 |Request|URL|Response|
 |---|---|---|
 |GUI Access to Database|/addProblemsSolutions.html|   |
-|Add Challenge|/api/challenges|   |
-|Get Random Challenge|/api/challenges|   |
-|Add User|/api/users|   |
+|Add Challenge|/api/challenges|challengeObj|
+|Get Random Challenge|/api/challenges|challengeObj|
+|Add User|/api/users|userObj|
 |Empty Database|/api/resetDB|   |
 |Reseed Database|/api/resetDBWithData|   |
 |Reseed Challenges Table|/api/resetChallenges|   |
