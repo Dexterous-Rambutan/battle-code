@@ -48,7 +48,6 @@ module.exports = function (app, redisClient) {
   app.get('/api/users/:githubHandle', userController.getUserById);
   app.get('/api/users/:githubHandle/matches', matchController.getAllByUser);
 
-  // app.get('/api/challenges', challengeController.getChallenge);
   // Used by solo/practice mode
   app.get('/api/challenges/:challengeId', challengeController.getChallengeById);
 
@@ -62,15 +61,20 @@ module.exports = function (app, redisClient) {
   // Add user to the db, require admin privilige. Normal users go through /auth/login
   app.post('/api/users', adminPrivilege, userController.addUser);
 
+  // Get a random challenge, disabled for the public
+  app.get('/api/challenges', adminPrivilege, challengeController.getChallenge);
+
+  // GUI to add solutions and challenges to the DB directly
   app.get('/addProblemsSolutions.html', adminPrivilege);
 
   // Add challenge to the db, admin privilige required
   app.post('/api/challenges', adminPrivilege, challengeController.addChallenge);
 
+  // Reset the database to be blank
   app.get('/api/resetDB', adminPrivilege, db.resetEverything);
-  // app.get('/api/resetDB', db.resetEverything);
+
+  // Reset the datbabase with some seed data
   app.get('/api/resetDBWithData', adminPrivilege, function (req, res) {
-  // app.get('/api/resetDBWithData', function (req, res) {
     db.resetEverythingPromise()
     .then(function() {
       return userController.resetWithData();
@@ -93,5 +97,7 @@ module.exports = function (app, redisClient) {
       return;
     })
   });
+
+  // Reset the challenges table with challenges.csv
   app.get('/api/resetChallenges', adminPrivilege, challengeController.repopulateTable);
 };
