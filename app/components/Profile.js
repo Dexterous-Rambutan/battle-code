@@ -1,4 +1,5 @@
 var React = require('react');
+var moment = require('moment');
 
 var Profile = React.createClass({
   componentDidUpdate: function () {
@@ -44,18 +45,18 @@ var Profile = React.createClass({
     var matchHistory = this.props.user.user_match_history.map(function (match) {
       var opponentURL = "http://github.com/" + opponent;
       var opponent = match.opponent_github_handle;
-      //var date = match.date;
+      var date = match.created_at;
+      date = moment(date).format("MMM Do");
       var linkToProblem = function(){
         this.props.navActions.navSoloArena(match);
-        console.log('called');
       }.bind(this);
       return (
         <div  onClick={linkToProblem} className="challenge-card card card-clickable profile-offset-card">
           <div className="challenge-card-handle"><img className="opponent-profile-image" src={match.opponent_avatar} /></div>
           {match.win ? <div className="match-result match-won">W</div>: <div className="match-result match-lost">L</div>}
           <div className="match-detail-info">
-            <div>vs. <a className="match-opponent-url" href={opponentURL} target="_blank">{opponent}</a></div>
-            <div>Challenge ID: {match.challenge_id}</div>
+            <div>{date} vs. <a className="match-opponent-url" href={opponentURL} target="_blank">{opponent}</a></div>
+            <div className="challenge-title">{match.challenge_name}</div>
           </div>
         </div>
       )
