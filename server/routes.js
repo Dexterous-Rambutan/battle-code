@@ -29,6 +29,10 @@ module.exports = function (app, redisClient) {
       // Once complete, redirect to home page
       res.redirect('/');
   });
+  app.get('/logout', function (req, res) {
+    req.session.loggedIn = false;
+    res.redirect('/');
+  });
 
   // When client needs to verify if they are authenticated
   app.get('/auth-verify', function(req, res) {
@@ -41,29 +45,32 @@ module.exports = function (app, redisClient) {
     }
   });
 
-
-  // app.get('/addProblemsSolutions.html', adminPrivilege);
-  app.get('/addProblemsSolutions.html');
-  app.get('/api/challenges', challengeController.getChallenge);
-  app.get('/api/challenges/:challengeId', challengeController.getChallengeById);
-  app.post('/api/challenges', challengeController.addChallenge);
   app.get('/api/users/:githubHandle', userController.getUserById);
-  app.post('/api/users', userController.addUser);
+  app.get('/api/users/:githubHandle/matches', matchController.getAllByUser);
+
+  // app.get('/api/challenges', challengeController.getChallenge);
+  // Used by solo/practice mode
+  app.get('/api/challenges/:challengeId', challengeController.getChallengeById);
+
   app.get('/api/solutions/:solutionId', solutionController.getSolutionById);
   app.get('/api/solutions/user/:githubHandle', solutionController.getAllSolutionsForUser);
   app.get('/api/solutions/:challenge_id/top', solutionController.getTopSolutions);
   app.post('/api/solutions/:challengeId', function (req, res) {
     solutionController.testSolution(req, res, redisClient);
   });
-  app.get('/api/users/:githubHandle/matches', matchController.getAllByUser)
-  app.get('/logout', function (req, res) {
-    req.session.loggedIn = false;
-    res.redirect('/');
-  });
-  // app.get('/api/resetDB', adminPrivilege, db.resetEverything);
-  app.get('/api/resetDB', db.resetEverything);
-  // app.get('/api/resetDBWithData', adminPrivilege, function (req, res) {
-  app.get('/api/resetDBWithData', function (req, res) {
+  
+  // Add user to the db, require admin privilige. Normal users go through /auth/login
+  app.post('/api/users', adminPrivilege, userController.addUser);
+
+  app.get('/addProblemsSolutions.html', adminPrivilege);
+
+  // Add challenge to the db, admin privilige required
+  app.post('/api/challenges', adminPrivilege, challengeController.addChallenge);
+
+  app.get('/api/resetDB', adminPrivilege, db.resetEverything);
+  // app.get('/api/resetDB', db.resetEverything);
+  app.get('/api/resetDBWithData', adminPrivilege, function (req, res) {
+  // app.get('/api/resetDBWithData', function (req, res) {
     db.resetEverythingPromise()
     .then(function() {
       return userController.resetWithData();
