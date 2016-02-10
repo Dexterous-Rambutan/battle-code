@@ -25,7 +25,7 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-content: flex-start;
+  align-content: center;
   position: relative;
   z-index: 0;
   padding-top: 50px;
@@ -129,7 +129,7 @@ button:hover {
 }
 
 .splash a {
-  margin-top: 80px;
+  margin-top: 40px;
   color: #7f7f7f;
   text-decoration: none;
 }
@@ -286,7 +286,7 @@ button:hover {
   padding: 10px;
   width: 300px;
   height: 300px;
-  opacity: 0;
+  opacity: 1;
 }
 
 .mode:hover .mode-description {
@@ -374,7 +374,7 @@ button:hover {
   position: absolute;
   top: -20px;
   right: 50%;
-  z-index: 4; 
+  z-index: 4;
   margin-right: -255px;
   height: 20px;
   display: flex;
@@ -574,3 +574,60 @@ button:hover {
 .left {
   text-align:left;
 }
+
+.description-staging {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  position:relative;
+  margin-top:30px;
+  height: 100px;
+  width: 600px;
+}
+.description-challenge{
+  opacity: 1;
+  webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 1s; /* Firefox < 16 */
+        -ms-animation: fadein 1s; /* Internet Explorer */
+         -o-animation: fadein 1s; /* Opera < 12.1 */
+            animation: fadein 1s;
+}
+.description-practice{
+  opacity: 1;
+  webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 1s; /* Firefox < 16 */
+        -ms-animation: fadein 1s; /* Internet Explorer */
+         -o-animation: fadein 1s; /* Opera < 12.1 */
+            animation: fadein 1s;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+}
+
