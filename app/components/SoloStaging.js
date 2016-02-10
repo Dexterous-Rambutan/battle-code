@@ -35,8 +35,13 @@ var SoloStaging = React.createClass({
                 {listOfProblems}
               </div>
             </div> : 
-            <div>
-              Sorry, you do not have any problems to practice on. Please play challenge or pair mode to unlock more problems.
+            <div className="challenge-list">
+              <div className="staging-exit-container">
+                <button className="staging-exit" onClick={this.props.navActions.navStaging}>X</button>
+              </div>
+              <div className="challenge-list-container">
+                Sorry, you do not have any problems to practice on. Please play challenge mode to unlock more problems.
+                </div>
             </div>
           }
       </div>
