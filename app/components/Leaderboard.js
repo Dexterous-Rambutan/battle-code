@@ -28,7 +28,6 @@ var Leaderboard = React.createClass({
           {this.props.arena.status === 'YOU WON!' ? <div className="card-content challenge-status">{this.props.arena.status}</div> : <div className="card-content challenge-status">CHALLENGE COMPLETE</div>}
           <div><button className="submit splash-buttons" onClick={this.getLeaderBoard}>  VIEW LEADERBOARD  </button></div>
           <div><button className="submit splash-buttons" onClick={this.exit}>GO BACK TO SOLUTION</button></div>
-          <div className='leaderboard'>{this.props.arena.problem_name}</div>
           <table className='leaderboard'>
           {solutions}
           </table>
