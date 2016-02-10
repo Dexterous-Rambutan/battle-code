@@ -126,8 +126,7 @@
   flex-direction: column;
   font-size: 2em;
   font-weight: 600;
-  margin-left: 10px;
-  width: 30px;
+  width: 60px;
 }
 
 .match-won {
@@ -138,11 +137,18 @@
   color: rgba(128,0,0,0.8);
 }
 
-.match-detail-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: 10px;
+.match-detail-opponent {
+  width: 170px;
+}
+
+.match-detail-challenge-title {
+  font-size: 12px;
+  width: 130px;
+}
+
+.match-detail-date {
+  font-size: 12px;
+  width: 70px;
 }
 
 .match-opponent-url {
@@ -160,6 +166,13 @@
   width: 500px;
   height: 60px;
   display: flex;
+  align-items: center;
+}
+
+.match-profile-card-blank {
+  width: 500px;
+  height: 60px;
+  margin: 10px;
 }
 
 div.match-profile-card:hover {

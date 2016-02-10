@@ -8,9 +8,11 @@ var actions = require('../constants').action;
 var initial = {
   problem_id: 0,
   prompt: '',
+  problem_name: '',
   content: "",
   status: '',
   spinner: false,
+  submitted: false,
   delay: 5,
   opponent_info: {},
   submissionMessage: "Nothing passing so far...(From initial arena reducer)",
@@ -33,6 +35,7 @@ function arenaReducer (state, action){
       });
     case actions.GET_PROBLEM_SUCCESS:
       return _.extend({}, state, {
+        problem_name: action.payload.name,
         content: action.payload.prompt,
         prompt: action.payload.prompt,
         opponentStatus: '',
@@ -62,11 +65,17 @@ function arenaReducer (state, action){
       return _.extend({}, state, {
         submissionMessage: "Solution passed all tests!",
         stdout: action.payload.stdout,
-        spinner: false
+        spinner: false,
+        submitted: true
       });
     case actions.STORE_EDITOR:
       return _.extend({}, state, {
         editorSolo: action.payload,
+      });
+    case actions.EXIT_SPLASH:
+      return _.extend({}, state, {
+        submitted: false,
+        leaderBoard: []
       });
     case actions.STORE_EDITOR_OPPONENT:
       return _.extend({}, state, {
@@ -99,8 +108,10 @@ function arenaReducer (state, action){
         content: '',
         prompt: '',
         syntaxMessage: '',
+        problem_name: '',
         leaderBoard: [],
         status: '',
+        submitted: false,
         delay: 5,
         opponentStatus: "Waiting for another player...",
         submissionMessage: 'Nothing passing so far...(From initial arena reducer)',

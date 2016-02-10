@@ -57,6 +57,7 @@ var getLeaderBoard = function(id) {
       dataType: 'json',
       cache: false,
       success: function (data) {
+
         dispatch({
           type: actions.GET_LEADERBOARD_SUCCESS,
           payload:data
@@ -81,6 +82,13 @@ var playerLeave = function (payload) {
   return {
     type: actions.PLAYER_LEAVE,
     payload: payload
+  };
+};
+
+var exitSplash = function () {
+  console.log('here')
+  return {
+    type: actions.EXIT_SPLASH
   };
 };
 
@@ -151,5 +159,6 @@ module.exports = {
   playerLeave: playerLeave,
   countdown: countdown,
   resetPrompt: resetPrompt,
-  getLeaderBoard: getLeaderBoard
+  getLeaderBoard: getLeaderBoard,
+  exitSplash: exitSplash
 };
