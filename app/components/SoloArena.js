@@ -42,6 +42,7 @@ var SoloArena = React.createClass({
     }
     return (
       <div className="content">
+        {this.props.arena.spinner ? <img className="spinner" src="https://shortpixel.com/img/spinner2.gif" /> : null}
         <div className="arena">
           <div id="editor" className="solo-editor"></div>
           <div className="arena-buttons">

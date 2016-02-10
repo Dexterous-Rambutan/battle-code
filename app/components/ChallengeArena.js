@@ -64,6 +64,7 @@ var ChallengeArena = React.createClass({
 
     return (
       <div className="content">
+        {this.props.arena.spinner ? <img className="spinner" src="https://shortpixel.com/img/spinner2.gif" /> : null}
         <div className="arena">
           <div className="editors">
             <div id="editor" onKeyPress={this.emitSocket} className='player-editor'></div>

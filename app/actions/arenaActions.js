@@ -96,7 +96,6 @@ var submitProblem = function (errors, solution_str, socket_id, problem_id, user_
 
   if(errors.length === 0) {
     return function (dispatch) {
-
       dispatch({
         type: actions.NO_SYNTAX_ERROR,
         payload: solution_str

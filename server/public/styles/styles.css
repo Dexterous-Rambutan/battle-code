@@ -544,6 +544,15 @@ button:hover {
   text-transform: uppercase;
 }
 
+.spinner {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top: 200px;
+  left: 50%;
+  margin-left: -25px;
+  z-index: 10;
+}
 .challenge-status {
   font-size: 50px;
   color: #FFFFFF;

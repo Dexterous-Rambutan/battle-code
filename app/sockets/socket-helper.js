@@ -55,7 +55,6 @@ socket.on('eval', function (submissionMessage) {
   if(submissionMessage.message === 'victory!') {
     socket.emit('won', null);
   }
-  console.log(submissionMessage.challenge_id  )
   store.dispatch(arenaAction.handleSubmissionResponse(submissionMessage, submissionMessage.challenge_id));
 });
 
