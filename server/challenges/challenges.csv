@@ -301,8 +301,8 @@ assert.equal(romanNum(""MCMXCVI""),1996);",battle,2016-02-02 20:42:35.743-08,201
 23,isAnagram,"/*Write a function that given two input strings, str1 and st2, determins if str1 is an anagram of str2, ignoring spaces and capitalization
 
 Example usage:
-isAnagram(""Hi!"", "!iH") => true
-isAnagram(""Hello"", "hello") => false*/
+isAnagram(""Hi!"", ""!iH"") => true
+isAnagram(""Hello"", ""hello"") => true*/
 
 var isAnagram = function (str1, str2) {};","assert.equal(isAnagram("""",""""),true);
 assert.equal(isAnagram(""abc"",""bac""),true);
