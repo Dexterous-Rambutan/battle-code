@@ -166,7 +166,7 @@ module.exports = {
     .then(function () {
       return Challenge.forge({
         name: "missingNumber",
-        prompt: "/*Write a function that returns the missing number in an input array, arr.\nThe input array will always start at 0, and all following entries are 1 larger than the previous entry, except for the missing entry.\n\nExample usage:\nmissingNumber([0,1,2,4,5,6]) => 3\nmissingNumber([1,2,3,4,5]) => 0\nmissingNumber([1,2,3,4,5]) => null*/\n\nvar missingNumber = function (arr) {};",
+        prompt: "/*Write a function that returns the missing number in an input array, arr.\nThe input array will always start at 0, and all following entries are 1 larger than the previous entry, except for the missing entry.\n\nExample usage:\nmissingNumber([0,1,2,4,5,6]) => 3\nmissingNumber([1,2,3,4,5]) => 0\nmissingNumber([0,1,2,3,4,5]) => null*/\n\nvar missingNumber = function (arr) {};",
         test_suite: "assert.equal(missingNumber([0,2]), 1);\nassert.equal(missingNumber([0]), null);\nassert.equal(missingNumber([1,2]), 0);\nassert.equal(missingNumber([0,1,2,3,5]), 4);\nassert.equal(missingNumber([0,1,3]), 2);\nassert.equal(missingNumber([0,1,2,3]), null);\nassert.equal(missingNumber([0,1,2,3,4]), null);\nassert.equal(missingNumber([0,1,2,4]), 3);\nassert.equal(missingNumber([0,1,2,3,4,5,6,8]), 7);",
         type:'battle'
       }).save();

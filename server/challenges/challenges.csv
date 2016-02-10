@@ -41,7 +41,7 @@ The input array will always start at 0, and all following entries are 1 larger t
 Example usage:
 missingNumber([0,1,2,4,5,6]) => 3
 missingNumber([1,2,3,4,5]) => 0
-missingNumber([1,2,3,4,5]) => null*/
+missingNumber([0,1,2,3,4,5]) => null*/
 
 var missingNumber = function (arr) {};","assert.equal(missingNumber([0,2]), 1);
 assert.equal(missingNumber([0]), null);
@@ -258,3 +258,55 @@ assert.equal(compressString(""abc""), ""a1b1c1"");
 assert.equal(compressString(""hey !""), ""h1e1y1 1!1"");
 assert.equal(compressString(""Hannah""), ""H1a2n2h1"");
 assert.equal(compressString(""hahnbi""), ""h2a1n1b1i1"");",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+20,stepSum,"/*Write a function that returns number of possible ways to reach the top of a staircase containing n steps, given you can that given two input strings, str1 and st2, determins if str1 2 steps anagram of str2
+
+Example usage:
+er move.
+
+Example usage:
+stepSum(1) => 1
+stepSum(4) => 5*/
+
+var stepSum = function () {};","assert.equal(stepSum(1),1);
+assert.equal(stepSum(5),8);
+assert.equal(stepSum(7),21);
+assert.equal(stepSum(10),81);
+assert.equal(stepSum(20),10946);
+assert.equal(stepSum(30),1346269);
+assert.equal(stepSum(32),3524578);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+21,findSingleNum,"/*Given an input array of integers, arr, in which every element appears twice, except for one element, which appears only once. Write a function that finds that element
+
+Example usage:
+findSingleSum([1,2,3,4,1,2,3]) => 4
+findSingleSum([9,9,5,5,1]) => 1*/
+
+var findSingleSum = function (arr) {};","assert.equal(findSingleSum([1,2,3,4,3,2,1],4);
+assert.equal(findSingleSum([2,2,3,3,9,9,1],1);
+assert.equal(findSingleSum([2,2,3],3);
+assert.equal(findSingleSum([9,8,7,6,7,9,6],8);
+assert.equal(findSingleSum([1,0,0,5,1],5);
+assert.equal(findSingleSum([1,2,3,4,5,6,7,8,9,10,9,8,7,6,5,4,3,2,1],10);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+22,romanNum,"/*Write a function that interprets roman numeral, str, into an integer, assuming that the input str in integer form will not be larger than 3999.
+I = 1, V = 5, X = 10, L = 50, C = 100, D = 500, M = 1,000*/
+
+var romanNum = function (str) {};","assert.equal(romanNum(""LXXVII""),77);
+assert.equal(romanNum(""III""),3);
+assert.equal(romanNum(""VI""),6);
+assert.equal(romanNum(""IV""),4);
+assert.equal(romanNum(""IX""),9);
+assert.equal(romanNum(""XLIII""),43);
+assert.equal(romanNum(""MDCCC""),1800);
+assert.equal(romanNum(""MDCCXLIII""),1843);
+assert.equal(romanNum(""MCMXCVI""),1996);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+23,isAnagram,"/*Write a function that given two input strings, str1 and st2, determins if str1 is an anagram of str2, ignoring spaces and capitalization
+
+Example usage:
+isAnagram(""Hi!"", ""!iH"") => true
+isAnagram(""Hello"", ""hello"") => true*/
+
+var isAnagram = function (str1, str2) {};","assert.equal(isAnagram("""",""""),true);
+assert.equal(isAnagram(""abc"",""bac""),true);
+assert.equal(isAnagram(""Hi !"",""!ih""),true);
+assert.equal(isAnagram(""Hello"",""hello""),true);
+assert.equal(isAnagram(""Male chauvinism"",""Im such a vile man""),true);
+assert.equal(isAnagram(""bat"",""cat""),false);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
