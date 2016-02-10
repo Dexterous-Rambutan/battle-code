@@ -341,6 +341,10 @@ button:hover {
   justify-content: center;
 }
 
+.challenge-card:hover .card-content {
+  color: #8b1919;
+}
+
 .challenge-card .challenge-date {
   font-size: 12px;
   margin-top: -10px;
