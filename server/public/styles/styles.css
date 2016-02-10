@@ -298,24 +298,24 @@ button:hover {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  width: 100%;
-  padding-top: 20px;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  top: 0px;
+  width: 470px;
+  z-index: 3;
+  position: fixed;
+  max-height: 90%;
+  left: 50%;
+  margin-left: -235px;
+  top: 50px;
 }
 
 .challenge-list-container {
   width: 470px;
   padding: 25px;
-  max-height: 70%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  z-index: 3;
   position: relative;
-  top: 50px;
   background-color: #efefef;
   border-radius: 4px;
   overflow-y: auto;
@@ -371,11 +371,11 @@ button:hover {
 }
 
 .staging-exit-container {
-  position: relative;
-  top: 50px;
-  left: 235px;
+  position: absolute;
+  top: -20px;
+  right: 50%;
   z-index: 4; 
-  margin: 0 auto;
+  margin-right: -255px;
   height: 20px;
   display: flex;
   justify-content: center;
