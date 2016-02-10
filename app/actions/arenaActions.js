@@ -57,6 +57,7 @@ var getLeaderBoard = function(id) {
       dataType: 'json',
       cache: false,
       success: function (data) {
+
         dispatch({
           type: actions.GET_LEADERBOARD_SUCCESS,
           payload:data
@@ -84,6 +85,13 @@ var playerLeave = function (payload) {
   };
 };
 
+var exitSplash = function () {
+  console.log('here')
+  return {
+    type: actions.EXIT_SPLASH
+  };
+};
+
 var submitProblem = function (errors, solution_str, socket_id, problem_id, user_handle, type) {
 
   if(errors.length === 0) {
@@ -93,12 +101,6 @@ var submitProblem = function (errors, solution_str, socket_id, problem_id, user_
         type: actions.NO_SYNTAX_ERROR,
         payload: solution_str
       });
-
-      // console.log({
-      //   soln_str: solution_str,
-      //   user_handle: user_handle,
-      //   socket_id: socket_id
-      // });
       $.ajax({
         method:'POST',
         url: '/api/solutions/' + problem_id,
@@ -158,5 +160,6 @@ module.exports = {
   playerLeave: playerLeave,
   countdown: countdown,
   resetPrompt: resetPrompt,
-  getLeaderBoard: getLeaderBoard
+  getLeaderBoard: getLeaderBoard,
+  exitSplash: exitSplash
 };

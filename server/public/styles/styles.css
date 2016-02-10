@@ -85,7 +85,7 @@ body {
 
 .card-content {
   padding: 20px;
-  
+
 }
 
 button {
@@ -131,7 +131,7 @@ button:hover {
 .splash a {
   margin-top: 80px;
   color: #7f7f7f;
-  text-decoration: none; 
+  text-decoration: none;
 }
 
 .splash a:hover {
@@ -163,7 +163,7 @@ button:hover {
 
 .github-login-handle {
   width: 80px;
-  overflow: hidden; 
+  overflow: hidden;
   position: relative;
 }
 
@@ -413,7 +413,10 @@ button:hover {
   position: relative;
   z-index: 2;
 }
-
+.splash-buttons {
+  margin:5px;
+  width: 400px;
+}
 .submit-challenge {
   position: absolute;
   right: 30px;
@@ -539,4 +542,26 @@ button:hover {
   align-items: center;
   margin: 0 auto;
   text-transform: uppercase;
+}
+
+.challenge-status {
+  font-size: 50px;
+  color: #FFFFFF;
+
+}
+
+.leaderboard {
+  color: #FFFFFF;
+  font-size: 15px;
+  height: 20px;
+  width: 400px;
+  margin-top: 10px;
+}
+
+.right {
+  text-align:right;
+}
+
+.left {
+  text-align:left;
 }
