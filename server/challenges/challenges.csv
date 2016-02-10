@@ -7,30 +7,51 @@ one(2); => 1*/
 var one = function (n) {
 };","assert.equal(one(1),1);
 assert.equal(one(2),1);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
-2,Two,"/*Write a function one() that returns the value 1.
-Example usage:
-two(1); => 2
-two(2); => 2*/
+2,fizzBuzz,"/*Write a function that accepts an integer input, n, and returns ""FIZZ"" when n is divisible by 3, ""BUZZ"" when n is divisible by 5, and ""FIZZBUZZ"" when n is divisible by both 5 and 3
 
-var two = function (n) {
-};","assert.equal(two(1),2);
-assert.equal(two(2),2);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
-3,Three,"/*Write a function three() that returns the value 3.
 Example usage:
-three(1); => 3
-three(2); => 3*/
+fizzBuzz(1) => 1
+fizzBuzz(15) => ""FIZZBUZZ""
+fizzBuzz(20) => ""BUZZ"" */
 
-var three = function (n) {
-};","assert.equal(three(1),3);
-assert.equal(three(2),3);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
-4,Four,"/*Write a function four() that returns the value 4.
+var fizzBuzz = function (n) {};","assert.equal(fizzBuzz(1), 1);
+assert.equal(fizzBuzz(3), ""FIZZ"");
+assert.equal(fizzBuzz(5), ""BUZZ"");
+assert.equal(fizzBuzz(12), ""FIZZ"");
+assert.equal(fizzBuzz(30), ""FIZZBUZZ"");
+assert.equal(fizzBuzz(100), ""BUZZ"");
+assert.equal(fizzBuzz(300000), ""FIZZBUZZ"");
+assert.equal(fizzBuzz(123457), 123457);
+assert.equal(fizzBuzz(14), 14);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+3,stringReverse,"/*Write a function that reverses a string, str
+
 Example usage:
-four(1); => 4
-four(2); => 4*/
+stringReverse(""Foo bar!"") => ""!rab ooF""
+stringReverse(""Hello World"") => ""dlroW olleH""*/
 
-var four = function (n) {
-};","assert.equal(four(1),4);
-assert.equal(four(2),4);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+var stringReverse = function (str) {};","assert.equal(stringReverse(""hi""), ""ih"");
+assert.equal(stringReverse(""a""), ""a"");
+assert.equal(stringReverse(""Foo bar!""), ""!rab ooF"");
+assert.equal(stringReverse(""1234""), ""4321"");
+assert.equal(stringReverse(""stringReverse""), ""esreveRgnirts"");
+assert.equal(stringReverse(""b b b""), ""b b b"");",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+4,missingNumber,"/*Write a function that returns the missing number in an input array, arr.
+The input array will always start at 0, and all following entries are 1 larger than the previous entry, except for the missing entry.
+
+Example usage:
+missingNumber([0,1,2,4,5,6]) => 3
+missingNumber([1,2,3,4,5]) => 0
+missingNumber([1,2,3,4,5]) => null*/
+
+var missingNumber = function (arr) {};","assert.equal(missingNumber([0,2]), 1);
+assert.equal(missingNumber([0]), null);
+assert.equal(missingNumber([1,2]), 0);
+assert.equal(missingNumber([0,1,2,3,5]), 4);
+assert.equal(missingNumber([0,1,3]), 2);
+assert.equal(missingNumber([0,1,2,3]), null);
+assert.equal(missingNumber([0,1,2,3,4]), null);
+assert.equal(missingNumber([0,1,2,4]), 3);
+assert.equal(missingNumber([0,1,2,3,4,5,6,8]), 7);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
 5,nthFibonacci,"/*A Fibonacci sequence is a list of numbers that begins with 0 and 1, and each subsequent number is the sum of the previous two.
 
 For example, the first five Fibonacci numbers are: 0 1 1 2 3
@@ -83,22 +104,14 @@ assert.equal(stringSum(""82""), 10);
 assert.equal(stringSum(""010101""), 3);
 assert.equal(stringSum(""0""), 0);
 assert.equal(stringSum(""11111111111111111111""), 20);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
-8,fizzBuzz,"/*Write a function that accepts an integer input, n, and returns ""FIZZ"" when n is divisible by 3, ""BUZZ"" when n is divisible by 5, and ""FIZZBUZZ"" when n is divisible by both 5 and 3
-
+8,Two,"/*Write a function one() that returns the value 1.
 Example usage:
-fizzBuzz(1) => 1
-fizzBuzz(15) => ""FIZZBUZZ""
-fizzBuzz(15) => ""FIZZBUZZ"" */
+two(1); => 2
+two(2); => 2*/
 
-var fizzBuzz = function (n) {};","assert.equal(fizzBuzz(1), 1);
-assert.equal(fizzBuzz(3), ""FIZZ"");
-assert.equal(fizzBuzz(5), ""BUZZ"");
-assert.equal(fizzBuzz(12), ""FIZZ"");
-assert.equal(fizzBuzz(30), ""FIZZBUZZ"");
-assert.equal(fizzBuzz(100), ""BUZZ"");
-assert.equal(fizzBuzz(300000), ""FIZZBUZZ"");
-assert.equal(fizzBuzz(123457), 123457);
-assert.equal(fizzBuzz(14), 14);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+var two = function (n) {
+};","assert.equal(two(1),2);
+assert.equal(two(2),2);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
 9,isPrime,"/*Write a function that check to see if an input integer, n, is a prime number. Assume positive non-zero inputs
 
 Example usage:
@@ -158,18 +171,14 @@ assert.equal(maxProfit([3,10,1,5]), 7);
 assert.equal(maxProfit([7,4,7,8,0,1,3]), 3);
 assert.equal(maxProfit([1,10,1,10]), 9);
 assert.equal(maxProfit([1,100]), 99);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
-13,stringReverse,"/*Write a function that reverses a string, str
-
+13,Three,"/*Write a function three() that returns the value 3.
 Example usage:
-stringReverse(""Foo bar!"") => ""!rab ooF""
-stringReverse(""Hello World"") => ""dlroW olleH""*/
+three(1); => 3
+three(2); => 3*/
 
-var stringReverse = function (str) {};","assert.equal(stringReverse(""hi""), ""ih"");
-assert.equal(stringReverse(""a""), ""a"");
-assert.equal(stringReverse(""Foo bar!""), ""!rab ooF"");
-assert.equal(stringReverse(""1234""), ""4321"");
-assert.equal(stringReverse(""stringReverse""), ""esreveRgnirts"");
-assert.equal(stringReverse(""b b b""), ""b b b"");",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+var three = function (n) {
+};","assert.equal(three(1),3);
+assert.equal(three(2),3);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
 14,isPalindrome,"/*Write a function that determines if an input string, str, is a palindrome
 
 Example usage:
@@ -183,23 +192,14 @@ assert.equal(isPalindrome(""""), true);
 assert.equal(isPalindrome(""Hannah""), false);
 assert.equal(isPalindrome(""hahaha""), false);
 assert.equal(isPalindrome(""oh no""), false);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
-15,missingNumber,"/*Write a function that returns the missing number in an input array, arr.
-The input array will always start at 0, and all following entries are 1 larger than the previous entry, except for the missing entry.
-
+15,Four,"/*Write a function four() that returns the value 4.
 Example usage:
-missingNumber([0,1,2,4,5,6]) => 3
-missingNumber([1,2,3,4,5]) => 0
-missingNumber([1,2,3,4,5]) => null*/
+four(1); => 4
+four(2); => 4*/
 
-var missingNumber = function (arr) {};","assert.equal(missingNumber([0,2]), 1);
-assert.equal(missingNumber([0]), null);
-assert.equal(missingNumber([1,2]), 0);
-assert.equal(missingNumber([0,1,2,3,5]), 4);
-assert.equal(missingNumber([0,1,3]), 2);
-assert.equal(missingNumber([0,1,2,3]), null);
-assert.equal(missingNumber([0,1,2,3,4]), null);
-assert.equal(missingNumber([0,1,2,4]), 3);
-assert.equal(missingNumber([0,1,2,3,4,5,6,8]), 7);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+var four = function (n) {
+};","assert.equal(four(1),4);
+assert.equal(four(2),4);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
 16,moveZeros,"/*Write a function that moves all zeros in an input array, arr, to the end of the array, while maintaining the relative order of the non-zero elements.
 Move the numbers in-place without making a copy of the input array
 
