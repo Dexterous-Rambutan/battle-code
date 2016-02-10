@@ -44,6 +44,8 @@ module.exports = {
     DELAY_START: 'DELAY_START',
     COUNTDOWN: 'COUNTDOWN',
     RESET_PROMPT: 'RESET_PROMPT',
+    EXIT_SPLASH: 'EXIT_SPLASH',
+
 
 
     //Arena - Sockets
