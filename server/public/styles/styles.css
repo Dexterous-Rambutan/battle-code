@@ -138,6 +138,10 @@ button:hover {
   color: #8b1919;
 }
 
+.splash a:hover .card {
+  border-right: 10px solid #8b1919
+}
+
 .splash-logo {
   width: 100%;
 }
@@ -152,7 +156,7 @@ button:hover {
 
 .github-login {
   background-color: #ffffff;
-  width: 450px;
+  width: 360px;
   height: 80px;
   margin: 0px 0px;
   display: flex;
@@ -179,6 +183,9 @@ button:hover {
 .github-login .card-content {
   font-size: 24px;
   text-transform: uppercase;
+  width: 270px;
+  display: flex;
+  justify-content: center;
 }
 
 /* Navigation bar */
@@ -348,7 +355,7 @@ button:hover {
   right: 80px;
 }
 
-.card-clickable .card-content {
+.challenge-card .card-content {
   width: 310px;
   display: flex;
   flex-direction: column;
