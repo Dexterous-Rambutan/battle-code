@@ -51,10 +51,9 @@ var Profile = React.createClass({
           <div className="match-profile-card card card-clickable profile-offset-card">
             <div className="match-profile-card-handle"><img className="opponent-profile-image" src={match.opponent_avatar} /></div>
             {match.win ? <div className="match-result match-won">W</div>: <div className="match-result match-lost">L</div>}
-            <div className="match-detail-info">
-              <div>{date} vs. <span style={{'font-weight': 'bold'}}>{opponent}</span></div>
-              <div className="challenge-title">{match.challenge_name}</div>
-            </div>
+            <div className="match-detail-opponent">{opponent}</div>
+            <div className="match-detail-challenge-title">{match.challenge_name}</div>
+            <div className="match-detail-date">{date}</div>
           </div>
         </a>
       )
@@ -95,6 +94,9 @@ var Profile = React.createClass({
             {/*listOfProblems*/}
             <div className="profile-match-grid">
               {matchHistory}
+              {this.props.user.user_match_history % 2 !== 0 ?
+                <div className="match-profile-card-blank"></div>
+              : null}
             </div>
 
           </div>
