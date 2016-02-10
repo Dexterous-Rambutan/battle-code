@@ -142,32 +142,32 @@ module.exports = {
 
   resetWithData: function () {
     return Challenge.forge({
-      name: "Test function one",
+      name: "One",
       prompt: "/*Write a function one() that returns the value 1.\n\nExample usage: \none(1); \/\/ => 1\none(2); \/\/ => 1*/\n\nvar one = function (n) {\n  \n};",
       test_suite: "assert.equal(one(1),1);\nassert.equal(one(2),1);",
       type:'battle'
     }).save()
     .then(function () {
       return Challenge.forge({
-        name: "Test function two",
-        prompt: "/*Write a function two() that returns the value 2.\n\nExample usage: \ntwo(1); \/\/ => 2\ntwo(2); \/\/ => 2*/\n\nvar two = function (n) {\n  \n};",
-        test_suite: "assert.equal(two(1),2);\nassert.equal(two(2),2);",
+        name: "FizzBuzz",
+        prompt: "/*Write a function that accepts an integer input, n, and returns \"FIZZ\" when n is divisible by 3, \"BUZZ\" when n is divisible by 5, and \"FIZZBUZZ\" when n is divisible by both 5 and 3\n\nExample usage:\n\nfizzBuzz(1) => 1\nfizzBuzz(15) => \"FIZZBUZZ\"\nfizzBuzz(20) => \"BUZZ\" */\n\nvar fizzBuzz = function (n) {};",
+        test_suite: "assert.equal(fizzBuzz(1), 1);\nassert.equal(fizzBuzz(3), \"FIZZ\");\nassert.equal(fizzBuzz(5), \"BUZZ\");\nassert.equal(fizzBuzz(12), \"FIZZ\");\nassert.equal(fizzBuzz(30), \"FIZZBUZZ\");\nassert.equal(fizzBuzz(100), \"BUZZ\");\nassert.equal(fizzBuzz(300000), \"FIZZBUZZ\");\nassert.equal(fizzBuzz(123457), 123457);\nassert.equal(fizzBuzz(14), 14);",
         type:'battle'
       }).save();
     })
     .then(function () {
       return Challenge.forge({
-        name: "Test function three",
-        prompt: "/*Write a function three() that returns the value 3.\n\nExample usage: \nthree(1); \/\/ => 3\nthree(2); \/\/ => 3*/\n\nvar three = function (n) {\n  \n};",
-        test_suite: "assert.equal(three(1),3);\nassert.equal(three(2),3);",
+        name: "stringReverse",
+        prompt: "/*Write a function that reverses a string, str\n\nExample usage:\nstringReverse(\"Foo bar!\") => \"!rab ooF\"\nstringReverse(\"Hello World\") => \"dlroW olleH\"*/\n\nvar stringReverse = function (str) {};",
+        test_suite: "assert.equal(stringReverse(\"hi\"), \"ih\");\nassert.equal(stringReverse(\"a\"), \"a\");\nassert.equal(stringReverse(\"Foo bar!\"), \"!rab ooF\");\nassert.equal(stringReverse(\"1234\"), \"4321\");\nassert.equal(stringReverse(\"stringReverse\"), \"esreveRgnirts\");\nassert.equal(stringReverse(\"b b b\"), \"b b b\");",
         type:'battle'
       }).save();
     })
     .then(function () {
       return Challenge.forge({
-        name: "Test function four",
-        prompt: "/*Write a function four() that returns the value 4.\n\nExample usage: \nfour(1); \/\/ => 4\nfour(2); \/\/ => 4*/\n\nvar four = function (n) {\n  \n};",
-        test_suite: "assert.equal(four(1),4);\nassert.equal(four(2),4);",
+        name: "missingNumber",
+        prompt: "/*Write a function that returns the missing number in an input array, arr.\nThe input array will always start at 0, and all following entries are 1 larger than the previous entry, except for the missing entry.\n\nExample usage:\nmissingNumber([0,1,2,4,5,6]) => 3\nmissingNumber([1,2,3,4,5]) => 0\nmissingNumber([1,2,3,4,5]) => null*/\n\nvar missingNumber = function (arr) {};",
+        test_suite: "assert.equal(missingNumber([0,2]), 1);\nassert.equal(missingNumber([0]), null);\nassert.equal(missingNumber([1,2]), 0);\nassert.equal(missingNumber([0,1,2,3,5]), 4);\nassert.equal(missingNumber([0,1,3]), 2);\nassert.equal(missingNumber([0,1,2,3]), null);\nassert.equal(missingNumber([0,1,2,3,4]), null);\nassert.equal(missingNumber([0,1,2,4]), 3);\nassert.equal(missingNumber([0,1,2,3,4,5,6,8]), 7);",
         type:'battle'
       }).save();
     })
