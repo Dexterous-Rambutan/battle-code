@@ -18,7 +18,7 @@ body {
 
 .content {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1440px;
   height: 100%;
   margin: 0 auto;
   background-color: #efefef;
@@ -197,7 +197,7 @@ button:hover {
 
 .nav-content {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1440px;
   padding: 0 25px;
   display: flex;
   justify-content: space-between;
@@ -441,14 +441,14 @@ button:hover {
 }
 
 .player-card {
-  width: 400px;
-  height: 100px;
+  width: 300px;
+  height: 75px;
   margin: 10px;
   display: flex;
 }
 
 .player-card-handle {
-  width: 100px;
+  width: 75px;
   background-color: #3f3f3f;
   color: #ffffff;
   font-size: 30px;
@@ -457,14 +457,14 @@ button:hover {
 }
 
 .player-card-handle img {
-  height: 100px;
+  height: 75px;
 }
 
 .player-card .card-content {
-  width: 300px;
+  width: 225px;
   display: flex;
   align-items: center;
-  font-size: 30px
+  font-size: 24px
 }
 
 .user-card {
@@ -488,14 +488,14 @@ button:hover {
 }
 
 .countdown-card {
-  font-size: 30px;
+  font-size: 16px;
   padding: 15px;
-  width: 400px;
-  height: px;
+  width: 300px;
   background-color: #8b1919;
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
+  text-transform: uppercase;
 }

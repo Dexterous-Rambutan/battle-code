@@ -42,23 +42,21 @@ var Profile = React.createClass({
       var opponent = match.opponent_github_handle;
       var opponentURL = "http://github.com/" + opponent;
       var date = match.created_at;
-      date = moment(date).format("MMM Do");
+      date = moment(date).format("l");
       var linkToProblem = function(){
         this.props.navActions.navSoloArena(match);
       }.bind(this);
       return (
-        <div className="match-card-container">
-          <a href={opponentURL} target="_blank" className="match-profile-card">
-            <div className="challenge-card card card-clickable profile-offset-card">
-              <div className="challenge-card-handle"><img className="opponent-profile-image" src={match.opponent_avatar} /></div>
-              {match.win ? <div className="match-result match-won">W</div>: <div className="match-result match-lost">L</div>}
-              <div className="match-detail-info">
-                <div>{date} vs. {opponent}</div>
-                <div className="challenge-title">{match.challenge_name}</div>
-              </div>
+        <a href={opponentURL} target="_blank" className="match-profile-card">
+          <div className="match-profile-card card card-clickable profile-offset-card">
+            <div className="match-profile-card-handle"><img className="opponent-profile-image" src={match.opponent_avatar} /></div>
+            {match.win ? <div className="match-result match-won">W</div>: <div className="match-result match-lost">L</div>}
+            <div className="match-detail-info">
+              <div>{date} vs. <span style={{'font-weight': 'bold'}}>{opponent}</span></div>
+              <div className="challenge-title">{match.challenge_name}</div>
             </div>
-          </a>
-        </div>
+          </div>
+        </a>
       )
     }.bind(this));
 
@@ -89,10 +87,8 @@ var Profile = React.createClass({
                 Wins: {wins} &nbsp;
                 Losses: {loss}
               </div>
-
             </div>
           </div>
-
 
           <div className="profile-matches card">
             <h2 className="content-header match-grid-header">MATCH HISTORY</h2>
