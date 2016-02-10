@@ -11,6 +11,10 @@ var Profile = React.createClass({
       loss += matchHistory[i].win ? 0 : 1;
     }
     console.log('Wins:', wins, 'Losses:', loss);
+    var options = {
+      animationSteps:40,
+      animationEasing: "easeOutBack"
+    };
     var ctx = document.getElementById("myChart").getContext("2d");
     var data = [{
       value: wins,
@@ -23,7 +27,7 @@ var Profile = React.createClass({
       highlight: "rgba(128,0,0,1)",
       label: "Losses"
     }];
-    var myPieChart = new Chart(ctx).Pie(data);
+    var myPieChart = new Chart(ctx).Pie(data,options);
   },
 
   render: function() {
@@ -43,16 +47,18 @@ var Profile = React.createClass({
         this.props.navActions.navSoloArena(match);
       }.bind(this);
       return (
-        <a href={opponentURL} className="match-profile-card">
-        <div className="challenge-card card card-clickable profile-offset-card">
-          <div className="challenge-card-handle"><img className="opponent-profile-image" src={match.opponent_avatar} /></div>
-          {match.win ? <div className="match-result match-won">W</div>: <div className="match-result match-lost">L</div>}
-          <div className="match-detail-info">
-            <div>{date} vs. {opponent}</div>
-            <div className="challenge-title">{match.challenge_name}</div>
-          </div>
+        <div className="match-card-container">
+          <a href={opponentURL} target="_blank" className="match-profile-card">
+            <div className="challenge-card card card-clickable profile-offset-card">
+              <div className="challenge-card-handle"><img className="opponent-profile-image" src={match.opponent_avatar} /></div>
+              {match.win ? <div className="match-result match-won">W</div>: <div className="match-result match-lost">L</div>}
+              <div className="match-detail-info">
+                <div>{date} vs. {opponent}</div>
+                <div className="challenge-title">{match.challenge_name}</div>
+              </div>
+            </div>
+          </a>
         </div>
-        </a>
       )
     }.bind(this));
 
