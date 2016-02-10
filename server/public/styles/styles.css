@@ -309,13 +309,13 @@ button:hover {
 .challenge-list-container {
   width: 470px;
   padding: 25px;
-  max-height: 70%;
+  max-height: 600px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   z-index: 3;
   position: relative;
-  top: 50px;
+  top: 30px;
   background-color: #efefef;
   border-radius: 4px;
   overflow-y: auto;
@@ -371,11 +371,11 @@ button:hover {
 }
 
 .staging-exit-container {
-  position: relative;
-  top: 50px;
-  left: 235px;
+  position: absolute;
+  top: 30px;
+  right: 50%;
   z-index: 4; 
-  margin: 0 auto;
+  margin-right: -255px;
   height: 20px;
   display: flex;
   justify-content: center;

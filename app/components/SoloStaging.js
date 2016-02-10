@@ -29,7 +29,7 @@ var SoloStaging = React.createClass({
             listOfProblems.length > 0 ? 
             <div className="challenge-list">
               <div className="staging-exit-container">
-              <button className="staging-exit" onClick={this.props.navActions.navStaging}>X</button>
+                <button className="staging-exit" onClick={this.props.navActions.navStaging}>X</button>
               </div>
               <div className="challenge-list-container">
                 {listOfProblems}
