@@ -84,6 +84,7 @@ var ChallengeArena = React.createClass({
             {submissionMessage}
           </div>
           {this.props.arena.opponentStatus === 'Player has joined. Challenge starting soon...' ? <div className="backdrop"><DelaySplash {...this.props}/></div>: null}
+          {this.props.arena.submitted ? <div className="backdrop"><Leaderboard {...this.props}/></div>: null}
         </div>
       </div>
     )

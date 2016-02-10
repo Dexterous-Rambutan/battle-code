@@ -57,7 +57,6 @@ socket.on('eval', function (submissionMessage) {
   }
   console.log(submissionMessage.challenge_id  )
   store.dispatch(arenaAction.handleSubmissionResponse(submissionMessage, submissionMessage.challenge_id));
-  store.dispatch(arenaAction.getLeaderBoard(submissionMessage.challenge_id));
 });
 
 socket.on('won', function (data) {
