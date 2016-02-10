@@ -305,6 +305,7 @@ button:hover {
   width: 840px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .challenge-card {
@@ -348,6 +349,12 @@ button:hover {
 .challenge-card .challenge-date {
   font-size: 12px;
   margin-top: -10px;
+}
+
+.challenge-card-blank {
+  width: 400px;
+  height: 80px;
+  margin: 10px;
 }
 
 /* Arena */
