@@ -52,7 +52,6 @@
 }
 
 .basic-info {
-  display: flex;
   width: 230px;
   height: 290px;
 }
@@ -73,10 +72,10 @@
 
 .profile-github {
   margin-left: 10px;
+  margin-bottom: 10px;
 }
 
 .match-stats {
-  display: flex;
   flex-direction: column;
   justify-content: center;
   clear: right;
@@ -182,4 +181,10 @@ div.match-profile-card:hover {
 .profile-offset-card {
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 2px 5px rgba(0,0,0,0.24);
   margin: 0;
+}
+
+canvas{
+  width: 80% !important;
+  max-width: 800px;
+  height: auto !important;
 }
