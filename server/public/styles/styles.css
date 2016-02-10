@@ -129,6 +129,7 @@ button:hover {
 }
 
 .splash a {
+  margin-top: 80px;
   color: #7f7f7f;
   text-decoration: none; 
 }
@@ -153,12 +154,11 @@ button:hover {
   background-color: #ffffff;
   width: 450px;
   height: 80px;
-  margin: 0px 20px;
+  margin: 0px 0px;
   display: flex;
   flex-direction: row;
   align-items: center;
   position: relative;
-  margin-top: 80px;
 }
 
 .github-login-handle {
@@ -237,6 +237,8 @@ button:hover {
   align-self: center;
 }
 
+
+
 .mode {
   background-color: #ffffff;
   width: 300px;
@@ -294,17 +296,29 @@ button:hover {
 /* Solo staging */
 .challenge-list {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   width: 100%;
   padding-top: 20px;
   justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0px;
 }
 
 .challenge-list-container {
-  width: 840px;
+  width: 470px;
+  padding: 25px;
+  max-height: 70%;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  z-index: 3;
+  position: relative;
+  top: 50px;
+  background-color: #efefef;
+  border-radius: 4px;
+  overflow-y: auto;
 }
 
 .challenge-card {
@@ -348,6 +362,33 @@ button:hover {
 .challenge-card .challenge-date {
   font-size: 12px;
   margin-top: -10px;
+}
+
+.challenge-card-blank {
+  width: 400px;
+  height: 80px;
+  margin: 10px;
+}
+
+.staging-exit-container {
+  position: relative;
+  top: 50px;
+  left: 235px;
+  z-index: 4; 
+  margin: 0 auto;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.staging-exit {
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  font-weight: bolder;
+  background-color: rgb(180,180,180);
+  position: relative;
+  z-index: 3;
 }
 
 /* Arena */
