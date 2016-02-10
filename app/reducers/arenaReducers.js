@@ -10,6 +10,7 @@ var initial = {
   prompt: '',
   content: "",
   status: '',
+  spinner: false,
   delay: 5,
   opponent_info: {},
   submissionMessage: "Nothing passing so far...(From initial arena reducer)",
@@ -50,17 +51,18 @@ function arenaReducer (state, action){
     case actions.SUBMIT_PROBLEM_WRONG:
       return _.extend({}, state, {
         submissionMessage: action.payload.message,
-        stdout: action.payload.stdout
+        stdout: action.payload.stdout,
+        spinner: false
       });
     case actions.GET_LEADERBOARD_SUCCESS:
-    console.log(action.payload)
       return _.extend({}, state, {
         leaderBoard: action.payload
       });
     case actions.SUBMIT_PROBLEM_SUCCESS:
       return _.extend({}, state, {
         submissionMessage: "Solution passed all tests!",
-        stdout: action.payload.stdout
+        stdout: action.payload.stdout,
+        spinner: false
       });
     case actions.STORE_EDITOR:
       return _.extend({}, state, {
@@ -83,6 +85,7 @@ function arenaReducer (state, action){
         content: action.payload,
         syntaxMessage: '',
         errors: [],
+        spinner: true,
         submissionMessage: "Nothing passing so far...(From initial arena reducer)"
       });
     case actions.STORE_SOLO_PROBLEM:

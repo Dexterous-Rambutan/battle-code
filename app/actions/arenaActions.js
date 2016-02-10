@@ -88,17 +88,10 @@ var submitProblem = function (errors, solution_str, socket_id, problem_id, user_
 
   if(errors.length === 0) {
     return function (dispatch) {
-
       dispatch({
         type: actions.NO_SYNTAX_ERROR,
         payload: solution_str
       });
-
-      // console.log({
-      //   soln_str: solution_str,
-      //   user_handle: user_handle,
-      //   socket_id: socket_id
-      // });
       $.ajax({
         method:'POST',
         url: '/api/solutions/' + problem_id,
