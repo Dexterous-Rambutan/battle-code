@@ -23,27 +23,22 @@ var SoloStaging = React.createClass({
     }.bind(this));
 
     return (
-      <div className="content">
-        <div className="content-header card">
-          <div className="content-header-handle">
-            <img src="/img/training.png" />
-          </div>
-          <div className="card-content">
-            <h2>Practice Problem Archive</h2>
-          </div>
-        </div>
+      <div>
+        <div className="overlay" onClick={this.props.navActions.navStaging}></div>
           {
             listOfProblems.length > 0 ? 
             <div className="challenge-list">
+              <div className="staging-exit-container">
+              <button className="staging-exit" onClick={this.props.navActions.navStaging}>X</button>
+              </div>
               <div className="challenge-list-container">
                 {listOfProblems}
-                {listOfProblems.length % 2 === 1 ? <div className="challenge-card-blank"></div> : null}
               </div>
             </div> : 
             <div>
               Sorry, you do not have any problems to practice on. Please play challenge or pair mode to unlock more problems.
             </div>
-            }
+          }
       </div>
     )
   }

@@ -75,6 +75,7 @@ var App = React.createClass({
             return (
               <div>
                 <components.NavBar {...this.props}/>
+                <components.Staging {...this.props}/>
                 <components.SoloStaging {...this.props}/>
               </div>
             );
