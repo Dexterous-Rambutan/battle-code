@@ -6,8 +6,8 @@ var Nav = React.createClass({
   },
 
   render: function () {
-    var showNav = (this.props.user.isLoggedIn && (this.props.view !== 'CHALLENGE_ARENA' && this.props.view !== 'PAIR_ARENA'));
-    var showLeave = (this.props.user.isLoggedIn && (this.props.view === 'CHALLENGE_ARENA' || this.props.view === 'PAIR_ARENA'));
+    var showNav = (this.props.user.isLoggedIn && (this.props.view !== 'CHALLENGE_ARENA' && this.props.view !== 'SOLO_ARENA'));
+    var showLeave = (this.props.user.isLoggedIn && (this.props.view === 'CHALLENGE_ARENA' || this.props.view === 'SOLO_ARENA'));
     return (
       <div className="nav-bar">
         <div className="nav-content">
