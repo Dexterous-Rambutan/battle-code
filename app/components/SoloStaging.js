@@ -2,6 +2,24 @@ var React = require('react');
 
 var SoloStaging = React.createClass({
   render: function () {
+    var formatDate = function (date) {
+      var d = new Date(date);
+      var output = '';
+
+      output += d.getMonth() + '/';
+      output += d.getDate() + '/';
+      if (d.getYear() >= 100) {
+        output += (d.getYear() - 100);
+      } else {
+        output += d.getYear();
+      }
+      output += ' ';
+      output += (d.getHours() < 10 ? ('0' + d.getHours()) : d.getHours());
+      output += ':';
+      output += (d.getMinutes() < 10 ? ('0' + d.getMinutes()) : d.getMinutes());
+      return output;
+    }
+
     var listOfProblems = this.props.user.user_problems.map(function (problem) {
       var linkToProblem = function(){
         this.props.navActions.navSoloArena(problem);
@@ -9,10 +27,13 @@ var SoloStaging = React.createClass({
       return (
         <div className="card card-clickable challenge-card" onClick={linkToProblem}>
           <div className="challenge-card-handle">
-            {problem.challenge_id}
+            <img src="/img/training.png" />
           </div>
           <div className="card-content">
-            {problem.valid ? 'Completed:' : 'Attempted:'} - {problem.end_time}
+            {problem.challenge_name}
+            <br />
+            <span className="challenge-date">Seen: {formatDate(problem.start_time)}</span>
+            
           </div>
         </div>
       )
