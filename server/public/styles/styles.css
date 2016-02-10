@@ -18,7 +18,7 @@ body {
 
 .content {
   width: 100%;
-  max-width: 1080px;
+  max-width: 1200px;
   height: 100%;
   margin: 0 auto;
   background-color: #efefef;
@@ -85,41 +85,37 @@ body {
 
 .card-content {
   padding: 20px;
+  
+}
+
+button {
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.24);
+  transition: all 0.2s ease-in-out;
+  border: 0px;
+}
+
+button:hover {
+  box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 5px 10px rgba(0,0,0,0.23);
+  transition: all 0.2s ease-in-out;
 }
 
 .submit {
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
   background-color: #8b1919;
   color: #ffffff;
-  border: 0px;
-  padding: 10px;
-  cursor: pointer;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.24);
-  transition: all 0.2s ease-in-out;
-}
+  font-weight: 700;
 
-.submit:hover {
-  box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 5px 10px rgba(0,0,0,0.23);
-  transition: all 0.2s ease-in-out;
 }
 
 .reset {
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
-  background-color: #8b1919;
+  background-color: #555555;
   color: #ffffff;
-  border: 0px;
-  padding: 10px;
-  cursor: pointer;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.24);
-  transition: all 0.2s ease-in-out;
+  font-weight: 700;
 }
 
-.reset:hover {
-  box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 5px 10px rgba(0,0,0,0.23);
-  transition: all 0.2s ease-in-out;
-}
 
 /* Splash page */
 .splash {
@@ -201,7 +197,7 @@ body {
 
 .nav-content {
   width: 100%;
-  max-width: 1080px;
+  max-width: 1200px;
   padding: 0 25px;
   display: flex;
   justify-content: space-between;
@@ -324,20 +320,34 @@ body {
 
 .challenge-card-handle {
   width: 80px;
-  background-color: #3f3f3f;
   color: #ffffff;
   font-size: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: hidden;
 }
 
-.challenge-card:hover .challenge-card-handle {
-  background-color: #8b1919;
+.challenge-card-handle img {
+  height: 80px;
+  position: relative;
+}
+
+.challenge-card:hover .challenge-card-handle img {
+  right: 80px;
 }
 
 .card-clickable .card-content {
   width: 310px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.challenge-card:hover .card-content {
+  color: #8b1919;
+}
+
+.challenge-card .challenge-date {
+  font-size: 12px;
+  margin-top: -10px;
 }
 
 /* Arena */
