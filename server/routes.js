@@ -24,7 +24,7 @@ module.exports = function (app, redisClient) {
       req.body.github_avatar_url = req.session.passport.user._json.avatar_url;
       req.body.github_profile_url = req.session.passport.user.profileUrl;
       req.body.elo_rating = 1000;
-      req.body.email = req.session.passport.user.emails[0].value;
+      req.body.email = req.session.passport.user.emails ? req.session.passport.user.emails[0].value : '';
       userController.addUser(req);
 
       // Once complete, redirect to home page

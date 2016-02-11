@@ -317,12 +317,12 @@ findSingleSum([9,9,5,5,1]) => 1*/
 
 var findSingleSum = function (arr) {
   
-};","assert.equal(findSingleSum([1,2,3,4,3,2,1],4);
-assert.equal(findSingleSum([2,2,3,3,9,9,1],1);
-assert.equal(findSingleSum([2,2,3],3);
-assert.equal(findSingleSum([9,8,7,6,7,9,6],8);
-assert.equal(findSingleSum([1,0,0,5,1],5);
-assert.equal(findSingleSum([1,2,3,4,5,6,7,8,9,10,9,8,7,6,5,4,3,2,1],10);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
+};","assert.equal(findSingleSum([1,2,3,4,3,2,1],4));
+assert.equal(findSingleSum([2,2,3,3,9,9,1],1));
+assert.equal(findSingleSum([2,2,3],3));
+assert.equal(findSingleSum([9,8,7,6,7,9,6],8));
+assert.equal(findSingleSum([1,0,0,5,1],5));
+assert.equal(findSingleSum([1,2,3,4,5,6,7,8,9,10,9,8,7,6,5,4,3,2,1],10));",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
 22,romanNum,"/*Write a function that interprets roman numeral, str, into an integer, assuming that the input str in integer form will not be larger than 3999.
 I = 1, V = 5, X = 10, L = 50, C = 100, D = 500, M = 1,000*/
 
