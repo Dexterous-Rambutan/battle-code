@@ -34,6 +34,16 @@ var ChallengeArena = React.createClass({
     var editor = ace.edit('editor');
     editor.setOptions(selfEditorOptions);
     editor.$blockScrolling = Infinity;
+
+    // Key binding to enable Command-Enter or Ctrl-Enter to submit problem
+    editor.commands.addCommand({
+      name: "replace",
+      bindKey: {win: "Ctrl-Enter", mac: "Command-Enter"},
+      exec: function(editor) {
+        this.submitProblem();
+      }.bind(this)
+    });
+    
     this.props.arenaActions.storeEditor(editor);
 
     //setting up opponnent editor
