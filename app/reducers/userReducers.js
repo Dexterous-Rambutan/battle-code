@@ -11,6 +11,7 @@ var initial = {
   github_profile_url: '',
   github_avatar_url: '',
   user_problems: [],
+  elo_rating: '',
   user_match_history: []
 };
 
@@ -40,6 +41,10 @@ function userReducer (state, action){
     case actions.STORE_MATCH_HISTORY:
       return _.extend({}, state, {
         user_match_history: action.payload
+      });
+    case actions.GET_ELO:
+      return _.extend({}, state, {
+        elo_rating: action.payload
       });
     default:
       return state;

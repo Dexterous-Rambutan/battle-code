@@ -18,6 +18,17 @@ userController.getUserById = function ( req, res ) {
   });
 };
 
+userController.getEloByUser = function (req, res) {
+
+  var github_handle = req.params.githubHandle;
+  new User ({github_handle: github_handle}).fetch()
+  .then(function(user){
+    res.status(200).json(user.get('elo_rating'));
+  })
+  .catch(function(err){
+    res.status(500).json({error: true, data: {message: err.message}});
+  });
+};
 // retrieve user object if it exists
 // otherwise ask DB to create user
 userController.addUser = function ( req, res ) {

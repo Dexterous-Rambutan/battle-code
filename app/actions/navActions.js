@@ -55,6 +55,26 @@ var updateMatchHistory = function (dispatch, github_handle, action) {
   });
 };
 
+var getElo = function (dispatch, github_handle, action) {
+  $.ajax({
+    method: 'GET',
+    dataType: 'json',
+    url:'/api/users/' + github_handle + '/elo',
+    success: function (data) {
+      console.log('data', data)
+      dispatch({
+        type: action,
+        payload: data
+      });
+    },
+    error: function (err) {
+      dispatch({
+        type: action
+      });
+    }
+  });
+};
+
 var navSoloStaging = function (github_handle) {
   return function (dispatch) {
     updateChallenges(dispatch, github_handle, actions.NAV_SOLO_STAGING);
@@ -145,6 +165,7 @@ var navProfile = function (github_handle) {
   return function (dispatch) {
     updateChallenges(dispatch, github_handle, actions.NAV_PROFILE);
     updateMatchHistory(dispatch, github_handle, actions.NAV_PROFILE);
+    getElo(dispatch, github_handle, actions.GET_ELO);
   };
 };
 
@@ -157,5 +178,6 @@ module.exports = {
   navChallengeArena: navChallengeArena,
   navAwayFromArena: navAwayFromArena,
   navProfile: navProfile,
-  spoofSolo: spoofSolo
+  spoofSolo: spoofSolo,
+  getElo: getElo
 };

@@ -47,6 +47,7 @@ module.exports = function (app, redisClient) {
   });
 
   app.get('/api/users/:githubHandle', userController.getUserById);
+  app.get('/api/users/:githubHandle/elo', userController.getEloByUser);
   app.get('/api/users/:githubHandle/matches', matchController.getAllByUser);
 
   // Used by solo/practice mode
@@ -58,7 +59,7 @@ module.exports = function (app, redisClient) {
   app.post('/api/solutions/:challengeId', function (req, res) {
     solutionController.testSolution(req, res, redisClient);
   });
-  
+
   // Add user to the db, require admin privilige. Normal users go through /auth/login
   app.post('/api/users', adminPrivilege, userController.addUser);
 
