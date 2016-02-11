@@ -14,9 +14,9 @@ ADD ./server/users/userModel.js /worker/users/userModel.js
 ADD ./server/helpers/dbConfig.js /worker/helpers/dbConfig.js
 
 # TODO: RUN `npm install`
-# RUN npm install
+RUN npm install forever -g
 
 # EXPOSE 3000 
 # This command allows us to access the web server port from outside the container
 
-CMD ["node", "solutionTester.js"] # `package.json` already provides this command
+CMD ["forever", "solutionTester.js"] # `package.json` already provides this command
