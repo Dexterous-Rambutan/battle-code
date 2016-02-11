@@ -35,9 +35,9 @@
   background-color: #efefef;
   top: 50px;
   left: 50%;
-  width: 86%;
-  height: 90%;
-  margin-left: -43%;
+  width: 1000px;
+  margin-left: -500px;
+  height: 700px;
 }
 
 .profile-top-row {
@@ -52,12 +52,12 @@
 }
 
 .basic-info {
-  width: 230px;
-  height: 290px;
+  width: 200px;
+  height: 260px;
 }
 
 .profile-img img{
-  width: 230px;
+  width: 200px;
   border-radius: 5px;
 }
 
@@ -75,12 +75,17 @@
   margin-bottom: 10px;
 }
 
+.profile-github a {
+  text-decoration: none;
+  color: #8b1919;
+}
+
 .match-stats {
   flex-direction: column;
   justify-content: center;
   clear: right;
-  height: 300px;
-  width: 230px;
+  height: 250px;
+  width: 200px;
 }
 
 .win-loss-record {
@@ -92,16 +97,31 @@
   font-size: 1.2em;
 }
 
+.elo-rating {
+  padding: 10px;
+}
+
+.elo-rating h2 {
+  font-size: 20px;
+  margin-top: -10px;
+  font-size: 1em;
+  font-weight: 300;
+}
+
+.elo-rating-content {
+  text-align: center;
+  font-size: 50px;
+  color: #8b1919;
+}
+
 .profile-matches {
   margin: 10px;
-  width: 100%
 }
 
 .match-grid-header {
   margin: 20px 30px 5px 30px;
   font-size: 1.5em;
   font-weight: 300;
-  width : 100%;
 }
 
 .profile-match-grid{
@@ -110,12 +130,11 @@
   flex-direction: row;
   justify-content: center;
   align-content: flex-start;
-  height: 80%;
   overflow-y: auto;
 }
 
 .opponent-profile-image {
-  height: 60px;
+  height: 75px;
 }
 
 .match-result {
@@ -125,7 +144,7 @@
   flex-direction: column;
   font-size: 2em;
   font-weight: 600;
-  width: 60px;
+  width: 75px;
 }
 
 .match-won {
@@ -137,12 +156,12 @@
 }
 
 .match-detail-opponent {
-  width: 170px;
+  width: 250px;
 }
 
 .match-detail-challenge-title {
   font-size: 12px;
-  width: 130px;
+  width: 160px;
 }
 
 .match-detail-date {
@@ -162,15 +181,15 @@
   margin: 10px;
   text-decoration: none;
   color: rgb(127, 127, 127);
-  width: 500px;
-  height: 60px;
+  width: 650px;
+  height: 75px;
   display: flex;
   align-items: center;
 }
 
 .match-profile-card-blank {
   width: 500px;
-  height: 60px;
+  height: 75px;
   margin: 10px;
 }
 

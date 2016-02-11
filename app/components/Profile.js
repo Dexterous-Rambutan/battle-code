@@ -87,6 +87,11 @@ var Profile = React.createClass({
                 Losses: {loss}
               </div>
             </div>
+
+            <div className="elo-rating profile-card card">
+              <h2 className="content-header">ELO RATING</h2>
+              <div className="elo-rating-content">{this.props.user.elo_rating}</div>
+            </div>
           </div>
 
           <div className="profile-matches card">
