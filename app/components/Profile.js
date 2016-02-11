@@ -99,9 +99,6 @@ var Profile = React.createClass({
             {/*listOfProblems*/}
             <div className="profile-match-grid">
               {matchHistory}
-              {this.props.user.user_match_history % 2 !== 0 ?
-                <div className="match-profile-card-blank"></div>
-              : null}
             </div>
 
           </div>
