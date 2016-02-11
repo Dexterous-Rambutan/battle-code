@@ -32,6 +32,7 @@ var ChallengeArena = React.createClass({
   componentDidMount: function() {
     //setting up solo (player) editor
     var editor = ace.edit('editor');
+    editor.focus();
     editor.setOptions(selfEditorOptions);
     editor.$blockScrolling = Infinity;
     this.props.arenaActions.storeEditor(editor);
@@ -93,6 +94,8 @@ var ChallengeArena = React.createClass({
 
   componentDidUpdate: function(){
     this.props.arena.editorSolo.setValue(this.props.arena.content,1);
+    var pos = this.props.arena.editorSolo.selection.getCursor();
+    this.props.arena.editorSolo.moveCursorTo(pos.row - 1, 2);
   }
 });
 
