@@ -35,9 +35,9 @@
   background-color: #efefef;
   top: 50px;
   left: 50%;
-  width: 1000px;
-  margin-left: -500px;
-  height: 700px;
+  width: 800px;
+  margin-left: -400px;
+  height: 570px;
 }
 
 .profile-top-row {
@@ -52,12 +52,12 @@
 }
 
 .basic-info {
-  width: 200px;
-  height: 260px;
+  width: 150px;
+  height: 200px;
 }
 
 .profile-img img{
-  width: 200px;
+  width: 150px;
   border-radius: 5px;
 }
 
@@ -67,7 +67,7 @@
 
 .profile-name {
   margin: 10px 0px 0px 10px;
-  font-size: 1.5em;
+  font-size: 1em;
 }
 
 .profile-github {
@@ -78,14 +78,15 @@
 .profile-github a {
   text-decoration: none;
   color: #8b1919;
+  font-size: 0.9em;
 }
 
 .match-stats {
   flex-direction: column;
   justify-content: center;
   clear: right;
-  height: 250px;
-  width: 200px;
+  height: 180px;
+  width: 150px;
 }
 
 .win-loss-record {
@@ -94,7 +95,7 @@
 
 .profile-record {
   text-align: center;
-  font-size: 1.2em;
+  font-size: 0.9em;
 }
 
 .elo-rating {
@@ -102,7 +103,6 @@
 }
 
 .elo-rating h2 {
-  font-size: 20px;
   margin-top: -10px;
   font-size: 1em;
   font-weight: 300;
@@ -110,12 +110,13 @@
 
 .elo-rating-content {
   text-align: center;
-  font-size: 50px;
+  font-size: 2.5em;
   color: #8b1919;
 }
 
 .profile-matches {
   margin: 10px;
+  height: 510px;
 }
 
 .match-grid-header {
@@ -131,6 +132,8 @@
   justify-content: center;
   align-content: flex-start;
   overflow-y: auto;
+  width: 570px;
+  height: 430px;
 }
 
 .opponent-profile-image {
@@ -156,17 +159,17 @@
 }
 
 .match-detail-opponent {
-  width: 250px;
+  width: 170px;
 }
 
 .match-detail-challenge-title {
   font-size: 12px;
-  width: 160px;
+  width: 120px;
 }
 
 .match-detail-date {
   font-size: 12px;
-  width: 70px;
+  width: 0px;
 }
 
 .match-opponent-url {
@@ -181,7 +184,7 @@
   margin: 10px;
   text-decoration: none;
   color: rgb(127, 127, 127);
-  width: 650px;
+  width: 520px;
   height: 75px;
   display: flex;
   align-items: center;
