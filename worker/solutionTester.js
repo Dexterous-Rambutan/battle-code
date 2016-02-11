@@ -44,6 +44,7 @@ function runTest() {
     // Fetch the challenge test suite
     challenge.fetch()
     .then(function (challenge) {
+      console.log('Successfully fetched challenge', challenge);
       // create a sandbox and load chai into that context
       var context = new vm.createContext();
       // Load test suite into the context
@@ -111,7 +112,7 @@ function runTest() {
     })
     // Potential errors include: no such challenge
     .catch(function (err) {
-      console.log('got an error despite the try catch block');
+      console.log('got an error despite the try catch block', err);
       return new Error(err);
     });
   });
