@@ -182,7 +182,7 @@ maxProfit([1]) => 0
 maxProfit([10,9,8]) => 0
 maxProfit([3,10,1,5]) => 7*/
 
-var maxProfit = function (n) {
+var maxProfit = function (arr) {
   
 };","assert.equal(maxProfit([10,9,8,7,6,5,4,3,2,1]), 0);
 assert.equal(maxProfit([1,2,3,4,5,6,7,8,9,10]), 9);
@@ -332,7 +332,7 @@ assert.equal(romanNum(""IV""),4);
 assert.equal(romanNum(""IX""),9);
 assert.equal(romanNum(""XLIII""),43);
 assert.equal(romanNum(""MDCCC""),1800);
-assert.equal(romanNum(""MDCCXLIII""),1843);
+assert.equal(romanNum(""MDCCCXLIII""),1843);
 assert.equal(romanNum(""MCMXCVI""),1996);",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
 23,isAnagram,"/*Write a function that given two input strings, str1 and st2, determins if str1 is an anagram of str2, ignoring spaces and capitalization
 
