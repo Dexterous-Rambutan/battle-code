@@ -72,6 +72,9 @@ module.exports = function (app, redisClient) {
   // Add challenge to the db, admin privilige required
   app.post('/api/challenges', adminPrivilege, challengeController.addChallenge);
 
+  // Update a challenge to the db
+  app.put('/api/challenges/:challengeId', adminPrivilege, challengeController.update);
+
   // Reset the database to be blank
   app.get('/api/resetDB', adminPrivilege, db.resetEverything);
 
