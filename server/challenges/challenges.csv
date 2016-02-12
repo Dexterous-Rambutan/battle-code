@@ -291,7 +291,7 @@ assert.equal(compressString(""abc""), ""a1b1c1"");
 assert.equal(compressString(""hey !""), ""h1e1y1 1!1"");
 assert.equal(compressString(""Hannah""), ""H1a2n2h1"");
 assert.equal(compressString(""hahnbi""), ""h2a1n1b1i1"");",battle,2016-02-02 20:42:35.743-08,2016-02-02 20:42:35.743-08
-20,stepSum,"/*Write a function that returns number of possible ways to reach the top of a staircase containing n steps, given that you can take 1, 2, or 3 steps per move.
+20,stepSum,"/*Write a function that returns number of possible ways to reach the top of a staircase containing n steps, given that you can take 1 or 2 steps per move.
 
 Example usage:
 stepSum(1) => 1
