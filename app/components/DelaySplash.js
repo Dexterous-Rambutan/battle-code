@@ -2,7 +2,6 @@ var React = require('react');
 var actions = require('../constants').action;
 var DelaySplash = React.createClass({
   componentDidUpdate: function () {
-    console.log(this.props.arena.delay)
     if(this.props.arena.delay > 0){
       setTimeout(this.props.arenaActions.countdown, 1000)
     }

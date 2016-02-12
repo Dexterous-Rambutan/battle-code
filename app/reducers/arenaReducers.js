@@ -141,6 +141,10 @@ function arenaReducer (state, action){
         opponent_info: {},
         content: action.payload
       });
+    case actions.LEAVING:
+      return _.extend({}, state, {
+        opponent_info: {}
+      });
     case actions.GOT_OPPONENT_HANDLE:
       return _.extend({}, state, {
         opponent_info: action.payload

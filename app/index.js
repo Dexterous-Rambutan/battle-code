@@ -12,9 +12,9 @@ var configureStore = require('./store/configureStore');
 
 
 var store = configureStore();
-store.subscribe(() => {
-  console.log('state changed',store.getState());
-});
+// store.subscribe(() => {
+//   console.log('state changed',store.getState());
+// });
 
 
 window.store = store;
