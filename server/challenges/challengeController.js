@@ -140,6 +140,22 @@ module.exports = {
     });
   },
 
+  update: function (req, res) {
+    var challengeAttr = {
+      prompt: req.body.prompt,
+      test_suite: req.body.test_suite
+    };
+    var challengeId = req.params.challengeId;
+    Challenge.forge({
+      id: challengeId
+    }).fetch()
+    .then(function (challenge) {
+      challenge.set(challengeAttr).save();
+    }).then(function (challenge) {
+      res.status(201).json(challenge);
+    });
+  },
+
   resetWithData: function () {
     return Challenge.forge({
       name: "One",

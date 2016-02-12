@@ -8,23 +8,25 @@
       var $challengeName = $('.challengeName');
       var $challengePrompt = $('.challengePrompt');
       var $challengeTest = $('.challengeTest');
-      var $submitProblem = $('.submitProblem');
+      var $updateChallengeId = $('.updateChallengeId');
+      var $updateChallengePrompt = $('.updateChallengePrompt');
+      var $updateChallengeTest = $('.updateChallengeTest');
+      var $updateProblem = $('.updateProblem');
       var $submitBattleProblem = $('.submitBattleProblem');
 
       var $solution = $('.solution');
       var $challengeId = $('.challengeId');
       var $submitSolution = $('.submitSolution');
 
-      $submitProblem.on('click', function() {
+      $updateProblem.on('click', function() {
+        var id = $updateChallengeId;
         var data = JSON.stringify({
-            name: $challengeName.val(),
-            prompt: $challengePrompt.val(),
-            test_suite: $challengeTest.val()
+          prompt: $updateChallengePrompt.val(),
+          test_suite: $updateChallengeTest.val()
         });
-        console.log(data);
         $.ajax({
-          url: 'http://127.0.0.1:3000/api/challenges',
-          method: 'POST',
+          url: '/api/challenges/'+$updateChallengeId.val(),
+          method: 'PUT',
           data: data,
           contentType: 'application/json',
           success: function(a) {
@@ -45,7 +47,7 @@
         });
         console.log(data);
         $.ajax({
-          url: 'http://127.0.0.1:3000/api/challenges',
+          url: '/api/challenges',
           method: 'POST',
           data: data,
           contentType: 'application/json',
@@ -67,7 +69,7 @@
         });
         console.log(data);
         $.ajax({
-          url: 'http://127.0.0.1:3000/api/solutions/' + $challengeId.val(),
+          url: '/api/solutions/' + $challengeId.val(),
           method: 'POST',
           data: data,
           contentType: 'application/json',
@@ -108,5 +110,18 @@
   <div style="padding: 10px; clear:left">
     <button class="submitSolution">Submit Solution</button>
   </div>
+  <div style="float: left">
+    <div style="width:400px; height:350px; float: left; padding: 10px">
+      <input class="updateChallengeId" placeholder="Challenge id..." style="width: 400px; height: 20px"></input>
+      <textarea class="updateChallengePrompt" placeholder="Problem prompt..." style="width:400px; height:325px"></textarea><br>
+    </div>
+    <div style="width:400px; height:350px; float: left; padding: 10px">
+      <textarea class="updateChallengeTest" placeholder="Problem test suite..." style="width:400px; height:350px; float: left"></textarea><br>
+    </div>
+    <div style="clear: left; padding: 10px">
+      <button class="updateProblem">Update Challenge</button>
+    </div>;
+  </div>
+
 </body>
 </html>
