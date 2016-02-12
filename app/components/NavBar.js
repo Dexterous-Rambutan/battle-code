@@ -18,7 +18,7 @@ var Nav = React.createClass({
           </div>
           <div className="nav-links">
             <ul>
-              {this.props.arena.opponent_info.github_handle ? <li> You are now playing: {this.props.arena.opponent_info.github_handle}</li> : null}
+              {this.props.arena.opponent_info.github_handle ? <li> You are now playing against: {this.props.arena.opponent_info.github_handle}</li> : null}
               {showNav ? <li><a href='#' onClick={this.navProfile}>Profile</a></li> : null}
               {showNav ? <li><a href='/logout'>Logout</a></li> : null}
               {showLeave ? <li><a href='#' onClick={this.props.navActions.navAwayFromArena}>LEAVE</a></li> : null}
