@@ -45,6 +45,7 @@ module.exports = {
     COUNTDOWN: 'COUNTDOWN',
     RESET_PROMPT: 'RESET_PROMPT',
     EXIT_SPLASH: 'EXIT_SPLASH',
+    LEAVING: 'LEAVING',
 
 
 
