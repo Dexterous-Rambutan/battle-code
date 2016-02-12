@@ -24,7 +24,6 @@
           prompt: $updateChallengePrompt.val(),
           test_suite: $updateChallengeTest.val()
         });
-        console.log(data);
         $.ajax({
           url: '/api/challenges/'+$updateChallengeId.val(),
           method: 'PUT',

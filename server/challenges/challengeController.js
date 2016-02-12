@@ -145,9 +145,7 @@ module.exports = {
       prompt: req.body.prompt,
       test_suite: req.body.test_suite
     };
-    console.log(challengeAttr);
     var challengeId = req.params.challengeId;
-    console.log(challengeId);
     Challenge.forge({
       id: challengeId
     }).fetch()
