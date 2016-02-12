@@ -3,8 +3,8 @@ var callbackURL;
 var port = process.env.PORT || 3000;
 
 if (process.env.DEPLOYED) {
-  callbackURL = "http://battlecode.tk/login/callback";
-  apiKey = require('../lib/apiKey.js');
+  callbackURL = "http://??????/login/callback";
+  apiKey = require('../lib/apiKey-demo.js');
 } else {
   callbackURL = "http://127.0.0.1:3000/login/callback";
   apiKey = require('../lib/apiKey-dev.js');
