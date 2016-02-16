@@ -359,7 +359,7 @@ button:hover {
   width: 310px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 .challenge-card:hover .card-content {
@@ -464,9 +464,10 @@ button:hover {
 .editors {
   display: flex;
   z-index: 0;
+  height: 75%;
 }
 .player-editor, .opponent-editor {
-  height: 75%;
+  height: 100%;
   width:50%;
 }
 
