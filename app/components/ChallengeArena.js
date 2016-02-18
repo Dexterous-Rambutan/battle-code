@@ -44,7 +44,7 @@ var ChallengeArena = React.createClass({
         this.submitProblem();
       }.bind(this)
     });
-    
+
     this.props.arenaActions.storeEditor(editor);
 
     //setting up opponnent editor
@@ -84,7 +84,7 @@ var ChallengeArena = React.createClass({
           <div>
             <div className="challenge-arena-buttons">
               <button className="reset reset-challenge" onClick={this.props.arenaActions.resetPrompt}>RESET</button>
-              <button className="submit submit-challenge" onClick={this.submitProblem}>SUBMIT</button>
+              {this.props.arena.problem_id !== null  ? <button className="submit submit-challenge" onClick={this.submitProblem}>SUBMIT</button> : null}
             </div>
             <div></div>
           </div>

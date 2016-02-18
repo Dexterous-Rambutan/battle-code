@@ -6,7 +6,7 @@ var actions = require('../constants').action;
 
 
 var initial = {
-  problem_id: 0,
+  problem_id: null,
   prompt: '',
   problem_name: '',
   content: "",
@@ -109,6 +109,7 @@ function arenaReducer (state, action){
         prompt: '',
         syntaxMessage: '',
         problem_name: '',
+        problem_id: null,
         leaderBoard: [],
         status: '',
         submitted: false,
