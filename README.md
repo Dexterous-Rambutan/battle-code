@@ -10,6 +10,7 @@ Battle your peers head-to-head with intense coding challenges.
   - __Development Team Members__: [Harun Davood](https://github.com/puzzlehe4d), [Alan Fu](https://github.com/alanzfu), [Hahnbi Sun](https://github.com/hahnbi), [Kevin Weng](https://github.com/kweng2)
 
 <hr>
+
 ## Table of Contents
 
 1. [Usage](#Usage)
@@ -23,10 +24,12 @@ Battle your peers head-to-head with intense coding challenges.
 1. [Deployment](#deployment)
 
 <hr>
+
 ## Usage
 
 Load up the arena and try to complete as many of the test cases for the coding challenge as possible before your opponent.
 <hr>
+
 ## Requirements
 
 - Node 0.10.x
@@ -37,6 +40,7 @@ Load up the arena and try to complete as many of the test cases for the coding c
 - Redux -
 
 <hr>
+
 ## Development
 
 ### Installing Dependencies
@@ -54,16 +58,21 @@ bower install
 View the project roadmap [here](https://github.com/Dexterous-Rambutan/battle-code/issues)
 
 <hr>
+
 ## Contributing + Github Workflow
 
 See [github.md](github.md) for contribution and github workflow guidelines.
 
 <hr>
+
 ## Architecture
+
 ### High Level Architecture
+
 ![](http://i.imgur.com/mqdnWVh.png)
 
 ### Database Schema
+
 Database in Postgres, using Bookshelf and Knex
 ![](http://i.imgur.com/xyi07Rv.png)
 
@@ -78,7 +87,9 @@ Database in Postgres, using Bookshelf and Knex
 ![](http://i.imgur.com/1N1vi5h.png)
 
 ## API
+
 ##### Public End Points
+
 |Request|URL|Response|
 |---|---|---|
 |Log-in|/auth/github|   |
@@ -92,6 +103,7 @@ Database in Postgres, using Bookshelf and Knex
 |Get Challenge|/api/challenges/:challengeId|[challengeObj...]|
 
 ##### Admin Only
+
 |Request|URL|Response|
 |---|---|---|
 |GUI Access to Database|/addProblemsSolutions.html|   |
